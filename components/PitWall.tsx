@@ -185,16 +185,16 @@ export function PitWall({
   /* ---------- STEP 1: SCENARIO MIXER ---------- */
   if (step === "mix") {
     return (
-      <div className="px-4 pb-32 pt-5 lg:pb-10">
+      <div className="shell px-4 pb-32 pt-5">
         <div className="relative overflow-hidden pt-3">
           <span
             aria-hidden
-            className="title ghost-red bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] lg:text-[8rem]"
+            className="title ghost-red bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] sm:text-[6rem]"
           >
             SETUP
           </span>
-          <div className="relative pt-[7vw] lg:pt-12">
-            <Title hit="THE SKY" size="text-[13vw] leading-[0.84] lg:text-6xl">
+          <div className="relative pt-[7vw] sm:pt-10">
+            <Title hit="THE SKY" size="text-[13vw] leading-[0.84] sm:text-6xl">
               Mix
             </Title>
             <p className="mt-2 max-w-md text-[13px] leading-snug text-muted">
@@ -238,15 +238,13 @@ export function PitWall({
           <span className="text-yellow">{mixLabel(mix)}</span>
         </div>
 
-        <div className="actionbar mt-6">
-          <div className="shell lg:px-0">
-            <button
-              onClick={goIntro}
-              className="display w-full rounded-xl bg-red py-4 text-xl leading-none transition-transform active:scale-[0.98]"
-            >
-              Meet the judges →
-            </button>
-          </div>
+        <div className="mt-6">
+          <button
+            onClick={goIntro}
+            className="display w-full rounded-xl bg-red py-4 text-xl leading-none transition-transform active:scale-[0.98]"
+          >
+            Meet the judges →
+          </button>
         </div>
       </div>
     );
@@ -255,16 +253,16 @@ export function PitWall({
   /* ---------- STEP 2: JUDGE INTROS ---------- */
   if (step === "intro" && scenario) {
     return (
-      <div className="px-4 pb-32 pt-5 lg:pb-10">
+      <div className="shell px-4 pb-32 pt-5">
         <div className="relative overflow-hidden pt-3">
           <span
             aria-hidden
-            className="title ghost bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] lg:text-[8rem]"
+            className="title ghost bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] sm:text-[6rem]"
           >
             JUDGES
           </span>
-          <div className="relative pt-[7vw] lg:pt-12">
-            <Title hit="THE THREE" size="text-[13vw] leading-[0.84] lg:text-6xl">
+          <div className="relative pt-[7vw] sm:pt-10">
+            <Title hit="THE THREE" size="text-[13vw] leading-[0.84] sm:text-6xl">
               Meet
             </Title>
             <p className="mt-2 max-w-md text-[13px] leading-snug text-muted">
@@ -315,23 +313,19 @@ export function PitWall({
           ))}
         </div>
 
-        <div className="actionbar mt-6">
-          <div className="shell lg:px-0">
-            <div className="grid grid-cols-2 gap-2">
-              <button
-                onClick={() => setStep("mix")}
-                className="display rounded-xl border border-line bg-surface py-4 text-base leading-none text-muted transition-transform active:scale-[0.98]"
-              >
-                ← Back
-              </button>
-              <button
-                onClick={startDebate}
-                className="display rounded-xl bg-red py-4 text-base leading-none transition-transform active:scale-[0.98]"
-              >
-                Hear them argue →
-              </button>
-            </div>
-          </div>
+        <div className="mt-6 grid grid-cols-2 gap-2">
+          <button
+            onClick={() => setStep("mix")}
+            className="display rounded-xl border border-line bg-surface py-4 text-base leading-none text-muted transition-transform active:scale-[0.98]"
+          >
+            ← Back
+          </button>
+          <button
+            onClick={startDebate}
+            className="display rounded-xl bg-red py-4 text-base leading-none transition-transform active:scale-[0.98]"
+          >
+            Hear them argue →
+          </button>
         </div>
       </div>
     );
@@ -340,110 +334,107 @@ export function PitWall({
   /* ---------- STEP 3: DEBATE ---------- */
   if (step === "debate" && scenario) {
     return (
-      <div className="px-4 pb-44 pt-5 lg:grid lg:grid-cols-[1.15fr_.85fr] lg:items-start lg:gap-10 lg:pb-10">
-        <div className="flex flex-col gap-5">
-          <div className="relative overflow-hidden pt-3">
-            <span
-              aria-hidden
-              className="title ghost-red bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] lg:text-[8rem]"
-            >
-              {scenario.name}
-            </span>
-            <div className="relative pt-[7vw] lg:pt-12">
-              <Title hit="WALL" size="text-[13vw] leading-[0.84] lg:text-6xl">
-                PIT
-              </Title>
-              <p className="mt-2 max-w-sm text-[13px] leading-snug text-muted">
-                Three engineers, one sky. Listen to the debate, then decide who was right.
-              </p>
-              <div className="annot data mt-3 text-[10px] uppercase tracking-[0.2em] text-muted">
-                <span>
-                  {scenario.trackTempC}°C · {scenario.humidityPct}% humidity · {scenario.lapsRemaining} laps
-                </span>
-              </div>
+      <div className="shell flex flex-col gap-5 px-4 pb-32 pt-5">
+        <div className="relative overflow-hidden pt-3">
+          <span
+            aria-hidden
+            className="title ghost-red bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] sm:text-[6rem]"
+          >
+            {scenario.name}
+          </span>
+          <div className="relative pt-[7vw] sm:pt-10">
+            <Title hit="WALL" size="text-[13vw] leading-[0.84] sm:text-6xl">
+              PIT
+            </Title>
+            <p className="mt-2 max-w-md text-[13px] leading-snug text-muted">
+              Three engineers, one sky. Listen to the debate, then decide who was right.
+            </p>
+            <div className="annot data mt-3 text-[10px] uppercase tracking-[0.2em] text-muted">
+              <span>
+                {scenario.trackTempC}°C · {scenario.humidityPct}% humidity · {scenario.lapsRemaining} laps
+              </span>
             </div>
-          </div>
-
-          <div className="grid grid-cols-3 gap-2">
-            <Stat label="Track" value={scenario.trackTempC} unit="°C" tone="yellow" />
-            <Stat label="Air" value={scenario.airTempC} unit="°C" />
-            <Stat label="Humidity" value={scenario.humidityPct} unit="%" tone="ice" />
-          </div>
-
-          <div className="flex flex-col gap-2.5">
-            {feed.map((t, i) => {
-              const p = PERSONAS.find((x) => x.id === t.id)!;
-              return (
-                <article
-                  key={`${t.id}-${i}`}
-                  className={`anim-slide card overflow-hidden transition-all ${t.open ? "ring-1" : ""}`}
-                  style={t.open ? { borderColor: `var(--${p.tone})` } : undefined}
-                >
-                  <div
-                    className="flex items-center gap-3 px-3 py-2.5"
-                    style={{ background: `color-mix(in srgb, var(--${p.tone}) 15%, transparent)` }}
-                  >
-                    <Avatar persona={p} size={38} />
-                    <div className="min-w-0 flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="display text-sm leading-none" style={{ color: `var(--${p.tone})` }}>
-                          {p.name}
-                        </span>
-                        {t.open && (
-                          <span
-                            aria-hidden
-                            className="anim-blink inline-block h-2 w-2 rounded-full"
-                            style={{ background: `var(--${p.tone})` }}
-                          />
-                        )}
-                      </div>
-                      <div className="data text-[9px] uppercase tracking-wider text-muted mt-0.5">
-                        {p.role}
-                      </div>
-                    </div>
-                    <div className="data text-[9px] uppercase tracking-wider text-muted/70">
-                      CH-0{PERSONAS.indexOf(p) + 1}
-                    </div>
-                  </div>
-                  <p className="px-3.5 py-3 text-[15px] leading-snug">
-                    {t.text}
-                    {t.open && <span className="anim-blink ml-0.5 text-red">▊</span>}
-                  </p>
-                </article>
-              );
-            })}
-
-            {feed.length === 0 && (
-              <div className="card relative h-20 overflow-hidden">
-                <div className="anim-sweep absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
-                <div className="data flex h-full items-center justify-center text-[11px] text-muted">
-                  OPENING RADIO…
-                </div>
-              </div>
-            )}
           </div>
         </div>
 
-        <div className="actionbar lg:sticky lg:top-24">
-          <div className="shell lg:px-0">
-            <div className="data mb-2 flex items-center justify-between text-[10px] uppercase tracking-wider text-muted">
-              <span>Your call, {callsign}</span>
-              {!briefed && <span className="anim-blink">radio live…</span>}
+        <div className="grid grid-cols-3 gap-2">
+          <Stat label="Track" value={scenario.trackTempC} unit="°C" tone="yellow" />
+          <Stat label="Air" value={scenario.airTempC} unit="°C" />
+          <Stat label="Humidity" value={scenario.humidityPct} unit="%" tone="ice" />
+        </div>
+
+        <div className="flex flex-col gap-2.5">
+          {feed.map((t, i) => {
+            const p = PERSONAS.find((x) => x.id === t.id)!;
+            return (
+              <article
+                key={`${t.id}-${i}`}
+                className={`anim-slide card overflow-hidden transition-all ${t.open ? "ring-1" : ""}`}
+                style={t.open ? { borderColor: `var(--${p.tone})` } : undefined}
+              >
+                <div
+                  className="flex items-center gap-3 px-3 py-2.5"
+                  style={{ background: `color-mix(in srgb, var(--${p.tone}) 15%, transparent)` }}
+                >
+                  <Avatar persona={p} size={38} />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="display text-sm leading-none" style={{ color: `var(--${p.tone})` }}>
+                        {p.name}
+                      </span>
+                      {t.open && (
+                        <span
+                          aria-hidden
+                          className="anim-blink inline-block h-2 w-2 rounded-full"
+                          style={{ background: `var(--${p.tone})` }}
+                        />
+                      )}
+                    </div>
+                    <div className="data text-[9px] uppercase tracking-wider text-muted mt-0.5">
+                      {p.role}
+                    </div>
+                  </div>
+                  <div className="data text-[9px] uppercase tracking-wider text-muted/70">
+                    CH-0{PERSONAS.indexOf(p) + 1}
+                  </div>
+                </div>
+                <p className="px-3.5 py-3 text-[15px] leading-snug">
+                  {t.text}
+                  {t.open && <span className="anim-blink ml-0.5 text-red">▊</span>}
+                </p>
+              </article>
+            );
+          })}
+
+          {feed.length === 0 && (
+            <div className="card relative h-20 overflow-hidden">
+              <div className="anim-sweep absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+              <div className="data flex h-full items-center justify-center text-[11px] text-muted">
+                OPENING RADIO…
+              </div>
             </div>
-            <button
-              disabled={!briefed}
-              onClick={() => setStep("verdict")}
-              className="display w-full rounded-xl bg-yellow py-4 text-base leading-none text-black transition-transform active:scale-[0.98] disabled:opacity-40"
-            >
-              Who was right? →
-            </button>
-            <button
-              onClick={() => setStep("intro")}
-              className="display mt-2 w-full rounded-xl border border-line bg-surface py-3 text-sm leading-none text-muted transition-transform active:scale-[0.98]"
-            >
-              ← Back to judges
-            </button>
+          )}
+        </div>
+
+        {/* Action buttons directly below the judges, aligned with screen layout */}
+        <div className="mt-2 flex flex-col gap-2">
+          <div className="data flex items-center justify-between text-[10px] uppercase tracking-wider text-muted px-1">
+            <span>Your call, {callsign}</span>
+            {!briefed && <span className="anim-blink">radio live…</span>}
           </div>
+          <button
+            disabled={!briefed}
+            onClick={() => setStep("verdict")}
+            className="display w-full rounded-xl bg-yellow py-4 text-base leading-none text-black transition-transform active:scale-[0.98] disabled:opacity-40"
+          >
+            Who was right? →
+          </button>
+          <button
+            onClick={() => setStep("intro")}
+            className="display w-full rounded-xl border border-line bg-surface py-3 text-sm leading-none text-muted transition-transform active:scale-[0.98]"
+          >
+            ← Back to judges
+          </button>
         </div>
       </div>
     );
@@ -452,16 +443,16 @@ export function PitWall({
   /* ---------- STEP 4: JUDGE WHO'S RIGHT ---------- */
   if (step === "verdict" && scenario) {
     return (
-      <div className="px-4 pb-32 pt-5 lg:pb-10">
+      <div className="shell px-4 pb-32 pt-5">
         <div className="relative overflow-hidden pt-3">
           <span
             aria-hidden
-            className="title ghost bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] lg:text-[8rem]"
+            className="title ghost bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] sm:text-[6rem]"
           >
             VERDICT
           </span>
-          <div className="relative pt-[7vw] lg:pt-12">
-            <Title hit="RIGHT?" size="text-[13vw] leading-[0.84] lg:text-6xl">
+          <div className="relative pt-[7vw] sm:pt-10">
+            <Title hit="RIGHT?" size="text-[13vw] leading-[0.84] sm:text-6xl">
               Who was
             </Title>
             <p className="mt-2 max-w-md text-[13px] leading-snug text-muted">
@@ -506,15 +497,13 @@ export function PitWall({
           })}
         </div>
 
-        <div className="actionbar mt-6">
-          <div className="shell lg:px-0">
-            <button
-              onClick={() => setStep("debate")}
-              className="display w-full rounded-xl border border-line bg-surface py-4 text-base leading-none text-muted transition-transform active:scale-[0.98]"
-            >
-              ← Back to the debate
-            </button>
-          </div>
+        <div className="mt-6">
+          <button
+            onClick={() => setStep("debate")}
+            className="display w-full rounded-xl border border-line bg-surface py-4 text-base leading-none text-muted transition-transform active:scale-[0.98]"
+          >
+            ← Back to the debate
+          </button>
         </div>
       </div>
     );
