@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { PERSONAS, CALL_LABEL, type Call } from "@/lib/personas.ts";
+import { PERSONAS, CALL_LABEL, advocateOf, type Call } from "@/lib/personas.ts";
 import { scenarioById } from "@/lib/scenarios.ts";
 import { streamRadio } from "@/lib/radio.ts";
 import { fallbackLine } from "@/lib/fallback.ts";
@@ -114,42 +114,57 @@ export function PitWall({
         </div>
 
         <div className="flex flex-col gap-2.5">
-        {feed.map((t, i) => {
-          const p = PERSONAS.find((x) => x.id === t.id)!;
-          return (
-            <article key={`${t.id}-${i}`} className="anim-slide card overflow-hidden">
-              <div
-                className="flex items-center gap-2.5 px-3 py-2"
-                style={{ background: `color-mix(in srgb, var(--${p.tone}) 14%, transparent)` }}
+          {feed.map((t, i) => {
+            const p = PERSONAS.find((x) => x.id === t.id)!;
+            return (
+              <article
+                key={`${t.id}-${i}`}
+                className={`anim-slide card overflow-hidden transition-all ${
+                  t.open ? "ring-1" : ""
+                }`}
+                style={t.open ? { borderColor: `var(--${p.tone})` } : undefined}
               >
-                <Avatar persona={p} size={32} />
-                <span className="display text-sm leading-none" style={{ color: `var(--${p.tone})` }}>
-                  {p.name}
-                </span>
-                {t.open && (
-                  <span
-                    aria-hidden
-                    className="anim-blink h-2 w-2 rounded-full"
-                    style={{ background: `var(--${p.tone})` }}
-                  />
-                )}
-                <span className="data ml-auto text-[9px] uppercase text-muted">{p.role}</span>
-              </div>
-              <p className="px-3.5 py-3 text-[15px] leading-snug">
-                {t.text}
-                {t.open && <span className="anim-blink ml-0.5 text-red">▊</span>}
-              </p>
-            </article>
-          );
-        })}
+                <div
+                  className="flex items-center gap-3 px-3 py-2.5"
+                  style={{ background: `color-mix(in srgb, var(--${p.tone}) 15%, transparent)` }}
+                >
+                  <Avatar persona={p} size={38} />
+                  <div className="min-w-0 flex-1">
+                    <div className="flex items-center gap-2">
+                      <span className="display text-sm leading-none" style={{ color: `var(--${p.tone})` }}>
+                        {p.name}
+                      </span>
+                      {t.open && (
+                        <span
+                          aria-hidden
+                          className="anim-blink inline-block h-2 w-2 rounded-full"
+                          style={{ background: `var(--${p.tone})` }}
+                        />
+                      )}
+                    </div>
+                    <div className="data text-[9px] uppercase tracking-wider text-muted mt-0.5">
+                      {p.role}
+                    </div>
+                  </div>
+                  <div className="data text-[9px] uppercase tracking-wider text-muted/70">
+                    CH-0{PERSONAS.indexOf(p) + 1}
+                  </div>
+                </div>
+                <p className="px-3.5 py-3 text-[15px] leading-snug">
+                  {t.text}
+                  {t.open && <span className="anim-blink ml-0.5 text-red">▊</span>}
+                </p>
+              </article>
+            );
+          })}
 
-        {feed.length === 0 && (
-          <div className="card relative h-20 overflow-hidden">
-            <div className="anim-sweep absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
-            <div className="data flex h-full items-center justify-center text-[11px] text-muted">
-              OPENING RADIO…
+          {feed.length === 0 && (
+            <div className="card relative h-20 overflow-hidden">
+              <div className="anim-sweep absolute inset-y-0 w-1/3 bg-gradient-to-r from-transparent via-white/5 to-transparent" />
+              <div className="data flex h-full items-center justify-center text-[11px] text-muted">
+                OPENING RADIO…
+              </div>
             </div>
-          </div>
           )}
         </div>
       </div>
@@ -160,23 +175,36 @@ export function PitWall({
             <span>Your call, {callsign}</span>
             {!briefed && <span className="anim-blink">radio live…</span>}
           </div>
-          <div className="flex flex-col gap-2">
-            {(Object.keys(CALL_LABEL) as Call[]).map((call, i) => (
-              <button
-                key={call}
-                onClick={() => {
-                  radioBeep(muted);
-                  onDecide(call);
-                }}
-                style={{ "--i": i } as React.CSSProperties}
-                className="display anim-rise flex items-center justify-between rounded-xl border border-line bg-surface px-4 py-3 text-left text-base leading-none transition-transform active:scale-[0.98]"
-              >
-                <span style={{ color: `var(--${CALL_TONE[call]})` }}>{CALL_LABEL[call]}</span>
-                <span aria-hidden className="text-muted">
-                  ›
-                </span>
-              </button>
-            ))}
+          <div className="flex flex-col gap-2.5">
+            {(Object.keys(CALL_LABEL) as Call[]).map((call, i) => {
+              const advocate = advocateOf(call);
+              return (
+                <button
+                  key={call}
+                  onClick={() => {
+                    radioBeep(muted);
+                    onDecide(call);
+                  }}
+                  style={{ "--i": i } as React.CSSProperties}
+                  className="anim-rise group flex items-center justify-between rounded-xl border border-line bg-surface p-3 text-left transition-all active:scale-[0.98] hover:border-fg/30"
+                >
+                  <div className="flex items-center gap-3">
+                    <Avatar persona={advocate} size={36} />
+                    <div>
+                      <div className="display text-base leading-none" style={{ color: `var(--${CALL_TONE[call]})` }}>
+                        {CALL_LABEL[call]}
+                      </div>
+                      <div className="data mt-1 text-[10px] uppercase tracking-wider text-muted">
+                        Pushed by {advocate.name}
+                      </div>
+                    </div>
+                  </div>
+                  <span aria-hidden className="text-xl text-muted/60 transition-transform group-hover:translate-x-0.5">
+                    ›
+                  </span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>

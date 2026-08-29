@@ -219,6 +219,54 @@ body {
   }
 }
 
+/* ---- tilt card ----------------------------------------------------------
+   Perspective lives on the wrapper so the card itself keeps its normal
+   layout box (width/height/9:16 ratio untouched); only the inner element
+   rotates. --tilt-x/--tilt-y are written by useTilt on pointermove. */
+.tilt-wrap {
+  perspective: 900px;
+}
+
+.tilt-card {
+  --tilt-x: 0deg;
+  --tilt-y: 0deg;
+  --glare-x: 50%;
+  --glare-y: 50%;
+  transform: rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
+  transform-style: preserve-3d;
+  transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.tilt-card:hover,
+.tilt-card:active {
+  transition: transform 0.05s linear;
+}
+
+.tilt-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    380px circle at var(--glare-x) var(--glare-y),
+    rgba(255, 255, 255, 0.22),
+    transparent 55%
+  );
+  opacity: 0;
+  transition: opacity 0.2s ease;
+  pointer-events: none;
+}
+
+.tilt-card:hover::after {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tilt-card {
+    transform: none !important;
+  }
+}
+
 /* ---- share buttons ------------------------------------------------------
    The "fills like water" hover is one blend trick, no JS: the icon sits on
    `mix-blend-mode: difference`, so as the fill rises behind it the icon's

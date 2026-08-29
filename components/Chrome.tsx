@@ -66,21 +66,29 @@ export function Header({
  * Portraits are light-on-black, so `screen` knocks the black out against any
  * dark surface — no alpha channel and no matting halo.
  */
-export function Avatar({ persona, size = 40 }: { persona: Persona; size?: number }) {
+export function Avatar({
+  persona,
+  size = 40,
+  className = "",
+}: {
+  persona: Persona;
+  size?: number;
+  className?: string;
+}) {
   return (
     <span
-      className="grid shrink-0 place-items-center overflow-hidden rounded-lg bg-black"
+      className={`grid shrink-0 place-items-center overflow-hidden rounded-xl bg-black ${className}`}
       style={{
         width: size,
         height: size,
-        boxShadow: `inset 0 0 0 1px color-mix(in srgb, var(--${persona.tone}) 35%, transparent)`,
+        boxShadow: `inset 0 0 0 1px color-mix(in srgb, var(--${persona.tone}) 45%, transparent), 0 0 14px -3px color-mix(in srgb, var(--${persona.tone}) 35%, transparent)`,
       }}
     >
       {persona.avatar ? (
         // eslint-disable-next-line @next/next/no-img-element
         <img
           src={persona.avatar}
-          alt=""
+          alt={persona.name}
           width={size}
           height={size}
           loading="lazy"

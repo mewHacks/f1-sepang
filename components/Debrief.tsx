@@ -132,19 +132,29 @@ export function Debrief({
 
         <article className="card overflow-hidden">
           <div
-            className="flex items-center gap-2.5 px-3 py-2"
-            style={{ background: `color-mix(in srgb, var(--${winner.tone}) 14%, transparent)` }}
+            className="flex items-center gap-3 px-4 py-3"
+            style={{ background: `color-mix(in srgb, var(--${winner.tone}) 15%, transparent)` }}
           >
-            <Avatar persona={winner} size={32} />
+            <Avatar persona={winner} size={48} />
+            <div className="min-w-0 flex-1">
+              <div className="display text-base leading-none" style={{ color: `var(--${winner.tone})` }}>
+                {winner.name}
+              </div>
+              <div className="data mt-1 text-[10px] uppercase tracking-wider text-muted">
+                {winner.role}
+              </div>
+            </div>
             <span
-              className="display text-sm leading-none"
-              style={{ color: `var(--${winner.tone})` }}
+              className="data rounded-full border px-2.5 py-1 text-[9px] uppercase tracking-wider"
+              style={{
+                borderColor: `var(--${winner.tone})`,
+                color: `var(--${winner.tone})`,
+              }}
             >
-              {winner.name}
+              Had it right
             </span>
-            <span className="data ml-auto text-[9px] uppercase text-muted">had it right</span>
           </div>
-          <p className="px-3.5 py-3 text-[15px] leading-snug">
+          <p className="px-4 py-3.5 text-[15px] leading-snug">
             {verdict || <span className="anim-blink text-muted">…</span>}
           </p>
         </article>

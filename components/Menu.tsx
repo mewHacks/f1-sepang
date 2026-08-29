@@ -1,7 +1,7 @@
-"use client";
-
 import { useEffect } from "react";
 import type { View } from "@/lib/views.ts";
+import { PERSONAS } from "@/lib/personas.ts";
+import { Avatar } from "./Chrome.tsx";
 
 const ITEMS: { view: View; n: string; label: string; hint: string }[] = [
   { view: "landing", n: "01", label: "Pit Wall", hint: "Call the strategy" },
@@ -88,9 +88,26 @@ export function Menu({
       </nav>
 
       <div
-        className="border-t border-line px-4 py-4"
+        className="flex flex-col gap-2.5 border-t border-line px-4 py-4"
         style={{ paddingBottom: "calc(var(--safe-b) + 16px)" }}
       >
+        <div className="flex items-center justify-between rounded-xl border border-line bg-surface/50 px-3.5 py-2.5">
+          <div className="flex items-center gap-2">
+            <div className="flex -space-x-2">
+              {PERSONAS.map((p) => (
+                <Avatar key={p.id} persona={p} size={28} className="border border-bg" />
+              ))}
+            </div>
+            <div className="data text-[10px] uppercase tracking-wider text-muted">
+              Pit crew comms
+            </div>
+          </div>
+          <span className="data inline-flex items-center gap-1 text-[9px] uppercase tracking-widest text-green">
+            <span className="anim-blink h-1.5 w-1.5 rounded-full bg-green" />
+            Active
+          </span>
+        </div>
+
         <button
           onClick={onToggleMute}
           aria-pressed={muted}
