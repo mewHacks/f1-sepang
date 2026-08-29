@@ -1,0 +1,15 @@
+# secrets — never read
+.env
+.env.*
+*.env
+*.pem
+*.key
+*.p12
+secrets.*
+credentials.*
+
+# noise
+node_modules/
+.next/
+.omc/
+package-lock.json

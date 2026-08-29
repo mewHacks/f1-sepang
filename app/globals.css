@@ -1,0 +1,108 @@
+@import "tailwindcss";
+
+/* ---- design tokens ----------------------------------------------------
+   Placeholder palette. Swap these values when UI direction is decided —
+   nothing else in the app hardcodes a colour.
+   ponytail: tokens only, no theme system until a second theme exists. */
+:root {
+  --bg: #07070b;
+  --surface: #12121a;
+  --line: #23232f;
+  --fg: #f2f2f7;
+  --muted: #8a8a9c;
+
+  --accent: #00e5ff; /* telemetry / Aero-9 */
+  --warm: #ffb020; /* Uncle Sepang */
+  --hot: #ff2e79; /* Din Turbo */
+  --go: #38e07a;
+
+  --safe-t: env(safe-area-inset-top, 0px);
+  --safe-b: env(safe-area-inset-bottom, 0px);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-line: var(--line);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --color-warm: var(--warm);
+  --color-hot: var(--hot);
+  --color-go: var(--go);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  background: var(--bg);
+  /* stop iOS rubber-band flashing the wrong colour */
+  overscroll-behavior-y: none;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans), system-ui, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---- motion -----------------------------------------------------------
+   transform/opacity only: both composite on the GPU, so a budget Android
+   animates them without touching layout or paint. Never animate width,
+   height, top, left, or filter here. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale3d(0.94, 0.94, 1);
+  }
+  to {
+    opacity: 1;
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes pulse-soft {
+  50% {
+    opacity: 0.45;
+  }
+}
+
+.anim-rise {
+  animation: rise 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.anim-pop {
+  animation: pop 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.anim-pulse {
+  animation: pulse-soft 1.6s ease-in-out infinite;
+}
+
+/* Stagger without JS: set --i on the element. */
+.anim-rise,
+.anim-pop {
+  animation-delay: calc(var(--i, 0) * 70ms);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
