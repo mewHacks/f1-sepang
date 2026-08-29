@@ -552,7 +552,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                 {/* Question Body */}
                 <div className="p-6 flex flex-col flex-1 items-center text-center justify-center min-h-[220px]">
                   <div className="text-4xl mb-3">{currentQ.icon}</div>
-                  <h3 className="title text-2xl sm:text-3xl leading-snug text-white max-w-xs">
+                  <h3 className="title title-loose text-2xl sm:text-3xl text-white max-w-xs">
                     &ldquo;{currentQ.question}&rdquo;
                   </h3>
                   <p className="mt-3 text-xs leading-relaxed text-muted max-w-xs">

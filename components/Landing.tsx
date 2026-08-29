@@ -5,10 +5,30 @@ import { SCENARIOS } from "@/lib/scenarios.ts";
 import { PERSONAS, CALL_LABEL } from "@/lib/personas.ts";
 import { Avatar, Title } from "./Chrome.tsx";
 
+// Names carry the F1 flavour; the plain-English line does the actual
+// explaining, so nobody needs to already know what a "paddock" is.
 const FEATURES = [
-  { n: "01", tone: "red" as const, label: "Pit Wall", tag: "Call the strategy live" },
-  { n: "02", tone: "yellow" as const, label: "Circuit Pass", tag: "Flex your Strategy IQ" },
-  { n: "03", tone: "ice" as const, label: "Paddock Mamak", tag: "Dodge traffic, find supper" },
+  {
+    n: "01",
+    tone: "red" as const,
+    label: "Pit Wall",
+    plain: "The strategy game",
+    tag: "Three engineers argue live — you make the call",
+  },
+  {
+    n: "02",
+    tone: "yellow" as const,
+    label: "Circuit Pass",
+    plain: "Your result card",
+    tag: "A shareable score card for how you did",
+  },
+  {
+    n: "03",
+    tone: "ice" as const,
+    label: "Paddock Mamak",
+    plain: "After the race",
+    tag: "Skip the traffic jam, find supper nearby",
+  },
 ];
 
 export function Landing({
@@ -68,7 +88,7 @@ export function Landing({
           </div>
           <div className="min-w-0 flex-1">
             <div className="data text-[10px] uppercase tracking-[0.2em] text-muted">
-              Live On Pit Comms
+              Your three strategists
             </div>
             <div className="display text-sm tracking-wide text-fg">
               AERO-9 <span className="text-muted/60">·</span> UNCLE SEPANG <span className="text-muted/60">·</span> DIN TURBO
@@ -96,9 +116,9 @@ export function Landing({
               {f.n}
             </span>
             <div className="min-w-0">
-              <div className="title text-2xl leading-none">{f.label}</div>
-              <div className="data mt-1 text-[11px] uppercase tracking-[0.15em] text-muted">
-                {f.tag}
+              <div className="title-loose title text-lg leading-tight sm:text-xl">{f.tag}</div>
+              <div className="data mt-1 text-[10px] uppercase tracking-[0.15em] text-muted">
+                {f.plain} <span className="text-muted/50">· aka {f.label}</span>
               </div>
             </div>
           </div>

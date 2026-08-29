@@ -93,6 +93,14 @@ body {
   display: inline-block;
 }
 
+/* .title's 0.86 leading is tuned for a short single/double-word display
+   header. Anything that wraps to 3+ lines of real reading content (a quiz
+   question, a quote) needs room to breathe — this keeps the display font,
+   skew and caps but loosens the line spacing. */
+.title-loose {
+  line-height: 1.15;
+}
+
 .data {
   font-family: var(--font-mono), ui-monospace, monospace;
   font-variant-numeric: tabular-nums;

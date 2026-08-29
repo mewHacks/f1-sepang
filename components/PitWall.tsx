@@ -99,6 +99,9 @@ export function PitWall({
             <Title hit="WALL" size="text-[13vw] leading-[0.84] lg:text-6xl">
               PIT
             </Title>
+            <p className="mt-2 max-w-sm text-[13px] leading-snug text-muted">
+              Three engineers will each argue for a different call. Listen, then pick one below.
+            </p>
             <div className="annot data mt-3 text-[10px] uppercase tracking-[0.2em] text-muted">
               <span>
                 {scenario.name} · {scenario.lapsRemaining} laps to go
