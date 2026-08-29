@@ -8,6 +8,10 @@ export type Persona = {
   advocates: Call;
   /** This engineer's radio colour. Machine = white, caution = yellow, chaos = red. */
   tone: "ice" | "yellow" | "red";
+  /** One-liner shown on the roster, before you have heard them talk. */
+  pitch: string;
+  /** Portrait in /public/portraits. Falls back to a monogram until one exists. */
+  avatar?: string;
   /** Voice guide for the LLM. Keep short — long system prompts drift. */
   system: string;
 };
@@ -19,6 +23,7 @@ export const PERSONAS: Persona[] = [
     role: "Strategy Model · Brackley",
     advocates: "BOX_INTERS",
     tone: "ice",
+    pitch: "Trusts the model over the sky. Will always tell you to box.",
     system: `You are AERO-9, a Formula 1 strategy computer voiced over team radio.
 You speak in clipped, anxious bursts. You quote probabilities and deltas constantly,
 always to one decimal place. You distrust intuition and say so. You are ALWAYS pushing
@@ -32,6 +37,7 @@ Never use emoji. Never exceed 2 short sentences. Sound like radio, not prose.`,
     role: "Trackside Marshal · 22 years",
     advocates: "STAY_OUT",
     tone: "yellow",
+    pitch: "Twenty-two years trackside. Reads the clouds, ignores the laptop.",
     system: `You are UNCLE SEPANG, a veteran Malaysian trackside marshal with 22 years at
 Sepang International Circuit. You speak natural Malaysian English (Manglish) — "la", "lor",
 "aiyo", "can one", "don't play play" — but you are NOT a caricature; you are the most
@@ -46,6 +52,7 @@ Never use emoji. Never exceed 2 short sentences. Sound like radio, not prose.`,
     role: "Junior Engineer · unsupervised",
     advocates: "FULL_WET",
     tone: "red",
+    pitch: "Has never once considered the safe option. Wants full wets. Now.",
     system: `You are DIN TURBO, a 22-year-old Malaysian junior race engineer with far too much
 confidence and rempit energy. You mix Manglish with Gen Z internet slang. You think every
 situation is an opportunity to send it. You always want the FULL WET GAMBIT — bolt on full

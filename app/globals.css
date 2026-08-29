@@ -96,6 +96,44 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* ---- shell ------------------------------------------------------------
+   Phone-width column by default; on a wide screen it opens out into a real
+   two-column layout instead of a lonely strip down the middle. */
+.shell {
+  width: 100%;
+  max-width: 28rem;
+  margin-inline: auto;
+}
+
+@media (min-width: 1024px) {
+  .shell {
+    max-width: 72rem;
+  }
+}
+
+/* Primary actions sit in thumb reach on a phone and become an ordinary panel
+   on desktop, where a bar stuck to the bottom of a 1440px window is absurd.
+   No backdrop blur: it is a real GPU cost on weak hardware and buys nothing
+   against a near-black ground. */
+.actionbar {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: 20;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+  padding: 12px 16px calc(var(--safe-b) + 12px);
+}
+
+@media (min-width: 1024px) {
+  .actionbar {
+    position: static;
+    border-top: 0;
+    background: none;
+    padding: 0;
+  }
+}
+
 /* ---- surfaces ---------------------------------------------------------- */
 .card {
   background: var(--surface);

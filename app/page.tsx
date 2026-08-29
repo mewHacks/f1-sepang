@@ -2,63 +2,104 @@
 
 import { useState } from "react";
 import { Header } from "@/components/Chrome.tsx";
+import { Menu } from "@/components/Menu.tsx";
 import { Landing } from "@/components/Landing.tsx";
 import { PitWall } from "@/components/PitWall.tsx";
 import { Debrief } from "@/components/Debrief.tsx";
+import { SharePass } from "@/components/SharePass.tsx";
+import { Mamak } from "@/components/Mamak.tsx";
 import { resolve, type RaceResult } from "@/lib/sim.ts";
 import { scenarioById } from "@/lib/scenarios.ts";
 import type { Call } from "@/lib/personas.ts";
+import type { View } from "@/lib/views.ts";
 
-/* One route, three stages. A stage machine beats three pages here: the run
-   is a single continuous act, and routing it would mean serialising a race
-   result into the URL for no user-visible gain.
-   ponytail: add routes when someone needs to deep-link a result. */
-type Stage =
-  | { at: "landing" }
-  | { at: "pitwall"; callsign: string; scenarioId: string }
-  | { at: "debrief"; callsign: string; scenarioId: string; result: RaceResult };
+/* One route, five views. The race is a single continuous act, so routing it
+   would mean serialising a result into the URL for no user-visible gain; the
+   menu gives the three features their own entry points instead.
+   ponytail: add real routes when someone needs to deep-link a result. */
+
+type Run = { callsign: string; scenarioId: string; result: RaceResult };
 
 export default function Page() {
-  const [stage, setStage] = useState<Stage>({ at: "landing" });
+  const [view, setView] = useState<View>("landing");
+  const [setup, setSetup] = useState<{ callsign: string; scenarioId: string } | null>(null);
+  const [run, setRun] = useState<Run | null>(null);
   const [muted, setMuted] = useState(false);
-
-  const restart = () => setStage({ at: "landing" });
+  const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <main className="mx-auto w-full max-w-md flex-1">
-      <Header muted={muted} onToggleMute={() => setMuted((m) => !m)} onRestart={restart} />
+    <>
+      <Header onHome={() => setView("landing")} onOpenMenu={() => setMenuOpen(true)} />
 
-      {stage.at === "landing" && (
-        <Landing
-          onStart={(callsign, scenarioId) => setStage({ at: "pitwall", callsign, scenarioId })}
-        />
-      )}
+      <Menu
+        open={menuOpen}
+        onClose={() => setMenuOpen(false)}
+        onNavigate={setView}
+        hasRun={run !== null}
+        muted={muted}
+        onToggleMute={() => setMuted((m) => !m)}
+      />
 
-      {stage.at === "pitwall" && (
-        <PitWall
-          callsign={stage.callsign}
-          scenarioId={stage.scenarioId}
-          muted={muted}
-          onDecide={(call: Call) =>
-            setStage({
-              at: "debrief",
-              callsign: stage.callsign,
-              scenarioId: stage.scenarioId,
-              result: resolve(scenarioById(stage.scenarioId), call),
-            })
-          }
-        />
-      )}
+      <main className="shell flex-1">
+        {view === "landing" && (
+          <Landing
+            onStart={(callsign, scenarioId) => {
+              setSetup({ callsign, scenarioId });
+              setView("pitwall");
+            }}
+          />
+        )}
 
-      {stage.at === "debrief" && (
-        <Debrief
-          result={stage.result}
-          scenarioId={stage.scenarioId}
-          callsign={stage.callsign}
-          muted={muted}
-          onRestart={restart}
-        />
-      )}
-    </main>
+        {view === "pitwall" && setup && (
+          <PitWall
+            callsign={setup.callsign}
+            scenarioId={setup.scenarioId}
+            muted={muted}
+            onDecide={(call: Call) => {
+              setRun({
+                ...setup,
+                result: resolve(scenarioById(setup.scenarioId), call),
+              });
+              setView("debrief");
+            }}
+          />
+        )}
+
+        {view === "debrief" && run && (
+          <Debrief
+            result={run.result}
+            scenarioId={run.scenarioId}
+            callsign={run.callsign}
+            muted={muted}
+            onPass={() => setView("pass")}
+            onMamak={() => setView("mamak")}
+          />
+        )}
+
+        {view === "pass" && run && (
+          <SharePass
+            result={run.result}
+            scenarioId={run.scenarioId}
+            callsign={run.callsign}
+          />
+        )}
+
+        {view === "mamak" && <Mamak onRestart={() => setView("landing")} />}
+
+        {/* A view that needs a race you have not run yet. */}
+        {((view === "pitwall" && !setup) ||
+          ((view === "debrief" || view === "pass") && !run)) && (
+          <div className="px-4 py-16 text-center">
+            <p className="text-sm text-muted">Run a race first.</p>
+            <button
+              onClick={() => setView("landing")}
+              className="display mt-4 rounded-xl bg-red px-6 py-3 text-base leading-none"
+            >
+              To the pit wall
+            </button>
+          </div>
+        )}
+      </main>
+    </>
   );
 }

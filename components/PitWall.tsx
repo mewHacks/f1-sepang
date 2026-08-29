@@ -6,7 +6,7 @@ import { scenarioById } from "@/lib/scenarios.ts";
 import { streamRadio } from "@/lib/radio.ts";
 import { fallbackLine } from "@/lib/fallback.ts";
 import { radioBeep } from "@/lib/beep.ts";
-import { Stat, Title } from "./Chrome.tsx";
+import { Avatar, Stat, Title } from "./Chrome.tsx";
 
 type Transmission = { id: string; text: string; open: boolean };
 
@@ -86,39 +86,43 @@ export function PitWall({
   }, [scenarioId, callsign]);
 
   return (
-    <div className="flex flex-col gap-5 px-4 pb-44 pt-5">
-      <div>
-        <Title hit="WALL" size="text-[13vw] leading-[0.84] sm:text-5xl">
-          PIT
-        </Title>
-        <div className="data mt-2 text-[11px] uppercase tracking-wider text-muted">
-          {scenario.name} · {scenario.lapsRemaining} laps to go
+    <div className="px-4 pb-44 pt-5 lg:grid lg:grid-cols-[1.15fr_.85fr] lg:items-start lg:gap-10 lg:pb-10">
+      <div className="flex flex-col gap-5">
+        <div>
+          <Title hit="WALL" size="text-[13vw] leading-[0.84] lg:text-6xl">
+            PIT
+          </Title>
+          <div className="data mt-2 text-[11px] uppercase tracking-wider text-muted">
+            {scenario.name} · {scenario.lapsRemaining} laps to go
+          </div>
         </div>
-      </div>
 
-      <div className="grid grid-cols-3 gap-2">
-        <Stat label="Track" value={scenario.trackTempC} unit="°C" tone="yellow" />
-        <Stat label="Air" value={scenario.airTempC} unit="°C" />
-        <Stat label="Humidity" value={scenario.humidityPct} unit="%" tone="ice" />
-      </div>
+        <div className="grid grid-cols-3 gap-2">
+          <Stat label="Track" value={scenario.trackTempC} unit="°C" tone="yellow" />
+          <Stat label="Air" value={scenario.airTempC} unit="°C" />
+          <Stat label="Humidity" value={scenario.humidityPct} unit="%" tone="ice" />
+        </div>
 
-      <div className="flex flex-col gap-2.5">
+        <div className="flex flex-col gap-2.5">
         {feed.map((t, i) => {
           const p = PERSONAS.find((x) => x.id === t.id)!;
           return (
             <article key={`${t.id}-${i}`} className="anim-slide card overflow-hidden">
               <div
-                className="flex items-center gap-2 px-3.5 py-2"
+                className="flex items-center gap-2.5 px-3 py-2"
                 style={{ background: `color-mix(in srgb, var(--${p.tone}) 14%, transparent)` }}
               >
-                <span
-                  aria-hidden
-                  className={`h-2 w-2 rounded-full ${t.open ? "anim-blink" : ""}`}
-                  style={{ background: `var(--${p.tone})` }}
-                />
+                <Avatar persona={p} size={32} />
                 <span className="display text-sm leading-none" style={{ color: `var(--${p.tone})` }}>
                   {p.name}
                 </span>
+                {t.open && (
+                  <span
+                    aria-hidden
+                    className="anim-blink h-2 w-2 rounded-full"
+                    style={{ background: `var(--${p.tone})` }}
+                  />
+                )}
                 <span className="data ml-auto text-[9px] uppercase text-muted">{p.role}</span>
               </div>
               <p className="px-3.5 py-3 text-[15px] leading-snug">
@@ -136,34 +140,34 @@ export function PitWall({
               OPENING RADIO…
             </div>
           </div>
-        )}
+          )}
+        </div>
       </div>
 
-      <div
-        className="fixed inset-x-0 bottom-0 z-20 border-t border-line bg-bg/95 px-4 pt-3 backdrop-blur-sm"
-        style={{ paddingBottom: "calc(var(--safe-b) + 12px)" }}
-      >
-        <div className="data mb-2 flex items-center justify-between text-[10px] uppercase tracking-wider text-muted">
-          <span>Your call, {callsign}</span>
-          {!briefed && <span className="anim-blink">radio live…</span>}
-        </div>
-        <div className="flex flex-col gap-2">
-          {(Object.keys(CALL_LABEL) as Call[]).map((call, i) => (
-            <button
-              key={call}
-              onClick={() => {
-                radioBeep(muted);
-                onDecide(call);
-              }}
-              style={{ "--i": i } as React.CSSProperties}
-              className="display anim-rise flex items-center justify-between rounded-xl border px-4 py-3 text-left text-base leading-none transition-transform active:scale-[0.98]"
-            >
-              <span style={{ color: `var(--${CALL_TONE[call]})` }}>{CALL_LABEL[call]}</span>
-              <span aria-hidden className="text-muted">
-                ›
-              </span>
-            </button>
-          ))}
+      <div className="actionbar lg:sticky lg:top-24">
+        <div className="shell lg:px-0">
+          <div className="data mb-2 flex items-center justify-between text-[10px] uppercase tracking-wider text-muted">
+            <span>Your call, {callsign}</span>
+            {!briefed && <span className="anim-blink">radio live…</span>}
+          </div>
+          <div className="flex flex-col gap-2">
+            {(Object.keys(CALL_LABEL) as Call[]).map((call, i) => (
+              <button
+                key={call}
+                onClick={() => {
+                  radioBeep(muted);
+                  onDecide(call);
+                }}
+                style={{ "--i": i } as React.CSSProperties}
+                className="display anim-rise flex items-center justify-between rounded-xl border border-line bg-surface px-4 py-3 text-left text-base leading-none transition-transform active:scale-[0.98]"
+              >
+                <span style={{ color: `var(--${CALL_TONE[call]})` }}>{CALL_LABEL[call]}</span>
+                <span aria-hidden className="text-muted">
+                  ›
+                </span>
+              </button>
+            ))}
+          </div>
         </div>
       </div>
     </div>

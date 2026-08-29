@@ -1,5 +1,7 @@
 "use client";
 
+import type { Persona } from "@/lib/personas.ts";
+
 export function Wordmark({ small = false }: { small?: boolean }) {
   return (
     <div className="flex items-center gap-2">
@@ -24,30 +26,76 @@ export function Wordmark({ small = false }: { small?: boolean }) {
 }
 
 export function Header({
-  muted,
-  onToggleMute,
-  onRestart,
+  onHome,
+  onOpenMenu,
 }: {
-  muted: boolean;
-  onToggleMute: () => void;
-  onRestart?: () => void;
+  onHome: () => void;
+  onOpenMenu: () => void;
 }) {
   return (
     <header
-      className="sticky top-0 z-20 flex items-center justify-between border-b border-line bg-bg/90 px-4 py-3 backdrop-blur-sm"
-      style={{ paddingTop: "calc(var(--safe-t) + 12px)" }}
+      className="sticky top-0 z-30 border-b border-line bg-bg"
+      style={{ paddingTop: "var(--safe-t)" }}
     >
-      <button onClick={onRestart} aria-label="JomLap — start over" className="active:scale-95 transition-transform">
-        <Wordmark small />
-      </button>
-      <button
-        onClick={onToggleMute}
-        aria-pressed={muted}
-        className="data rounded-full border border-line px-3 py-1.5 text-[11px] text-muted active:scale-95 transition-transform"
-      >
-        {muted ? "RADIO OFF" : "RADIO ON"}
-      </button>
+      <div className="shell flex items-center justify-between px-4 py-3">
+        <button
+          onClick={onHome}
+          aria-label="JomLap — home"
+          className="transition-transform active:scale-95"
+        >
+          <Wordmark small />
+        </button>
+        <button
+          onClick={onOpenMenu}
+          aria-label="Open menu"
+          className="data flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-[11px] uppercase tracking-wider text-muted transition-transform active:scale-95"
+        >
+          Menu
+          <span aria-hidden className="flex flex-col gap-[3px]">
+            <span className="block h-[1.5px] w-3.5 bg-fg" />
+            <span className="block h-[1.5px] w-3.5 bg-fg" />
+          </span>
+        </button>
+      </div>
     </header>
+  );
+}
+
+/**
+ * Portrait, or a monogram in the engineer's colour until artwork exists.
+ * Portraits are light-on-black, so `screen` knocks the black out against any
+ * dark surface — no alpha channel and no matting halo.
+ */
+export function Avatar({ persona, size = 40 }: { persona: Persona; size?: number }) {
+  return (
+    <span
+      className="grid shrink-0 place-items-center overflow-hidden rounded-lg bg-black"
+      style={{
+        width: size,
+        height: size,
+        boxShadow: `inset 0 0 0 1px color-mix(in srgb, var(--${persona.tone}) 35%, transparent)`,
+      }}
+    >
+      {persona.avatar ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img
+          src={persona.avatar}
+          alt=""
+          width={size}
+          height={size}
+          loading="lazy"
+          decoding="async"
+          style={{ mixBlendMode: "screen", width: "100%", height: "100%", objectFit: "cover" }}
+        />
+      ) : (
+        <span
+          className="display leading-none"
+          style={{ color: `var(--${persona.tone})`, fontSize: size * 0.42 }}
+        >
+          {persona.name.slice(0, 2)}
+        </span>
+      )}
+    </span>
   );
 }
 
