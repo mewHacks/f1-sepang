@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, useMemo } from "react";
 import { ESCAPES, type Escape, type VibeCategory } from "@/lib/mamak.ts";
 import { Title } from "./Chrome.tsx";
 
@@ -15,6 +15,59 @@ type LivePlace = {
   routeUrl: string;
 };
 
+// 5 Simple, User-Intuitive Preference Questions (Rule-Based)
+type VibeQuestion = {
+  id: string;
+  targetId: string;
+  icon: string;
+  question: string;
+  subtext: string;
+  tag: string;
+};
+
+const VIBE_QUESTIONS: VibeQuestion[] = [
+  {
+    id: "q_mamak",
+    targetId: "dengkil",
+    icon: "☕",
+    question: "Craving hot teh tarik & crispy roti canai on plastic chairs?",
+    subtext: "Classic late-night mamak feast with friends to debate the race strategy.",
+    tag: "24-Hour Mamak & Teh Tarik",
+  },
+  {
+    id: "q_cafe",
+    targetId: "cyberjaya",
+    icon: "❄️",
+    question: "Need freezing cold air-con, specialty iced coffee & chill vibes?",
+    subtext: "Cool down immediately, escape the humidity, and relax in aesthetic cafes.",
+    tag: "Cold AC & Specialty Cafes",
+  },
+  {
+    id: "q_seafood",
+    targetId: "bagan",
+    icon: "🦐",
+    question: "Want fresh grilled Ikan Bakar & ocean breeze by the beach?",
+    subtext: "Drive opposite to all KL highway traffic and feast on seafood by the coast.",
+    tag: "Coastal Seafood & Beach",
+  },
+  {
+    id: "q_fast",
+    targetId: "mitsui",
+    icon: "🛍️",
+    question: "Super hungry right now? Need food & cold AC within 6 minutes?",
+    subtext: "Quick sanctuary closest to circuit gates with plenty of food court choices.",
+    tag: "Instant 6-Min Pitstop",
+  },
+  {
+    id: "q_south",
+    targetId: "nilai",
+    icon: "🍛",
+    question: "Heading South (JB / Melaka / Seremban) and want midnight Nasi Kandar?",
+    subtext: "Skip the northern toll queues entirely and grab crispy fried chicken & naan.",
+    tag: "Southbound Midnight Feast",
+  },
+];
+
 const CATEGORIES: { id: VibeCategory; label: string; icon: string }[] = [
   { id: "all", label: "All Spots", icon: "🏁" },
   { id: "mamak", label: "24h Mamak", icon: "☕" },
@@ -25,7 +78,11 @@ const CATEGORIES: { id: VibeCategory; label: string; icon: string }[] = [
 ];
 
 export function Mamak({ onRestart }: { onRestart: () => void }) {
-  const [mode, setMode] = useState<"swipe" | "browse">("swipe");
+  // Starts directly in Quiz mode without showing tabs upfront
+  const [view, setView] = useState<"quiz" | "browse">("quiz");
+  const [hasExploredBrowse, setHasExploredBrowse] = useState(false);
+
+  const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<VibeCategory>("all");
   const [livePlaces, setLivePlaces] = useState<Record<string, LivePlace[]>>({});
 
@@ -33,8 +90,8 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [locationStatus, setLocationStatus] = useState<"idle" | "requesting" | "granted" | "denied">("idle");
 
-  // Swipe Deck State
-  const [deckIndex, setDeckIndex] = useState(0);
+  // Question Deck State
+  const [qIndex, setQIndex] = useState(0);
   const [matchedEscape, setMatchedEscape] = useState<Escape | null>(null);
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
 
@@ -43,13 +100,13 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
   const [calcProgress, setCalcProgress] = useState(0);
   const [calcStepText, setCalcStepText] = useState("🛰️ ACQUIRING GPS & TRAFFIC DELTAS...");
 
-  // Drag state for card
+  // Drag state for swipe card
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
   const [isDragging, setIsDragging] = useState(false);
   const dragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
-  // Auto request location on load
-  useEffect(() => {
+  // Request browser location
+  const requestLocation = () => {
     if (typeof window !== "undefined" && "geolocation" in navigator) {
       setLocationStatus("requesting");
       navigator.geolocation.getCurrentPosition(
@@ -63,9 +120,13 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
         { timeout: 8000, enableHighAccuracy: false },
       );
     }
+  };
+
+  useEffect(() => {
+    requestLocation();
   }, []);
 
-  // Fetch Live Places
+  // Fetch Live Places in background
   useEffect(() => {
     let active = true;
     (async () => {
@@ -96,7 +157,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
     };
   }, []);
 
-  // Run 3-second calculation animation before revealing matched result
+  // 3-second calculation animation sequence
   const triggerMatchCalculation = (targetEscape: Escape) => {
     setIsCalculating(true);
     setCalcProgress(0);
@@ -109,12 +170,12 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
       const progress = Math.min(100, Math.floor((elapsed / duration) * 100));
       setCalcProgress(progress);
 
-      if (elapsed < 900) {
-        setCalcStepText("🛰️ LOCKING GPS COORDS & SEPANG GATE TRAFFIC...");
-      } else if (elapsed < 1900) {
-        setCalcStepText("⚡ ANALYZING ELITE HIGHWAY CONGESTION DELTAS...");
-      } else if (elapsed < 2700) {
-        setCalcStepText("🍛 OPTIMIZING DETOUR WAYPOINTS & SUPPER STATUS...");
+      if (elapsed < 850) {
+        setCalcStepText("🛰️ LOCKING GPS COORDS & SEPANG GATE CONGESTION...");
+      } else if (elapsed < 1800) {
+        setCalcStepText("⚡ CALCULATING HIGHWAY DELTAS & BYPASS ROUTES...");
+      } else if (elapsed < 2650) {
+        setCalcStepText("🍛 VERIFYING OPEN MAMAKS & SUPPER AVAILABILITY...");
       } else {
         setCalcStepText("✓ ROUTE LOCKED · PRESENTING HIDEAWAY");
       }
@@ -124,28 +185,30 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
         setTimeout(() => {
           setIsCalculating(false);
           setMatchedEscape(targetEscape);
-        }, 200);
+        }, 150);
       }
     }, 50);
   };
 
   const handleSwipe = (dir: "left" | "right") => {
     setSwipeDirection(dir);
-    const chosen = ESCAPES[deckIndex];
+    const currentQ = VIBE_QUESTIONS[qIndex];
+    const target = ESCAPES.find((e) => e.id === currentQ.targetId) || ESCAPES[0];
 
     setTimeout(() => {
       if (dir === "right") {
-        triggerMatchCalculation(chosen);
+        triggerMatchCalculation(target);
       } else {
-        if (deckIndex < ESCAPES.length - 1) {
-          setDeckIndex((prev) => prev + 1);
+        if (qIndex < VIBE_QUESTIONS.length - 1) {
+          setQIndex((prev) => prev + 1);
         } else {
-          setDeckIndex(0);
+          // Reached end without matching: switch to full browse view
+          switchToBrowse();
         }
       }
       setSwipeDirection(null);
       setDragOffset({ x: 0, y: 0 });
-    }, 250);
+    }, 240);
   };
 
   const handlePointerDown = (e: React.PointerEvent) => {
@@ -164,24 +227,31 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
   const handlePointerUp = () => {
     if (!isDragging) return;
     setIsDragging(false);
-    if (dragOffset.x > 85) {
+    if (dragOffset.x > 80) {
       handleSwipe("right");
-    } else if (dragOffset.x < -85) {
+    } else if (dragOffset.x < -80) {
       handleSwipe("left");
     } else {
       setDragOffset({ x: 0, y: 0 });
     }
   };
 
-  const resetSwipe = () => {
+  const resetQuiz = () => {
     setMatchedEscape(null);
-    setDeckIndex(0);
+    setQIndex(0);
     setSwipeDirection(null);
     setDragOffset({ x: 0, y: 0 });
     setIsCalculating(false);
+    setView("quiz");
   };
 
-  // Generate dynamic routing URL based on user GPS or Sepang default
+  const switchToBrowse = () => {
+    setHasExploredBrowse(true);
+    setView("browse");
+    setIsCalculating(false);
+  };
+
+  // Nav routing URL helper
   const getNavUrl = (destination: string, fallbackUrl: string, placeId?: string) => {
     if (placeId) {
       if (userLocation) {
@@ -199,14 +269,26 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
     return fallbackUrl;
   };
 
-  const filteredEscapes =
-    filter === "all" ? ESCAPES : ESCAPES.filter((e) => e.category === filter);
+  // Filtered & Searched Escapes for Browse Mode
+  const displayedEscapes = useMemo(() => {
+    return ESCAPES.filter((e) => {
+      const matchesCategory = filter === "all" || e.category === filter;
+      const query = searchQuery.trim().toLowerCase();
+      const matchesSearch =
+        !query ||
+        e.name.toLowerCase().includes(query) ||
+        e.tagline.toLowerCase().includes(query) ||
+        e.food.dish.toLowerCase().includes(query) ||
+        e.via.toLowerCase().includes(query);
+      return matchesCategory && matchesSearch;
+    });
+  }, [filter, searchQuery]);
 
-  const currentEscape = ESCAPES[deckIndex];
+  const currentQ = VIBE_QUESTIONS[qIndex];
 
   return (
     <div className="flex flex-col gap-5 px-4 pb-32 pt-5 lg:pb-8">
-      {/* Header */}
+      {/* Header Section */}
       <div className="relative overflow-hidden pt-3">
         <span
           aria-hidden
@@ -215,72 +297,78 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
           MAKAN
         </span>
         <div className="relative pt-[7vw] lg:pt-12">
-          <Title hit="RADAR" tone="yellow" size="text-[13vw] leading-[0.84] lg:text-6xl">
+          <Title hit="MAMAK" tone="yellow" size="text-[13vw] leading-[0.84] lg:text-6xl">
             Paddock
           </Title>
         </div>
         <p className="relative mt-4 max-w-md text-sm leading-relaxed text-muted">
-          90,000 people stuck on the ELITE highway. Swipe your ideal post-race hideaway or browse all nearby supper escapes.
+          90,000 people stuck on the ELITE highway. Answer a few simple questions to find your post-race hideaway.
         </p>
 
-        {/* Geolocation Status Badge */}
-        <div className="mt-4 inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-[10px] uppercase tracking-wider text-muted">
-          {locationStatus === "granted" ? (
-            <>
-              <span className="h-2 w-2 rounded-full bg-green" />
-              <span className="text-green font-medium">GPS Lock: Live Origin</span>
-            </>
-          ) : locationStatus === "requesting" ? (
-            <>
-              <span className="anim-blink h-2 w-2 rounded-full bg-yellow" />
-              <span className="text-yellow">Acquiring GPS...</span>
-            </>
-          ) : (
-            <>
-              <span className="h-2 w-2 rounded-full bg-red" />
-              <span>Origin: Sepang Circuit Gate</span>
-            </>
-          )}
+        {/* Location Status Indicator */}
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <button
+            onClick={requestLocation}
+            className="inline-flex items-center gap-2 rounded-full border border-line bg-surface px-3 py-1 text-[10px] uppercase tracking-wider text-muted transition-transform active:scale-95"
+          >
+            {locationStatus === "granted" ? (
+              <>
+                <span className="h-2 w-2 rounded-full bg-green" />
+                <span className="text-green font-medium">GPS: Live Location</span>
+              </>
+            ) : locationStatus === "requesting" ? (
+              <>
+                <span className="anim-blink h-2 w-2 rounded-full bg-yellow" />
+                <span className="text-yellow">Acquiring GPS...</span>
+              </>
+            ) : (
+              <>
+                <span className="h-2 w-2 rounded-full bg-muted/60" />
+                <span>📍 Tap for Live GPS Origin</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
 
-      {/* Mode Switcher */}
-      <div className="flex rounded-xl border border-line bg-surface p-1">
-        <button
-          onClick={() => {
-            setMode("swipe");
-            setIsCalculating(false);
-          }}
-          className={`flex-1 rounded-lg py-2.5 text-center text-xs uppercase tracking-wider transition-all ${
-            mode === "swipe"
-              ? "bg-red text-white font-medium shadow-md"
-              : "text-muted hover:text-white"
-          }`}
-        >
-          🔥 Vibe Matcher (Swipe)
-        </button>
-        <button
-          onClick={() => {
-            setMode("browse");
-            setIsCalculating(false);
-          }}
-          className={`flex-1 rounded-lg py-2.5 text-center text-xs uppercase tracking-wider transition-all ${
-            mode === "browse"
-              ? "bg-red text-white font-medium shadow-md"
-              : "text-muted hover:text-white"
-          }`}
-        >
-          📋 Browse & Filter ({ESCAPES.length})
-        </button>
-      </div>
+      {/* Subtabs only visible AFTER user has chosen to explore the browse directory */}
+      {hasExploredBrowse && (
+        <div className="flex rounded-xl border border-line bg-surface p-1">
+          <button
+            onClick={() => {
+              setView("quiz");
+              setIsCalculating(false);
+            }}
+            className={`flex-1 rounded-lg py-2.5 text-center text-xs uppercase tracking-wider transition-all ${
+              view === "quiz"
+                ? "bg-red text-white font-medium shadow-md"
+                : "text-muted hover:text-white"
+            }`}
+          >
+            ⚡ Vibe Questions
+          </button>
+          <button
+            onClick={() => {
+              setView("browse");
+              setIsCalculating(false);
+            }}
+            className={`flex-1 rounded-lg py-2.5 text-center text-xs uppercase tracking-wider transition-all ${
+              view === "browse"
+                ? "bg-red text-white font-medium shadow-md"
+                : "text-muted hover:text-white"
+            }`}
+          >
+            📋 Browse All ({ESCAPES.length})
+          </button>
+        </div>
+      )}
 
-      {/* MODE 1: SWIPE MATCHING */}
-      {mode === "swipe" && (
+      {/* VIEW 1: SIMPLE USER-INTUITIVE QUESTIONS */}
+      {view === "quiz" && (
         <div className="flex flex-col items-center">
           {/* 3-SECOND CALCULATING TELEMETRY OVERLAY */}
           {isCalculating ? (
             <div className="anim-pop card relative w-full max-w-sm overflow-hidden p-6 border-red/40 bg-surface/95 text-center shadow-2xl">
-              {/* Spinning Radar Animation */}
               <div className="relative mx-auto flex h-28 w-28 items-center justify-center">
                 <div className="absolute inset-0 rounded-full border border-dashed border-red/40 animate-[spin_6s_linear_infinite]" />
                 <div className="absolute inset-2 rounded-full border border-yellow/30 animate-[spin_3s_linear_infinite_reverse]" />
@@ -290,7 +378,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
               </div>
 
               <div className="title mt-5 text-2xl tracking-wide text-white">
-                CALCULATING ROUTE
+                CALCULATING HIDEAWAY
               </div>
 
               {/* Progress Bar */}
@@ -303,7 +391,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
 
               <div className="mt-3 flex items-center justify-between text-[10px] text-muted data">
                 <span>{calcProgress}% PROCESSED</span>
-                <span>TELEMETRY SYNC</span>
+                <span>TRAFFIC DELTA ENGINE</span>
               </div>
 
               <div className="data mt-3 min-h-[32px] rounded-lg bg-surface-2 p-2 text-center text-[10px] uppercase tracking-wider text-yellow">
@@ -311,18 +399,18 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
               </div>
             </div>
           ) : matchedEscape ? (
-            /* MATCHED RESULT CARD */
+            /* MATCHED RESULT VIEW */
             <div className="anim-pop card relative w-full max-w-md overflow-hidden p-5 border-yellow/40 bg-surface">
               <div className="flex items-center justify-between">
                 <span className="data text-xs uppercase tracking-widest text-yellow font-medium">
-                  ★ Matched Hideaway
+                  ★ Ideal Hideaway Matched
                 </span>
                 <span className="data text-xs text-muted">
                   {matchedEscape.driveTime} ({matchedEscape.distance})
                 </span>
               </div>
 
-              <div className="mt-3 flex items-center gap-2.5">
+              <div className="mt-3 flex items-center gap-3">
                 <span className="text-3xl">{matchedEscape.vibeEmoji}</span>
                 <div>
                   <h3 className="title text-2xl leading-none text-white">
@@ -379,13 +467,13 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                 </div>
               )}
 
-              {/* Buttons */}
+              {/* Action Buttons */}
               <div className="mt-5 grid grid-cols-2 gap-2.5">
                 <button
-                  onClick={resetSwipe}
+                  onClick={resetQuiz}
                   className="data rounded-xl border border-line py-3.5 text-center text-xs uppercase tracking-wider transition-all hover:bg-white/5 active:scale-95"
                 >
-                  🔄 Swipe Again
+                  🔄 Retake Questions
                 </button>
                 <a
                   href={getNavUrl(
@@ -395,18 +483,26 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                   )}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="data rounded-xl bg-yellow py-3.5 text-center text-xs uppercase tracking-wider text-black font-semibold transition-all active:scale-95 flex items-center justify-center gap-1.5"
+                  className="data rounded-xl bg-yellow py-3.5 text-center text-xs uppercase tracking-wider text-black font-semibold transition-all active:scale-95 flex items-center justify-center gap-1.5 hover:bg-yellow/90"
                 >
                   <span>Route on Maps</span>
                   <span>↗</span>
                 </a>
               </div>
+
+              <button
+                onClick={switchToBrowse}
+                className="data mt-3 w-full text-center text-[11px] uppercase tracking-wider text-muted hover:text-white"
+              >
+                Or browse all {ESCAPES.length} hideaways →
+              </button>
             </div>
           ) : (
-            /* ACTIVE SWIPE CARD */
+            /* SIMPLE INTUITIVE QUESTION CARD */
             <div className="relative w-full max-w-sm">
-              <div className="data mb-2 text-center text-[11px] uppercase tracking-wider text-muted">
-                Spot {deckIndex + 1} of {ESCAPES.length} · Swipe right to match
+              <div className="data mb-2 flex items-center justify-between text-[11px] uppercase tracking-wider text-muted">
+                <span>Preference {qIndex + 1} of {VIBE_QUESTIONS.length}</span>
+                <span className="text-yellow">{currentQ.tag}</span>
               </div>
 
               <div
@@ -428,10 +524,10 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                   transition: isDragging ? "none" : "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
                 }}
               >
-                {/* Visual Swipe Overlays */}
+                {/* Visual Drag Overlays */}
                 {dragOffset.x > 35 && (
                   <div className="absolute top-4 right-4 z-20 rounded-lg border-2 border-green bg-green/20 px-3 py-1 text-sm font-bold uppercase text-green shadow-lg">
-                    LET&apos;S GO ✓
+                    YES! ✓
                   </div>
                 )}
                 {dragOffset.x < -35 && (
@@ -440,79 +536,83 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                   </div>
                 )}
 
-                <div className="flex items-center justify-between border-b border-line px-4 py-3 bg-surface-2/70">
+                {/* Card Top Banner */}
+                <div className="flex items-center justify-between border-b border-line px-5 py-3.5 bg-surface-2/80">
                   <div className="flex items-center gap-2">
-                    <span className="text-xl">{currentEscape.vibeEmoji}</span>
+                    <span className="text-2xl">{currentQ.icon}</span>
                     <span className="data text-xs uppercase tracking-wider text-muted">
-                      Skips {currentEscape.skips}
+                      {currentQ.tag}
                     </span>
                   </div>
-                  <span className="data text-xs text-yellow font-medium">
-                    {currentEscape.driveTime}
+                  <span className="data text-xs text-muted">
+                    {qIndex + 1}/{VIBE_QUESTIONS.length}
                   </span>
                 </div>
 
-                <div className="p-5 flex flex-col flex-1">
-                  <h3 className="title text-3xl leading-none text-white">
-                    {currentEscape.name}
+                {/* Question Body */}
+                <div className="p-6 flex flex-col flex-1 items-center text-center justify-center min-h-[220px]">
+                  <div className="text-4xl mb-3">{currentQ.icon}</div>
+                  <h3 className="title text-2xl sm:text-3xl leading-snug text-white max-w-xs">
+                    &ldquo;{currentQ.question}&rdquo;
                   </h3>
-                  <div className="data mt-1.5 text-xs text-yellow">
-                    {currentEscape.tagline}
-                  </div>
-                  <div className="data mt-1 text-[11px] text-muted">
-                    Route: {currentEscape.via}
-                  </div>
-
-                  <p className="mt-3.5 text-sm leading-relaxed text-fg/80">
-                    {currentEscape.note}
+                  <p className="mt-3 text-xs leading-relaxed text-muted max-w-xs">
+                    {currentQ.subtext}
                   </p>
-
-                  {/* Food summary */}
-                  <div className="mt-4 rounded-xl border border-line bg-surface-2 p-3">
-                    <div className="data text-[9px] uppercase tracking-wider text-muted">
-                      Signature Feast
-                    </div>
-                    <div className="display mt-1 text-sm text-yellow">
-                      {currentEscape.food.dish}
-                    </div>
-                  </div>
-
-                  {/* Engineer Tip */}
-                  <div className="mt-3 flex items-center gap-2.5 text-[11px] text-muted italic">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={currentEscape.engineerTip.avatar}
-                      alt=""
-                      className="h-6 w-6 rounded-md object-cover border border-line"
-                    />
-                    <span>&ldquo;{currentEscape.engineerTip.text}&rdquo;</span>
-                  </div>
                 </div>
 
-                {/* Physical Swipe Action Buttons */}
-                <div className="grid grid-cols-2 gap-2 border-t border-line p-3 bg-surface-2/40">
+                {/* Action Buttons */}
+                <div className="grid grid-cols-2 gap-2.5 border-t border-line p-3.5 bg-surface-2/50">
                   <button
                     onClick={() => handleSwipe("left")}
-                    className="data rounded-xl border border-line py-3 text-center text-xs uppercase tracking-wider text-muted transition-transform active:scale-95 hover:bg-white/5"
+                    className="data rounded-xl border border-line py-3.5 text-center text-xs uppercase tracking-wider text-muted transition-transform active:scale-95 hover:bg-white/5"
                   >
-                    ✕ Pass
+                    ✕ Not Feeling It
                   </button>
                   <button
                     onClick={() => handleSwipe("right")}
-                    className="data rounded-xl bg-yellow py-3 text-center text-xs uppercase tracking-wider text-black font-semibold transition-transform active:scale-95 hover:bg-yellow/90"
+                    className="data rounded-xl bg-yellow py-3.5 text-center text-xs uppercase tracking-wider text-black font-semibold transition-transform active:scale-95 hover:bg-yellow/90"
                   >
-                    ★ Let&apos;s Go
+                    ★ YES, That&apos;s Me!
                   </button>
                 </div>
+              </div>
+
+              {/* Choose Myself Bypass Link */}
+              <div className="mt-4 text-center">
+                <button
+                  onClick={switchToBrowse}
+                  className="data text-xs uppercase tracking-wider text-muted hover:text-white transition-colors underline-offset-4 hover:underline"
+                >
+                  Or choose myself instead (Browse all spots) →
+                </button>
               </div>
             </div>
           )}
         </div>
       )}
 
-      {/* MODE 2: BROWSE ALL & FILTER */}
-      {mode === "browse" && (
+      {/* VIEW 2: BROWSE ALL & MANUAL FILTER/SEARCH */}
+      {view === "browse" && (
         <div className="flex flex-col gap-4">
+          {/* Search Bar */}
+          <div className="relative">
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search spots, food (e.g. roti, seafood, coffee)..."
+              className="w-full rounded-xl border border-line bg-surface px-4 py-3 text-sm text-fg outline-none placeholder:text-muted/50 focus:border-yellow"
+            />
+            {searchQuery && (
+              <button
+                onClick={() => setSearchQuery("")}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted text-xs p-1"
+              >
+                ✕
+              </button>
+            )}
+          </div>
+
           {/* Filter Chips */}
           <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
             {CATEGORIES.map((cat) => (
@@ -533,98 +633,125 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
 
           {/* Cards Grid */}
           <div className="flex flex-col gap-3.5 lg:grid lg:grid-cols-2">
-            {filteredEscapes.map((e, i) => {
-              const liveSpot = livePlaces[e.id]?.[0];
-              return (
-                <article
-                  key={e.id}
-                  style={{ "--i": i } as React.CSSProperties}
-                  className="anim-rise card flex flex-col overflow-hidden"
+            {displayedEscapes.length === 0 ? (
+              <div className="card p-8 text-center col-span-2">
+                <p className="text-sm text-muted">No spots matching &ldquo;{searchQuery}&rdquo;</p>
+                <button
+                  onClick={() => {
+                    setSearchQuery("");
+                    setFilter("all");
+                  }}
+                  className="data mt-3 text-xs uppercase tracking-wider text-yellow"
                 >
-                  <div className="flex items-center justify-between border-b border-line px-4 py-2.5 bg-surface-2/50">
-                    <span className="data text-[10px] uppercase tracking-wider text-muted">
-                      Skips {e.skips}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      {liveSpot && (
-                        <span className="data flex items-center gap-1 rounded bg-green/10 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-green">
-                          <span className="h-1.5 w-1.5 rounded-full bg-green" />
-                          Live Maps
-                        </span>
-                      )}
-                      <span className="data text-[10px] text-yellow font-medium">
-                        {e.driveTime}
+                  Clear search & filters
+                </button>
+              </div>
+            ) : (
+              displayedEscapes.map((e, i) => {
+                const liveSpot = livePlaces[e.id]?.[0];
+                return (
+                  <article
+                    key={e.id}
+                    style={{ "--i": i } as React.CSSProperties}
+                    className="anim-rise card flex flex-col overflow-hidden"
+                  >
+                    <div className="flex items-center justify-between border-b border-line px-4 py-2.5 bg-surface-2/50">
+                      <span className="data text-[10px] uppercase tracking-wider text-muted">
+                        Skips {e.skips}
                       </span>
-                    </div>
-                  </div>
-
-                  <div className="flex flex-1 flex-col p-4">
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <div className="flex items-center gap-2">
-                          <span className="text-xl">{e.vibeEmoji}</span>
-                          <h3 className="title text-2xl leading-none">{e.name}</h3>
-                        </div>
-                        <div className="data mt-1 text-[11px] text-yellow">
-                          {e.tagline}
-                        </div>
-                      </div>
-                    </div>
-
-                    <p className="mt-2.5 text-[13px] leading-snug text-muted">{e.note}</p>
-
-                    {/* Supper recommendation */}
-                    <div className="mt-3.5 flex-1 rounded-xl border border-line bg-surface-2 p-3">
-                      <div className="flex items-center justify-between">
-                        <div className="data text-[9px] uppercase tracking-wider text-muted">
-                          Supper stop
-                        </div>
-                        {liveSpot?.rating && (
-                          <div className="data text-xs text-yellow font-medium">
-                            ★ {liveSpot.rating} <span className="text-muted text-[9px]">({liveSpot.userRatingCount || 0})</span>
-                          </div>
+                      <div className="flex items-center gap-2">
+                        {liveSpot && (
+                          <span className="data flex items-center gap-1 rounded bg-green/10 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-green">
+                            <span className="h-1.5 w-1.5 rounded-full bg-green" />
+                            Live Maps
+                          </span>
                         )}
-                      </div>
-                      <div className="display mt-1 text-sm text-yellow">
-                        {liveSpot ? liveSpot.name : e.food.name}
-                      </div>
-                      <div className="mt-0.5 text-[11px] text-muted truncate">
-                        {liveSpot ? liveSpot.address : e.food.dish}
+                        <span className="data text-[10px] text-yellow font-medium">
+                          {e.driveTime}
+                        </span>
                       </div>
                     </div>
 
-                    {/* Actions */}
-                    <div className="mt-4 grid grid-cols-2 gap-2">
-                      <a
-                        href={getNavUrl(e.name, e.routeUrl, liveSpot?.id)}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="data rounded-lg border border-line py-2.5 text-center text-[10px] uppercase tracking-wider transition-transform active:scale-95 hover:border-fg/40 flex items-center justify-center gap-1"
-                      >
-                        <span>Route ({e.driveTime})</span>
-                        <span aria-hidden>↗</span>
-                      </a>
-                      <a
-                        href={liveSpot ? liveSpot.googleMapsUri : e.food.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="data rounded-lg bg-yellow py-2.5 text-center text-[10px] uppercase tracking-wider text-black font-semibold transition-transform active:scale-95 hover:bg-yellow/90 flex items-center justify-center gap-1"
-                      >
-                        <span>Navigate</span>
-                        <span aria-hidden>↗</span>
-                      </a>
+                    <div className="flex flex-1 flex-col p-4">
+                      <div className="flex items-start justify-between gap-2">
+                        <div>
+                          <div className="flex items-center gap-2">
+                            <span className="text-xl">{e.vibeEmoji}</span>
+                            <h3 className="title text-2xl leading-none">{e.name}</h3>
+                          </div>
+                          <div className="data mt-1 text-[11px] text-yellow">
+                            {e.tagline}
+                          </div>
+                        </div>
+                      </div>
+
+                      <p className="mt-2.5 text-[13px] leading-snug text-muted">{e.note}</p>
+
+                      {/* Supper recommendation */}
+                      <div className="mt-3.5 flex-1 rounded-xl border border-line bg-surface-2 p-3">
+                        <div className="flex items-center justify-between">
+                          <div className="data text-[9px] uppercase tracking-wider text-muted">
+                            Supper stop recommendation
+                          </div>
+                          {liveSpot?.rating && (
+                            <div className="data text-xs text-yellow font-medium">
+                              ★ {liveSpot.rating} <span className="text-muted text-[9px]">({liveSpot.userRatingCount || 0})</span>
+                            </div>
+                          )}
+                        </div>
+                        <div className="display mt-1 text-sm text-yellow">
+                          {liveSpot ? liveSpot.name : e.food.name}
+                        </div>
+                        <div className="mt-0.5 text-[11px] text-muted truncate">
+                          {liveSpot ? liveSpot.address : e.food.dish}
+                        </div>
+                      </div>
+
+                      {/* Actions */}
+                      <div className="mt-4 grid grid-cols-2 gap-2">
+                        <a
+                          href={getNavUrl(e.name, e.routeUrl, liveSpot?.id)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="data rounded-lg border border-line py-2.5 text-center text-[10px] uppercase tracking-wider transition-transform active:scale-95 hover:border-fg/40 flex items-center justify-center gap-1"
+                        >
+                          <span>Route ({e.driveTime})</span>
+                          <span aria-hidden>↗</span>
+                        </a>
+                        <a
+                          href={liveSpot ? liveSpot.googleMapsUri : e.food.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="data rounded-lg bg-yellow py-2.5 text-center text-[10px] uppercase tracking-wider text-black font-semibold transition-transform active:scale-95 hover:bg-yellow/90 flex items-center justify-center gap-1"
+                        >
+                          <span>Navigate</span>
+                          <span aria-hidden>↗</span>
+                        </a>
+                      </div>
                     </div>
-                  </div>
-                </article>
-              );
-            })}
+                  </article>
+                );
+              })
+            )}
+          </div>
+
+          <div className="text-center mt-2">
+            <button
+              onClick={() => {
+                setView("quiz");
+                resetQuiz();
+              }}
+              className="data text-xs uppercase tracking-wider text-yellow hover:underline"
+            >
+              ⚡ Back to Vibe Questions
+            </button>
           </div>
         </div>
       )}
 
       <p className="data text-[10px] leading-relaxed text-muted">
         {userLocation
-          ? "Routes dynamically routed from your live GPS position to avoid Sepang exit bottlenecks."
+          ? "Routes dynamically calculated from your live GPS location to avoid Sepang exit bottlenecks."
           : "Routes start from Sepang International Circuit gates with turn-by-turn Google Maps navigation."}
       </p>
 
