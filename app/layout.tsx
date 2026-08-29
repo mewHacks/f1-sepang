@@ -24,6 +24,16 @@ export const metadata: Metadata = {
   title: "JomLap — Sepang Thermal Pit Wall",
   description:
     "Call the strategy from Sepang's pit wall. Three race engineers, one monsoon, zero chill.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon.png", sizes: "32x32", type: "image/png" },
+      { url: "/icon.png", sizes: "512x512", type: "image/png" },
+    ],
+    apple: [
+      { url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+  },
 };
 
 export const viewport: Viewport = {
