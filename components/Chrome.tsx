@@ -43,22 +43,22 @@ export function Reveal({
 
 export function Wordmark({ small = false }: { small?: boolean }) {
   return (
-    <div className="flex items-center gap-2">
-      {/* Angled red block — the broadcast chevron motif, no borrowed marks. */}
-      <span
-        aria-hidden
-        className="block bg-red"
-        style={{
-          width: small ? 10 : 14,
-          height: small ? 20 : 28,
-          clipPath: "polygon(38% 0, 100% 0, 62% 100%, 0 100%)",
-        }}
+    <div className="flex items-center gap-2.5">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src="/icon.png"
+        alt="JomLap"
+        width={small ? 28 : 36}
+        height={small ? 28 : 36}
+        className={`rounded-lg shrink-0 object-cover border border-white/15 shadow-sm ${
+          small ? "h-7 w-7" : "h-9 w-9"
+        }`}
       />
       <span
-        className={`display leading-none ${small ? "text-lg" : "text-2xl"}`}
+        className={`display leading-none text-white ${small ? "text-lg" : "text-2xl"}`}
         style={{ letterSpacing: "-0.02em" }}
       >
-        JOM<span className="text-red">LAP</span>
+        JomLap
       </span>
     </div>
   );
