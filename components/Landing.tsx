@@ -4,29 +4,47 @@ import { useEffect, useRef, useState } from "react";
 import { PERSONAS, CALL_LABEL } from "@/lib/personas.ts";
 import { Avatar, Reveal, Title } from "./Chrome.tsx";
 
-// Plain English first. The F1 term is a small subtitle, not the headline —
-// nobody should need to know what a "paddock" is to understand the app.
-const FEATURES = [
+// Section-by-section directory of everything inside JomLap
+const SECTIONS = [
   {
-    n: "1",
+    n: "01",
     tone: "red" as const,
-    title: "Play the strategy game",
-    body: "Rain is coming. Three engineers each tell you to do something different. You decide.",
-    label: "The Pit Wall",
+    label: "Pit Wall Strategy",
+    title: "Monsoon Strategy Simulation",
+    body: "Dial in Sepang's track heat, sudden monsoon showers, and race distance. Listen to 3 race engineers argue live over pit radio, lock in your tire call, and review deterministic lap telemetry with your 0–100 Strategy IQ.",
+    tag: "Core Game",
   },
   {
-    n: "2",
+    n: "02",
     tone: "yellow" as const,
-    title: "Get your score card",
-    body: "See how good your call was, then share the card with your friends.",
-    label: "The Circuit Pass",
+    label: "Trophy Room",
+    title: "12 Achievement Stamps & Rank Progression",
+    body: "Rise from Pit Lane Rookie to Pit Wall Legend across 5 ranks. Unlock 12 custom circular achievement badges by mastering tricky weather calls, trusting local wisdom, and scoring high on the live leaderboard.",
+    tag: "Achievements",
   },
   {
-    n: "3",
+    n: "03",
+    tone: "purple" as const,
+    label: "Fan Market",
+    title: "Sepang Race Prediction Markets",
+    body: "Wager virtual paddock credit on race outcomes — from Turn 11 monsoon showers to safety car deployments and tire strategies. Test your instincts with real-time odds calculations.",
+    tag: "Predictions",
+  },
+  {
+    n: "04",
+    tone: "green" as const,
+    label: "Paddock Mamak",
+    title: "Escape Circuit Jam & Find Local Food",
+    body: "Take a 5-question food vibe quiz with smart radar matching, or explore 10 authentic supper corridors, satay hotspots, and seafood hideaways around Sepang Circuit with GPS routing.",
+    tag: "Food & Navigation",
+  },
+  {
+    n: "05",
     tone: "ice" as const,
-    title: "Beat the traffic after",
-    body: "Skip the jam leaving the circuit and find somewhere open to eat nearby.",
-    label: "The Paddock Mamak",
+    label: "Circuit Pass",
+    title: "Holographic Credential & Social Sharing",
+    body: "Mint your personal interactive 3D holographic circuit pass stamped with your final Strategy IQ, rank badge, and callsign. Export in high resolution directly to X, Threads, and Instagram.",
+    tag: "Shareable Pass",
   },
 ];
 
@@ -136,35 +154,61 @@ export function Landing({
         </div>
       </div>
 
-      {/* --- what's in here: three big, plain-language cards --- */}
-      <Reveal className="mt-10 px-4">
-        <h2 className="title title-loose text-3xl leading-tight sm:text-4xl">
-          What&apos;s in here
+      {/* --- Section-by-Section App Walkthrough --- */}
+      <Reveal className="mt-12 px-4">
+        <div className="flex items-center gap-2 text-[10px] font-mono uppercase tracking-[0.25em] text-red">
+          <span className="h-1.5 w-1.5 rounded-full bg-red" />
+          <span>Application Directory</span>
+        </div>
+        <h2 className="title title-loose text-3xl leading-tight sm:text-4xl mt-1">
+          Inside the Web App
         </h2>
-        <div className="mt-4 flex flex-col gap-3">
-          {FEATURES.map((f, i) => (
+        <p className="mt-1.5 text-[14px] leading-relaxed text-muted max-w-md">
+          A complete guide to everything available in JomLap — from real-time monsoon strategy to post-race food escapes.
+        </p>
+
+        <div className="mt-6 flex flex-col gap-3.5">
+          {SECTIONS.map((f, i) => (
             <div
               key={f.label}
               style={{ "--i": i } as React.CSSProperties}
-              className="anim-rise card flex gap-4 p-5 transition-transform duration-200 hover:-translate-y-1 lg:hover:border-fg/30"
+              className="anim-rise card flex flex-col sm:flex-row gap-4 p-5 transition-transform duration-200 hover:-translate-y-0.5 lg:hover:border-fg/30"
             >
-              <span
-                className="title shrink-0 text-4xl leading-none"
-                style={{ color: `var(--${f.tone})` }}
-              >
-                {f.n}
-              </span>
-              <div className="min-w-0">
-                <h3 className="title title-loose text-2xl leading-tight sm:text-[1.75rem]">
-                  {f.title}
-                </h3>
-                <p className="mt-2 text-[15px] leading-relaxed text-fg/75">{f.body}</p>
-                <div
-                  className="data mt-2.5 text-xs uppercase tracking-wider"
+              <div className="flex items-center sm:items-start justify-between sm:justify-start gap-3 shrink-0">
+                <span
+                  className="font-mono text-3xl font-bold leading-none"
                   style={{ color: `var(--${f.tone})` }}
                 >
-                  {f.label}
+                  {f.n}
+                </span>
+                <span
+                  className="sm:hidden data text-[9px] font-mono uppercase tracking-wider rounded-full border px-2 py-0.5"
+                  style={{ borderColor: `var(--${f.tone})`, color: `var(--${f.tone})` }}
+                >
+                  {f.tag}
+                </span>
+              </div>
+
+              <div className="min-w-0 flex-1">
+                <div className="flex items-center justify-between gap-2">
+                  <div
+                    className="data text-[10px] uppercase tracking-wider font-semibold"
+                    style={{ color: `var(--${f.tone})` }}
+                  >
+                    {f.label}
+                  </div>
+                  <span
+                    className="hidden sm:inline-block data text-[9px] font-mono uppercase tracking-wider rounded-full border px-2 py-0.5"
+                    style={{ borderColor: `var(--${f.tone})`, color: `var(--${f.tone})` }}
+                  >
+                    {f.tag}
+                  </span>
                 </div>
+
+                <h3 className="title title-loose text-xl leading-snug sm:text-2xl mt-1 text-white">
+                  {f.title}
+                </h3>
+                <p className="mt-2 text-[14px] leading-relaxed text-fg/80">{f.body}</p>
               </div>
             </div>
           ))}
