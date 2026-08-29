@@ -40,7 +40,18 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${anton.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <div className="atmos" aria-hidden />
+        {/* Spine label down the right edge — pure decoration, hidden from AT
+            and from narrow screens where it would crowd the content. */}
+        <span
+          aria-hidden
+          className="edge-label data pointer-events-none fixed right-1.5 top-1/2 z-10 hidden -translate-y-1/2 text-[9px] text-muted/50 sm:block"
+        >
+          Sepang International Circuit
+        </span>
+        <div className="above flex min-h-full flex-1 flex-col">{children}</div>
+      </body>
     </html>
   );
 }

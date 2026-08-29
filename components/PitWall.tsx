@@ -88,12 +88,22 @@ export function PitWall({
   return (
     <div className="px-4 pb-44 pt-5 lg:grid lg:grid-cols-[1.15fr_.85fr] lg:items-start lg:gap-10 lg:pb-10">
       <div className="flex flex-col gap-5">
-        <div>
-          <Title hit="WALL" size="text-[13vw] leading-[0.84] lg:text-6xl">
-            PIT
-          </Title>
-          <div className="data mt-2 text-[11px] uppercase tracking-wider text-muted">
-            {scenario.name} · {scenario.lapsRemaining} laps to go
+        <div className="relative overflow-hidden pt-3">
+          <span
+            aria-hidden
+            className="title ghost-red bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] lg:text-[8rem]"
+          >
+            {scenario.name}
+          </span>
+          <div className="relative pt-[7vw] lg:pt-12">
+            <Title hit="WALL" size="text-[13vw] leading-[0.84] lg:text-6xl">
+              PIT
+            </Title>
+            <div className="annot data mt-3 text-[10px] uppercase tracking-[0.2em] text-muted">
+              <span>
+                {scenario.name} · {scenario.lapsRemaining} laps to go
+              </span>
+            </div>
           </div>
         </div>
 

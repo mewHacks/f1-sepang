@@ -18,42 +18,69 @@ export function Landing({
       <div className="lg:grid lg:grid-cols-[1fr_1fr] lg:items-start lg:gap-12">
         {/* --- pitch + roster --- */}
         <div>
-          <Title size="text-[15vw] leading-[0.84] lg:text-7xl">CALL THE</Title>
-          <Title hit="SHOTS" size="text-[15vw] leading-[0.84] lg:text-7xl">
-            STRATEGY
-          </Title>
-          <p className="mt-4 max-w-md text-sm leading-relaxed text-muted lg:text-base">
+          {/* Layered hero: a ghosted word bleeding off the edge, the real
+              headline riding over it. Depth without a single image. */}
+          <div className="relative -mt-2 overflow-hidden pb-1 pt-6">
+            <span
+              aria-hidden
+              className="title ghost-red bleed absolute -top-1 left-0 text-[26vw] leading-[0.8] lg:text-[10rem]"
+            >
+              SEPANG
+            </span>
+            <div className="relative pt-[9vw] lg:pt-16">
+              <Title size="text-[15vw] leading-[0.82] lg:text-7xl">CALL THE</Title>
+              <Title hit="SHOTS" size="text-[15vw] leading-[0.82] lg:text-7xl">
+                STRATEGY
+              </Title>
+            </div>
+          </div>
+
+          <div className="annot data mt-5 text-[10px] uppercase tracking-[0.2em] text-muted">
+            <span>001 — The brief</span>
+          </div>
+          <p className="mt-3 max-w-md text-sm leading-relaxed text-muted lg:text-base">
             Sepang. Fifty degrees of asphalt, a monsoon building over Turn 11, and three
             engineers screaming different things in your ear. You pick. You live with it.
           </p>
 
-          <div className="mt-7">
-            <div className="data mb-2.5 text-[10px] uppercase tracking-wider text-muted">
-              Your pit wall
+          <div className="mt-8">
+            <div className="annot data mb-3 text-[10px] uppercase tracking-[0.2em] text-muted">
+              <span>002 — Your pit wall</span>
             </div>
             <div className="flex flex-col gap-2">
               {PERSONAS.map((p, i) => (
                 <div
                   key={p.id}
                   style={{ "--i": i } as React.CSSProperties}
-                  className="anim-rise card flex items-center gap-3 px-3 py-2.5"
+                  className="anim-rise card relative flex items-stretch gap-3 overflow-hidden p-3"
                 >
-                  <Avatar persona={p} size={44} />
-                  <div className="min-w-0 flex-1">
+                  {/* Oversized index, cropped by the card edge. */}
+                  <span
+                    aria-hidden
+                    className="title ghost absolute -bottom-3 right-2 text-[3.5rem] leading-none opacity-70"
+                  >
+                    0{i + 1}
+                  </span>
+                  <span
+                    aria-hidden
+                    className="absolute inset-y-0 left-0 w-[3px]"
+                    style={{ background: `var(--${p.tone})` }}
+                  />
+                  <div className="halftone shrink-0 self-center rounded-lg opacity-90">
+                    <Avatar persona={p} size={48} />
+                  </div>
+                  <div className="relative min-w-0 flex-1 py-0.5">
                     <div
-                      className="display text-sm leading-none"
+                      className="title text-xl leading-none"
                       style={{ color: `var(--${p.tone})` }}
                     >
                       {p.name}
                     </div>
-                    <div className="mt-1 text-[12px] leading-snug text-muted">{p.pitch}</div>
-                  </div>
-                  <div className="data hidden shrink-0 text-right text-[9px] uppercase leading-tight text-muted sm:block">
-                    Wants
-                    <br />
-                    <span style={{ color: `var(--${p.tone})` }}>
-                      {CALL_LABEL[p.advocates]}
-                    </span>
+                    <div className="mt-1.5 text-[12px] leading-snug text-muted">{p.pitch}</div>
+                    <div className="data mt-2 text-[9px] uppercase tracking-[0.15em] text-muted">
+                      Wants ›{" "}
+                      <span style={{ color: `var(--${p.tone})` }}>{CALL_LABEL[p.advocates]}</span>
+                    </div>
                   </div>
                 </div>
               ))}
@@ -64,8 +91,8 @@ export function Landing({
         {/* --- setup --- */}
         <div className="mt-8 lg:mt-0">
           <label className="block">
-            <span className="data text-[10px] uppercase tracking-wider text-muted">
-              Your call-sign
+            <span className="annot data flex text-[10px] uppercase tracking-[0.2em] text-muted">
+              <span>003 — Your call-sign</span>
             </span>
             <input
               value={callsign}
@@ -78,8 +105,8 @@ export function Landing({
           </label>
 
           <div className="mt-6">
-            <div className="data mb-2 text-[10px] uppercase tracking-wider text-muted">
-              Pick your nightmare
+            <div className="annot data mb-3 text-[10px] uppercase tracking-[0.2em] text-muted">
+              <span>004 — Pick your nightmare</span>
             </div>
             <div className="flex flex-col gap-2.5">
               {SCENARIOS.map((s, i) => {

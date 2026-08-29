@@ -40,7 +40,9 @@ export function Menu({
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-40 flex flex-col bg-bg" role="dialog" aria-modal="true">
+    <div className="fixed inset-0 z-40 flex flex-col" role="dialog" aria-modal="true">
+      <div className="atmos" aria-hidden />
+      <div className="above flex h-full flex-col">
       <div
         className="flex items-center justify-between border-b border-line px-4 py-3"
         style={{ paddingTop: "calc(var(--safe-t) + 12px)" }}
@@ -99,6 +101,7 @@ export function Menu({
             {muted ? "OFF" : "ON"}
           </span>
         </button>
+      </div>
       </div>
     </div>
   );

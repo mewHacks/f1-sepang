@@ -85,40 +85,85 @@ export function SharePass({
           className="relative shrink-0 overflow-hidden"
           style={{ width: CARD_W, height: CARD_H, background: "#0a0a0c" }}
         >
+          {/* Red bloom + grain, baked into the card so it survives export. */}
+          <div
+            aria-hidden
+            className="absolute inset-0"
+            style={{
+              background:
+                "radial-gradient(115% 62% at 82% -6%, rgba(225,6,0,0.55), transparent 62%)," +
+                "radial-gradient(85% 48% at 4% 104%, rgba(225,6,0,0.32), transparent 60%)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute inset-0 opacity-[0.18]"
+            style={{
+              backgroundImage:
+                "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E\")",
+            }}
+          />
+
           {/* track watermark */}
           <svg
             viewBox="0 0 200 120"
-            className="absolute -right-10 top-1/2 w-[130%] -translate-y-1/2 opacity-[0.16]"
+            className="absolute -right-10 top-[38%] w-[135%] -translate-y-1/2"
             aria-hidden
           >
-            <path d={TRACK} fill="none" stroke="var(--red)" strokeWidth="7" strokeLinejoin="round" />
+            <path
+              d={TRACK}
+              fill="none"
+              stroke="#ffffff"
+              strokeOpacity="0.22"
+              strokeWidth="6"
+              strokeLinejoin="round"
+            />
           </svg>
+
+          {/* Ghosted scenario name bleeding off the left edge. */}
+          <span
+            aria-hidden
+            className="title absolute -left-3 top-[30%] whitespace-nowrap text-[4.5rem] leading-none"
+            style={{
+              color: "transparent",
+              WebkitTextStroke: "1.5px rgba(255,255,255,0.22)",
+            }}
+          >
+            SEPANG
+          </span>
+
+          <span
+            aria-hidden
+            className="edge-label data absolute right-1.5 top-1/2 -translate-y-1/2 text-[8px] text-white/40"
+          >
+            Thermal Pit Wall
+          </span>
 
           <div className="absolute inset-0 flex flex-col justify-between p-5">
             <div className="flex items-start justify-between">
               <Wordmark small />
-              <span className="data text-right text-[9px] uppercase leading-tight tracking-wider text-muted">
+              <span className="data text-right text-[9px] uppercase leading-tight tracking-[0.18em] text-white/50">
                 Sepang
                 <br />
                 Intl Circuit
               </span>
             </div>
 
-            <div>
-              <div className="data text-[10px] uppercase tracking-wider text-muted">
+            <div className="relative">
+              <div className="data text-[9px] uppercase tracking-[0.2em] text-white/50">
                 Strategist
               </div>
               <div className="title mt-0.5 text-3xl leading-none">{callsign}</div>
 
-              <div className="mt-6 data text-[10px] uppercase tracking-wider text-muted">
+              <div className="data mt-7 text-[9px] uppercase tracking-[0.2em] text-white/50">
                 Strategy IQ
               </div>
-              <div className="display leading-[0.8]" style={{ fontSize: 116 }}>
+              <div className="title leading-[0.78]" style={{ fontSize: 128 }}>
                 {result.strategyIQ}
               </div>
               <div
-                className="display mt-1 text-base"
-                style={{ color: result.strategyIQ >= 80 ? "var(--green)" : "var(--yellow)" }}
+                className="title mt-1 text-lg leading-none"
+                style={{ color: result.strategyIQ >= 80 ? "#00d26a" : "#ffd500" }}
               >
                 {iqGrade(result.strategyIQ)}
               </div>
@@ -130,10 +175,13 @@ export function SharePass({
               <Row
                 label="Verdict"
                 value={result.wasOptimal ? "Optimal" : `${result.rightAllAlong.name} was right`}
-                tone={result.wasOptimal ? "var(--green)" : "var(--yellow)"}
+                tone={result.wasOptimal ? "#00d26a" : "#ffd500"}
               />
-              <div className="mt-2 flex items-center justify-between border-t border-line pt-2.5">
-                <span className="data text-[9px] uppercase tracking-wider text-muted">
+              <div
+                className="mt-2 flex items-center justify-between pt-2.5"
+                style={{ borderTop: "1px solid rgba(255,255,255,0.18)" }}
+              >
+                <span className="data text-[9px] uppercase tracking-[0.18em] text-white/50">
                   f1-sepang.vercel.app
                 </span>
                 <span
@@ -167,7 +215,7 @@ export function SharePass({
 function Row({ label, value, tone }: { label: string; value: string; tone?: string }) {
   return (
     <div className="flex items-baseline justify-between gap-3">
-      <span className="data text-[9px] uppercase tracking-wider text-muted">{label}</span>
+      <span className="data text-[9px] uppercase tracking-[0.18em] text-white/50">{label}</span>
       <span className="display text-right text-[13px] leading-tight" style={tone ? { color: tone } : undefined}>
         {value}
       </span>

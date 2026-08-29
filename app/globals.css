@@ -5,10 +5,12 @@
    white. Everything else is a grey step. Nothing in a component hardcodes a
    colour — retheme happens here. */
 :root {
-  --bg: #0a0a0c;
-  --surface: #16161a;
-  --surface-2: #1f1f25;
-  --line: #2c2c34;
+  /* Red-leaning neutrals: the greys carry a trace of the accent so nothing
+     reads as dead grey sitting on a red field. */
+  --bg: #08060a;
+  --surface: #1a1216;
+  --surface-2: #251a1f;
+  --line: #3a2830;
   --fg: #ffffff;
   --muted: #8e8e99;
 
@@ -96,6 +98,89 @@ body {
   font-variant-numeric: tabular-nums;
 }
 
+/* ---- atmosphere -------------------------------------------------------
+   A fixed, non-interactive backdrop: deep red bloom plus film grain. Painted
+   once and never animated, so it costs one composited layer and nothing per
+   frame. This is what stops the black reading as flat. */
+.atmos {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 70% at 78% -8%, color-mix(in srgb, var(--red) 42%, transparent), transparent 62%),
+    radial-gradient(90% 55% at 8% 104%, color-mix(in srgb, var(--red) 26%, transparent), transparent 60%),
+    var(--bg);
+}
+
+.atmos::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.16;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Everything real sits above the atmosphere. */
+.above {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---- editorial type ---------------------------------------------------- */
+
+/* Outlined ghost word — layers behind content for depth at zero paint cost. */
+.ghost {
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--fg) 26%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+.ghost-red {
+  color: transparent;
+  -webkit-text-stroke: 1.5px color-mix(in srgb, var(--red) 62%, transparent);
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Type that runs off the edge of the screen, the way a poster crops. */
+.bleed {
+  margin-inline: -6vw;
+  white-space: nowrap;
+}
+
+/* Rotated spine label down the side of the page. */
+.edge-label {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+}
+
+/* Small caption with a rule running off it — the scattered-annotation look. */
+.annot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.annot::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: linear-gradient(90deg, var(--line), transparent);
+}
+
+/* Halftone dots, for panels that need print texture. */
+.halftone {
+  background-image: radial-gradient(
+    color-mix(in srgb, var(--fg) 20%, transparent) 1px,
+    transparent 1.4px
+  );
+  background-size: 6px 6px;
+}
+
 /* ---- shell ------------------------------------------------------------
    Phone-width column by default; on a wide screen it opens out into a real
    two-column layout instead of a lonely strip down the middle. */
@@ -135,10 +220,12 @@ body {
 }
 
 /* ---- surfaces ---------------------------------------------------------- */
+/* Translucent so the red bloom behind shows through — a solid fill here is
+   what made the old version feel like flat boxes on black. */
 .card {
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 76%, transparent);
   border: 1px solid var(--line);
-  border-radius: 16px;
+  border-radius: 14px;
 }
 
 /* Full-bleed status card, the green-flag / red-flag language from broadcast. */

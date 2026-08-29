@@ -57,13 +57,23 @@ export function Debrief({
   return (
     <div className="px-4 pb-40 pt-5 lg:grid lg:grid-cols-[.9fr_1.1fr] lg:items-start lg:gap-10 lg:pb-10">
       <div className="flex flex-col gap-5">
-        <Title
-          hit={result.wasOptimal ? "NAILED IT" : "OOF"}
-          tone={result.wasOptimal ? "yellow" : "red"}
-          size="text-[13vw] leading-[0.84] lg:text-6xl"
-        >
-          You
-        </Title>
+        <div className="relative overflow-hidden pt-3">
+          <span
+            aria-hidden
+            className="title ghost bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] lg:text-[8rem]"
+          >
+            DEBRIEF
+          </span>
+          <div className="relative pt-[7vw] lg:pt-12">
+            <Title
+              hit={result.wasOptimal ? "NAILED IT" : "OOF"}
+              tone={result.wasOptimal ? "yellow" : "red"}
+              size="text-[13vw] leading-[0.84] lg:text-6xl"
+            >
+              You
+            </Title>
+          </div>
+        </div>
 
         {result.wasOptimal ? (
           <Flag tone="green" label="Optimal call" value={scenario.name.toUpperCase()} />
@@ -75,17 +85,26 @@ export function Debrief({
           />
         )}
 
-        {/* The score, given the space it deserves. */}
-        <div className="card chevrons relative overflow-hidden px-4 py-6 text-center">
-          <div className="data text-[10px] uppercase tracking-wider text-muted">Strategy IQ</div>
+        {/* The score as the poster moment: the number repeated as a ghost
+            outline behind itself, cropped by the panel. */}
+        <div className="card halftone relative overflow-hidden px-4 pb-5 pt-4">
+          <span
+            aria-hidden
+            className="title ghost-red absolute -right-4 -top-6 select-none text-[9rem] leading-none"
+          >
+            {result.strategyIQ}
+          </span>
+          <div className="annot data relative text-[10px] uppercase tracking-[0.2em] text-muted">
+            <span>Strategy IQ</span>
+          </div>
           <div
-            className="display anim-pop mt-1 leading-none"
-            style={{ fontSize: "min(22vw, 132px)", lineHeight: 0.8 }}
+            className="title anim-pop relative mt-1 leading-none"
+            style={{ fontSize: "min(30vw, 150px)", lineHeight: 0.78 }}
           >
             {result.strategyIQ}
           </div>
           <div
-            className="display mt-2 text-base"
+            className="title relative mt-2 text-xl leading-none"
             style={{ color: result.strategyIQ >= 80 ? "var(--green)" : "var(--yellow)" }}
           >
             {iqGrade(result.strategyIQ)}

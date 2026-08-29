@@ -6,11 +6,19 @@ import { Title } from "./Chrome.tsx";
 export function Mamak({ onRestart }: { onRestart: () => void }) {
   return (
     <div className="flex flex-col gap-5 px-4 pb-32 pt-5 lg:pb-8">
-      <div>
-        <Title hit="MAMAK" tone="yellow" size="text-[13vw] leading-[0.84] sm:text-5xl">
-          Paddock
-        </Title>
-        <p className="mt-4 max-w-md text-sm leading-relaxed text-muted">
+      <div className="relative overflow-hidden pt-3">
+        <span
+          aria-hidden
+          className="title ghost bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] lg:text-[8rem]"
+        >
+          TEH TARIK
+        </span>
+        <div className="relative pt-[7vw] lg:pt-12">
+          <Title hit="MAMAK" tone="yellow" size="text-[13vw] leading-[0.84] lg:text-6xl">
+            Paddock
+          </Title>
+        </div>
+        <p className="relative mt-4 max-w-md text-sm leading-relaxed text-muted">
           Race done. Ninety thousand people now want the same two highways. Here is how you
           leave — and where to eat while everyone else sits on the ELITE.
         </p>
