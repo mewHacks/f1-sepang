@@ -1,20 +1,26 @@
 @import "tailwindcss";
 
 /* ---- design tokens ----------------------------------------------------
-   Placeholder palette. Swap these values when UI direction is decided —
-   nothing else in the app hardcodes a colour.
-   ponytail: tokens only, no theme system until a second theme exists. */
+   Broadcast-graphics palette: near-black ground, one hot red, one yellow,
+   white. Everything else is a grey step. Nothing in a component hardcodes a
+   colour — retheme happens here. */
 :root {
-  --bg: #07070b;
-  --surface: #12121a;
-  --line: #23232f;
-  --fg: #f2f2f7;
-  --muted: #8a8a9c;
+  --bg: #0a0a0c;
+  --surface: #16161a;
+  --surface-2: #1f1f25;
+  --line: #2c2c34;
+  --fg: #ffffff;
+  --muted: #8e8e99;
 
-  --accent: #00e5ff; /* telemetry / Aero-9 */
-  --warm: #ffb020; /* Uncle Sepang */
-  --hot: #ff2e79; /* Din Turbo */
-  --go: #38e07a;
+  --red: #e10600;
+  --red-dim: #8f0400;
+  --yellow: #ffd500;
+  --ice: #e6e9f2;
+
+  /* F1 canon: purple = fastest, green = clear, yellow = caution. Readers
+     decode these instantly, so they are never used decoratively. */
+  --purple: #b24bf3;
+  --green: #00d26a;
 
   --safe-t: env(safe-area-inset-top, 0px);
   --safe-b: env(safe-area-inset-bottom, 0px);
@@ -23,20 +29,22 @@
 @theme inline {
   --color-bg: var(--bg);
   --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
   --color-line: var(--line);
   --color-fg: var(--fg);
   --color-muted: var(--muted);
-  --color-accent: var(--accent);
-  --color-warm: var(--warm);
-  --color-hot: var(--hot);
-  --color-go: var(--go);
+  --color-red: var(--red);
+  --color-red-dim: var(--red-dim);
+  --color-yellow: var(--yellow);
+  --color-ice: var(--ice);
+  --color-purple: var(--purple);
+  --color-green: var(--green);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
 html {
   background: var(--bg);
-  /* stop iOS rubber-band flashing the wrong colour */
   overscroll-behavior-y: none;
 }
 
@@ -47,6 +55,74 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+/* ---- type -------------------------------------------------------------
+   Display face is angular and squared-off — the sim-racing HUD register.
+   Numbers are always tabular so telemetry does not jitter as it ticks. */
+.display {
+  font-family: var(--font-display), "Arial Narrow", var(--font-sans), sans-serif;
+  font-weight: 400; /* Anton ships one weight and it is already very heavy */
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+/* Section titles: heavy condensed caps on a slant, tight enough to stack into
+   solid blocks. Skew is a transform, so it costs nothing to composite. */
+.title {
+  font-family: var(--font-display), "Arial Narrow", var(--font-sans), sans-serif;
+  font-weight: 400;
+  text-transform: uppercase;
+  line-height: 0.86;
+  letter-spacing: 0.005em;
+  transform: skewX(-9deg);
+  transform-origin: left bottom;
+}
+
+/* Knocked-out word inside a title — the reference's colour-block lines. */
+.title-hit {
+  background: var(--red);
+  padding: 0 0.18em 0.04em;
+  display: inline-block;
+}
+
+.title-hit-y {
+  background: var(--yellow);
+  color: #0a0a0c;
+  padding: 0 0.18em 0.04em;
+  display: inline-block;
+}
+
+.data {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---- surfaces ---------------------------------------------------------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+}
+
+/* Full-bleed status card, the green-flag / red-flag language from broadcast. */
+.flag {
+  border-radius: 16px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* The chevron motif off the FASTEST LAP graphic. Pure gradient, no images,
+   no extra DOM — cheap enough to sit behind anything. */
+.chevrons {
+  background-image: repeating-linear-gradient(
+    -70deg,
+    color-mix(in srgb, var(--fg) 12%, transparent) 0 2px,
+    transparent 2px 14px
+  );
+}
+
 /* ---- motion -----------------------------------------------------------
    transform/opacity only: both composite on the GPU, so a budget Android
    animates them without touching layout or paint. Never animate width,
@@ -54,7 +130,18 @@ body {
 @keyframes rise {
   from {
     opacity: 0;
-    transform: translate3d(0, 8px, 0);
+    transform: translate3d(0, 10px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translate3d(-14px, 0, 0);
   }
   to {
     opacity: 1;
@@ -73,26 +160,40 @@ body {
   }
 }
 
-@keyframes pulse-soft {
+@keyframes blink {
   50% {
-    opacity: 0.45;
+    opacity: 0.25;
+  }
+}
+
+@keyframes sweep {
+  from {
+    transform: translate3d(-100%, 0, 0);
+  }
+  to {
+    transform: translate3d(100%, 0, 0);
   }
 }
 
 .anim-rise {
-  animation: rise 0.32s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: rise 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-
+.anim-slide {
+  animation: slide-in 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
 .anim-pop {
   animation: pop 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-
-.anim-pulse {
-  animation: pulse-soft 1.6s ease-in-out infinite;
+.anim-blink {
+  animation: blink 1.1s steps(1, end) infinite;
+}
+.anim-sweep {
+  animation: sweep 1.5s linear infinite;
 }
 
 /* Stagger without JS: set --i on the element. */
 .anim-rise,
+.anim-slide,
 .anim-pop {
   animation-delay: calc(var(--i, 0) * 70ms);
 }
