@@ -68,7 +68,7 @@ export function buildScenario(m: Mix): Scenario {
   // has a defensible "correct" answer, whatever the player mixes.
   const calls: Call[] = ["BOX_INTERS", "STAY_OUT", "FULL_WET"];
   const best = calls
-    .map((c) => ({ c, total: resolve(base, c).total }))
+    .map((c) => ({ c, total: resolve(base, c).totalTime }))
     .sort((a, b) => a.total - b.total)[0].c;
   base.expectedBest = best;
 

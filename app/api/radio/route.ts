@@ -47,7 +47,17 @@ export async function POST(req: Request) {
 
   // Custom (player-built) scenarios arrive with their fields inline; curated
   // ones are looked up. Both paths produce the same `situation` text.
-  const inline = body.scenario;
+  const inline = body.scenario as
+    | {
+        trackTempC?: number;
+        airTempC?: number;
+        humidityPct?: number;
+        lapsRemaining?: number;
+        blurb?: string;
+        name?: string;
+      }
+    | undefined;
+
   const scenario =
     inline && typeof inline.trackTempC === "number"
       ? {
