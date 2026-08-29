@@ -7,6 +7,16 @@ export type RadioRequest = {
   callsign?: string;
   chosenCall?: Call;
   seed?: number;
+  /** For custom, player-built scenarios: the fields the model needs, sent
+      directly because the server has no shared state with the browser. */
+  scenario?: {
+    trackTempC?: number;
+    airTempC?: number;
+    humidityPct?: number;
+    lapsRemaining?: number;
+    blurb?: string;
+    name?: string;
+  };
 };
 
 /** Stream one radio transmission, handing back text as it arrives. */

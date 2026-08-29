@@ -2,7 +2,7 @@ import { streamText } from "ai";
 import { hasAI, radioModel } from "@/lib/ai.ts";
 import { fallbackLine } from "@/lib/fallback.ts";
 import { PERSONAS, CALL_LABEL, type Call } from "@/lib/personas.ts";
-import { SCENARIOS, scenarioById } from "@/lib/scenarios.ts";
+import { scenarioById } from "@/lib/scenarios.ts";
 
 export const maxDuration = 30;
 
@@ -39,14 +39,26 @@ export async function POST(req: Request) {
 
   // Reject anything not in the known sets rather than passing it through.
   const persona = PERSONAS.find((p) => p.id === body.personaId);
-  const scenarioExists = SCENARIOS.some((s) => s.id === body.scenarioId);
   const phase: Phase = body.phase === "verdict" ? "verdict" : "brief";
 
-  if (!persona || !scenarioExists) {
-    return new Response("Unknown persona or scenario", { status: 400 });
+  if (!persona) {
+    return new Response("Unknown persona", { status: 400 });
   }
 
-  const scenario = scenarioById(body.scenarioId as string);
+  // Custom (player-built) scenarios arrive with their fields inline; curated
+  // ones are looked up. Both paths produce the same `situation` text.
+  const inline = body.scenario;
+  const scenario =
+    inline && typeof inline.trackTempC === "number"
+      ? {
+          id: (body.scenarioId as string) || "custom",
+          trackTempC: inline.trackTempC,
+          airTempC: inline.airTempC ?? inline.trackTempC - 10,
+          humidityPct: inline.humidityPct ?? 80,
+          lapsRemaining: inline.lapsRemaining ?? 12,
+          blurb: inline.blurb ?? inline.name ?? "",
+        }
+      : scenarioById(body.scenarioId as string);
   const callsign = cleanCallsign(body.callsign);
   const chosen = typeof body.chosenCall === "string" ? (body.chosenCall as Call) : undefined;
   const seed = typeof body.seed === "number" ? Math.abs(Math.trunc(body.seed)) : 0;

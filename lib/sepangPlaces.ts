@@ -46,7 +46,7 @@ function haversineKm(
 export const SEPANG_CENTER = CENTER;
 
 export const SCRAPED_PLACES: ScrapedPlace[] = (
-  raw.places as ScrapedPlace[]
+  raw.places as unknown as ScrapedPlace[]
 ).map((p) => ({
   ...p,
   distanceKm:

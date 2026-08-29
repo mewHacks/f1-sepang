@@ -25,7 +25,7 @@ type Run = { callsign: string; scenarioId: string; result: RaceResult };
 
 export default function Page() {
   const [view, setView] = useState<View>("landing");
-  const [setup, setSetup] = useState<{ callsign: string; scenarioId: string } | null>(null);
+  const [setup, setSetup] = useState<{ callsign: string } | null>(null);
   const [run, setRun] = useState<Run | null>(null);
   const [muted, setMuted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
@@ -54,8 +54,8 @@ export default function Page() {
       <main className="shell flex-1">
         {view === "landing" && (
           <Landing
-            onStart={(callsign, scenarioId) => {
-              setSetup({ callsign, scenarioId });
+            onStart={(callsign) => {
+              setSetup({ callsign });
               setView("pitwall");
             }}
           />
@@ -64,15 +64,14 @@ export default function Page() {
         {view === "pitwall" && setup && (
           <PitWall
             callsign={setup.callsign}
-            scenarioId={setup.scenarioId}
             muted={muted}
-            onDecide={(call: Call) => {
-              const result = resolve(scenarioById(setup.scenarioId), call);
-              setRun({ ...setup, result });
+            onDecide={(call: Call, scenarioId: string) => {
+              const result = resolve(scenarioById(scenarioId), call);
+              setRun({ callsign: setup.callsign, scenarioId, result });
               // Award achievements the moment the race resolves, so the
               // debrief and trophy room agree without extra plumbing.
               recordRace({
-                scenarioId: setup.scenarioId,
+                scenarioId,
                 strategyIQ: result.strategyIQ,
                 wasOptimal: result.wasOptimal,
                 advocateId: result.rightAllAlong.id,

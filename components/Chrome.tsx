@@ -83,12 +83,12 @@ export function Header({
   muted?: boolean;
   onToggleMute?: () => void;
 }) {
-  const NAV_ITEMS: { id: View; label: string; icon: string; requiresRun?: boolean }[] = [
-    { id: "landing", label: "Pit Wall", icon: "🏁" },
-    { id: "trophies", label: "Trophies", icon: "🏆" },
-    { id: "predict", label: "Predictions", icon: "🎯" },
-    { id: "mamak", label: "Paddock Mamak", icon: "🍛" },
-    { id: "pass", label: "Circuit Pass", icon: "🎫", requiresRun: true },
+  const NAV_ITEMS: { id: View; label: string; code: string; requiresRun?: boolean }[] = [
+    { id: "landing", label: "Pit Wall", code: "01" },
+    { id: "trophies", label: "Trophies", code: "02" },
+    { id: "predict", label: "Predictions", code: "03" },
+    { id: "mamak", label: "Paddock Mamak", code: "04" },
+    { id: "pass", label: "Circuit Pass", code: "05", requiresRun: true },
   ];
 
   return (
@@ -130,7 +130,7 @@ export function Header({
                   }`}
                   title={disabled ? "Run a race on the Pit Wall first" : undefined}
                 >
-                  <span className="text-sm">{item.icon}</span>
+                  <span className="font-mono text-[10px] opacity-60">{item.code}</span>
                   <span>{item.label}</span>
                 </button>
               );
@@ -152,10 +152,11 @@ export function Header({
               <button
                 onClick={onToggleMute}
                 aria-label={muted ? "Unmute pit radio" : "Mute pit radio"}
-                className="data flex items-center justify-center h-8 w-8 rounded-lg border border-line text-xs text-muted hover:text-white hover:bg-surface transition-colors ml-1"
+                className="data flex items-center gap-1 h-8 rounded-lg border border-line px-2 text-[10px] uppercase tracking-wider text-muted hover:text-white hover:bg-surface transition-colors ml-1"
                 title={muted ? "Unmute radio audio" : "Mute radio audio"}
               >
-                {muted ? "🔇" : "🔊"}
+                <span className={`inline-block h-1.5 w-1.5 rounded-full ${muted ? "bg-muted" : "bg-green"}`} />
+                <span>{muted ? "MUTED" : "RADIO"}</span>
               </button>
             )}
           </nav>

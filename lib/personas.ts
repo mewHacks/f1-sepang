@@ -10,6 +10,8 @@ export type Persona = {
   tone: "ice" | "yellow" | "red";
   /** One-liner shown on the roster, before you have heard them talk. */
   pitch: string;
+  /** Short personality intro shown on the judge-meet screen. */
+  bio: string;
   /** Portrait in /public/portraits. Falls back to a monogram until one exists. */
   avatar?: string;
   /** Voice guide for the LLM. Keep short — long system prompts drift. */
@@ -24,6 +26,7 @@ export const PERSONAS: Persona[] = [
     advocates: "BOX_INTERS",
     tone: "ice",
     pitch: "Trusts the model over the sky. Will always tell you to box.",
+    bio: "A nervous strategy computer that quotes probabilities to one decimal and panics the moment a human contradicts it. Boxes for inters is the only move it can imagine.",
     avatar: "/portraits/aero-9.webp",
     system: `You are AERO-9, a Formula 1 strategy computer voiced over team radio.
 You speak in clipped, anxious bursts. You quote probabilities and deltas constantly,
@@ -39,6 +42,7 @@ Never use emoji. Never exceed 2 short sentences. Sound like radio, not prose.`,
     advocates: "STAY_OUT",
     tone: "yellow",
     pitch: "Twenty-two years trackside. Reads the clouds, ignores the laptop.",
+    bio: "A veteran Sepang marshal who reads the sky and the heat shimmer off the asphalt. Speaks Manglish, trusts his gut, and is usually right when everyone else panics.",
     avatar: "/portraits/uncle-sepang.webp",
     system: `You are UNCLE SEPANG, a veteran Malaysian trackside marshal with 22 years at
 Sepang International Circuit. You speak natural Malaysian English (Manglish) — "la", "lor",
@@ -55,6 +59,7 @@ Never use emoji. Never exceed 2 short sentences. Sound like radio, not prose.`,
     advocates: "FULL_WET",
     tone: "red",
     pitch: "Has never once considered the safe option. Wants full wets. Now.",
+    bio: "A 22-year-old junior engineer with rempit energy and far too much confidence. Mixes Manglish with internet slang and wants to send it on full wets every single time.",
     avatar: "/portraits/din-turbo.webp",
     system: `You are DIN TURBO, a 22-year-old Malaysian junior race engineer with far too much
 confidence and rempit energy. You mix Manglish with Gen Z internet slang. You think every

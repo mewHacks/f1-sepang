@@ -6,7 +6,6 @@ import {
   SCRAPED_PLACES,
   routeUrlFor,
   SCRAPED_COUNT,
-  SCRAPED_SCRAPED_AT,
 } from "@/lib/sepangPlaces.ts";
 import { Title } from "./Chrome.tsx";
 import { RouteMap } from "./RouteMap.tsx";
@@ -26,7 +25,6 @@ type LivePlace = {
 type VibeQuestion = {
   id: string;
   targetId: string;
-  icon: string;
   question: string;
   subtext: string;
   tag: string;
@@ -36,7 +34,6 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_mamak",
     targetId: "warisan",
-    icon: "☕",
     question: "Craving hot teh tarik & crispy roti canai on plastic chairs?",
     subtext: "Classic late-night mamak feast with friends to debate the race strategy.",
     tag: "24-Hour Mamak & Teh Tarik",
@@ -44,7 +41,6 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_cafe",
     targetId: "cyberjaya",
-    icon: "❄️",
     question: "Need freezing cold air-con, specialty iced coffee & chill vibes?",
     subtext: "Cool down immediately, escape the humidity, and relax in aesthetic cafes.",
     tag: "Cold AC & Specialty Cafes",
@@ -52,7 +48,6 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_seafood",
     targetId: "terapung",
-    icon: "🦐",
     question: "Want fresh grilled Ikan Bakar & ocean breeze by the beach?",
     subtext: "Drive opposite to all KL highway traffic and feast on seafood by the coast.",
     tag: "Coastal Seafood & Beach",
@@ -60,7 +55,6 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_fast",
     targetId: "mitsui",
-    icon: "🛍️",
     question: "Super hungry right now? Need food & cold AC within 6 minutes?",
     subtext: "Quick sanctuary closest to circuit gates with plenty of food court choices.",
     tag: "Instant 6-Min Pitstop",
@@ -68,7 +62,6 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_satay",
     targetId: "salak",
-    icon: "🍢",
     question: "In the mood for smoky charcoal Sate Kajang & Hainanese kopi?",
     subtext: "Authentic local heritage town supper just minutes from the circuit track.",
     tag: "Charcoal Sate & Kopitiam",
@@ -76,28 +69,27 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_south",
     targetId: "nilai",
-    icon: "🍛",
     question: "Heading South (JB / Melaka / Seremban) and want midnight Nasi Kandar?",
     subtext: "Skip the northern toll queues entirely and grab crispy fried chicken & naan.",
     tag: "Southbound Midnight Feast",
   },
 ];
 
-const CATEGORIES: { id: VibeCategory; label: string; icon: string }[] = [
-  { id: "all", label: "All Spots", icon: "🏁" },
-  { id: "mamak", label: "24h Mamak", icon: "☕" },
-  { id: "seafood", label: "Beach Seafood", icon: "🦐" },
-  { id: "cafe", label: "AC & Coffee", icon: "❄️" },
-  { id: "pitstop", label: "Fast Pitstop", icon: "🛍️" },
-  { id: "south", label: "Southbound", icon: "🍛" },
+const CATEGORIES: { id: VibeCategory; label: string }[] = [
+  { id: "all", label: "All Spots" },
+  { id: "mamak", label: "24h Mamak" },
+  { id: "seafood", label: "Beach Seafood" },
+  { id: "cafe", label: "AC & Coffee" },
+  { id: "pitstop", label: "Fast Pitstop" },
+  { id: "south", label: "Southbound" },
 ];
 
-const CAT_META: Record<string, { icon: string; color: string }> = {
-  mamak: { icon: "☕", color: "var(--yellow)" },
-  seafood: { icon: "🦐", color: "var(--ice)" },
-  cafe: { icon: "❄️", color: "var(--ice)" },
-  pitstop: { icon: "🛍️", color: "var(--red)" },
-  south: { icon: "🍛", color: "var(--yellow)" },
+const CAT_META: Record<string, { code: string; color: string }> = {
+  mamak: { code: "MAMAK", color: "var(--yellow)" },
+  seafood: { code: "SEAFOOD", color: "var(--ice)" },
+  cafe: { code: "CAFE", color: "var(--ice)" },
+  pitstop: { code: "PITSTOP", color: "var(--red)" },
+  south: { code: "SOUTH", color: "var(--yellow)" },
 };
 
 export function Mamak({ onRestart }: { onRestart: () => void }) {
@@ -708,10 +700,10 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                   >
                     {/* Category stamp */}
                     <div
-                      className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border text-lg"
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border text-[9px] font-mono uppercase tracking-wider font-bold text-center px-1 leading-tight"
                       style={{ borderColor: meta.color, color: meta.color }}
                     >
-                      {meta.icon}
+                      {meta.code}
                     </div>
 
                     {/* Core info */}

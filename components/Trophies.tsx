@@ -49,7 +49,7 @@ function Stamp({
     // trophies, a faded checkered flag for locked ones.
     return (
       <span
-        className="grid aspect-square w-16 place-items-center rounded-full border-2 text-2xl"
+        className="grid aspect-square w-16 place-items-center rounded-full border-2 text-2xl font-bold"
         style={{
           borderColor: got ? TIER_COLOR[tier] : "var(--line)",
           color: got ? TIER_COLOR[tier] : "var(--muted)",
@@ -59,7 +59,7 @@ function Stamp({
           opacity: got ? 1 : 0.5,
         }}
       >
-        {got ? "🏎️" : "🏁"}
+        {got ? "★" : "○"}
       </span>
     );
   }
@@ -67,17 +67,17 @@ function Stamp({
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
-      src={`/stamps/${id}.webp`}
+      src={`/stamps/${id}.png`}
       alt=""
       width={56}
       height={56}
       loading="lazy"
       decoding="async"
       onError={() => setMissing(true)}
-      className="h-14 w-14 shrink-0 object-contain"
+      className="h-14 w-14 shrink-0 object-contain drop-shadow-md transition-all"
       style={{
-        filter: got ? "none" : "grayscale(1)",
-        opacity: got ? 1 : 0.4,
+        filter: got ? "none" : "grayscale(1) brightness(0.6)",
+        opacity: got ? 1 : 0.35,
       }}
     />
   );

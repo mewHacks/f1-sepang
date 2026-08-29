@@ -72,3 +72,17 @@ export const SCENARIOS: Scenario[] = [
 
 export const scenarioById = (id: string) =>
   SCENARIOS.find((s) => s.id === id) ?? SCENARIOS[0];
+
+/* Custom, mix-and-match scenarios the player builds in the Pit Wall are kept
+   in a client-side registry so Debrief / SharePass can look them up by id
+   without a backend. The radio API never relies on this — the browser sends
+   the scenario fields with each request instead. */
+const CUSTOM = new Map<string, Scenario>();
+
+export function registerScenario(s: Scenario) {
+  CUSTOM.set(s.id, s);
+}
+
+export function getCustomScenario(id: string): Scenario | undefined {
+  return CUSTOM.get(id);
+}

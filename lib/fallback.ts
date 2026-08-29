@@ -32,6 +32,13 @@ const LINES: Record<Persona["id"], Record<string, Record<Phase, string[]>>> = {
       ],
       verdict: ["Intermediates aquaplaned. Full wets were correct. Logging the error."],
     },
+    custom: {
+      brief: [
+        "Cross-checking the forecast now. Crossover probability is high. Box for inters.",
+        "I do not like the look of that radar. Recommend inters at the earliest opportunity.",
+      ],
+      verdict: ["The numbers were right. Adjusting the model's confidence upward."],
+    },
   },
   uncle: {
     turn11: {
@@ -54,6 +61,13 @@ const LINES: Record<Persona["id"], Record<string, Record<Phase, string[]>>> = {
         "Cannot save this one with slicks. Go full wet, faster the better.",
       ],
       verdict: ["Ya, monsoon proper. Nothing to read, just survive."],
+    },
+    custom: {
+      brief: [
+        "Eh, depend on the sky la. Hot track, light rain just vaporise. Don't play play.",
+        "Twenty-two years I stand here. You watch the clouds, not the laptop.",
+      ],
+      verdict: ["See? Trust uncle can one. Next time listen faster."],
     },
   },
   din: {
@@ -78,6 +92,13 @@ const LINES: Record<Persona["id"], Record<string, Record<Phase, string[]>>> = {
       ],
       verdict: ["FULL SEND VINDICATED. Uncle, respectfully, get rekt."],
     },
+    custom: {
+      brief: [
+        "Bro, whatever the sky doing, full wets. We settle this on track.",
+        "Trust me la, I got the feeling. Send it, no thinking!",
+      ],
+      verdict: ["Eh, maybe I was wrong. But the vibes were correct, okay?"],
+    },
   },
 };
 
@@ -88,6 +109,6 @@ export function fallbackLine(
   seed = 0,
 ): string {
   const byScenario = LINES[personaId];
-  const pool = (byScenario[scenarioId] ?? byScenario.turn11)[phase];
+  const pool = (byScenario[scenarioId] ?? byScenario.custom ?? byScenario.turn11)[phase];
   return pool[seed % pool.length];
 }

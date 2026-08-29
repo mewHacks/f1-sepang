@@ -24,7 +24,7 @@ export type Escape = {
   skips: string;
   driveTime: string;
   distance: string;
-  vibeEmoji: string;
+  vibeCode: string;
   engineerTip: {
     author: string;
     avatar: string;
@@ -45,7 +45,7 @@ export const ESCAPES: Escape[] = [
     skips: "ELITE northbound jam",
     driveTime: "~12 mins",
     distance: "14 km",
-    vibeEmoji: "☕",
+    vibeCode: "MAMAK",
     engineerTip: {
       author: "UNCLE SEPANG",
       avatar: "/portraits/uncle-sepang.webp",
@@ -68,7 +68,7 @@ export const ESCAPES: Escape[] = [
     skips: "KLIA / ELITE main toll queues",
     driveTime: "~7 mins",
     distance: "8 km",
-    vibeEmoji: "🍛",
+    vibeCode: "WARISAN",
     engineerTip: {
       author: "DIN TURBO",
       avatar: "/portraits/din-turbo.webp",
@@ -91,7 +91,7 @@ export const ESCAPES: Escape[] = [
     skips: "All KLIA and Putrajaya highway exits",
     driveTime: "~8 mins",
     distance: "9.5 km",
-    vibeEmoji: "🏎️",
+    vibeCode: "ENSTEK",
     engineerTip: {
       author: "UNCLE SEPANG",
       avatar: "/portraits/uncle-sepang.webp",
@@ -114,7 +114,7 @@ export const ESCAPES: Escape[] = [
     skips: "Immediate circuit exit gridlock",
     driveTime: "~6 mins",
     distance: "6.5 km",
-    vibeEmoji: "🛍️",
+    vibeCode: "MITSUI",
     engineerTip: {
       author: "DIN TURBO",
       avatar: "/portraits/din-turbo.webp",
@@ -137,7 +137,7 @@ export const ESCAPES: Escape[] = [
     skips: "Toll plaza bottlenecks",
     driveTime: "~18 mins",
     distance: "21 km",
-    vibeEmoji: "❄️",
+    vibeCode: "CAFE",
     engineerTip: {
       author: "AERO-9",
       avatar: "/portraits/aero-9.webp",
@@ -160,7 +160,7 @@ export const ESCAPES: Escape[] = [
     skips: "Highway crawl entirely",
     driveTime: "~11 mins",
     distance: "12 km",
-    vibeEmoji: "🍢",
+    vibeCode: "SATAY",
     engineerTip: {
       author: "UNCLE SEPANG",
       avatar: "/portraits/uncle-sepang.webp",
@@ -183,7 +183,7 @@ export const ESCAPES: Escape[] = [
     skips: "Entire KL exit crowd",
     driveTime: "~22 mins",
     distance: "24 km",
-    vibeEmoji: "🦐",
+    vibeCode: "SEAFOOD",
     engineerTip: {
       author: "UNCLE SEPANG",
       avatar: "/portraits/uncle-sepang.webp",
@@ -206,7 +206,7 @@ export const ESCAPES: Escape[] = [
     skips: "All north & eastbound expressways",
     driveTime: "~24 mins",
     distance: "26 km",
-    vibeEmoji: "🦀",
+    vibeCode: "FLOATING",
     engineerTip: {
       author: "DIN TURBO",
       avatar: "/portraits/din-turbo.webp",
@@ -229,7 +229,7 @@ export const ESCAPES: Escape[] = [
     skips: "ELITE highway jam",
     driveTime: "~14 mins",
     distance: "15 km",
-    vibeEmoji: "🐟",
+    vibeCode: "HERITAGE",
     engineerTip: {
       author: "AERO-9",
       avatar: "/portraits/aero-9.webp",
@@ -252,7 +252,7 @@ export const ESCAPES: Escape[] = [
     skips: "Airport merge & PLUS North toll",
     driveTime: "~15 mins",
     distance: "16 km",
-    vibeEmoji: "🫓",
+    vibeCode: "SOUTH",
     engineerTip: {
       author: "DIN TURBO",
       avatar: "/portraits/din-turbo.webp",

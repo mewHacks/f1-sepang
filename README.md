@@ -1,110 +1,105 @@
 # JomLap
 
-A race-strategy game, prediction market, and post-race companion for Sepang International Circuit. Built for the KrackedDevs **Formula 1's Return to Sepang** hackathon.
+**Call the strategy from Sepang's pit wall — three engineers, one monsoon, zero chill.**
 
-**Live:** https://f1-sepang.vercel.app
+> _Home screen (attach the photo here):_
+>
+> ![JomLap home screen](./docs/home.png)
+>
+> _Replace `./docs/home.png` with the screenshot you'll provide._
 
-## What it is
+---
 
-You're handed the pit wall radio. Three engineers each want you to make a different call — one trusts the data, one trusts 22 years of reading the sky, one just wants to send it. You pick, a lap simulation scores you, and you get a shareable result card. Along the way you earn achievements, predict what happens on race day, and get routed to supper past the traffic.
+## Executive Summary
 
-No F1 knowledge required — every screen explains itself in plain language before it uses any racing term.
+JomLap is a race-strategy game, fan prediction market, and post-race companion built for the **Formula 1's Return to Sepang** hackathon. You step onto the pit wall of Sepang International Circuit as the strategist: three racing engineers each argue for a different call, you pick one, a deterministic lap simulation scores your decision, and you walk away with a shareable result card. Around that core loop sit an achievement/trophy room, a fictional-currency prediction market, and a post-race "Paddock Mamak" escape-routing feature that gets you fed and off the highway after the race. The whole experience is playable with zero F1 knowledge — every screen explains itself in plain language before it uses a racing term — and needs no login, no backend, and no API keys to run end to end.
 
-## Features
+## The Problem
 
-**The strategy game — Pit Wall**
-Pick one of three Sepang weather scenarios, each tuned so a different engineer is objectively right. All three argue live over radio (streamed from an LLM, with a scripted fallback if the API is down), then you choose. A deterministic lap simulation resolves the race into a 0–100 Strategy IQ score, a lap-delta chart, and a verdict from whoever called it correctly.
+Formula 1 is a walled garden. Its strategy language — undercuts, inters, tyre delta, safety-car windows — is jargon that locks out casual fans, especially the Malaysian audience Sepang's return is meant to excite. Existing fan apps are either hardcore telemetry dashboards or real-money betting platforms. None of them answer the simple, delightful question a first-timer actually has at a race weekend:
 
-**Progression — Trophy Room**
-12 achievements tied to real gameplay: winning specific scenarios, siding with a particular engineer and being right, a perfect 100, winning all three weathers. XP feeds five ranks (Rookie → Pit Wall Legend) and a leaderboard. Locked achievements state exactly how to earn them, so they read as goals rather than mysteries.
+> _"If it were my call, what should I do — and how good was it?"_
 
-**Fan predictions — Fan Market**
-Five Sepang-specific yes/no markets: rain before lap 30, safety car deployed, track over 50°C, winner makes 3+ stops, someone laps under 1:35. Odds shift with backing, and your payout multiplier locks at the moment you place — the same way a real market works, so you can't game your own late vote.
+On top of that, 90,000 people leave Sepang into the same ELITE-highway jam, with no lightweight tool that routes them to somewhere open and worth eating at while dodging the traffic.
 
-This is a prediction *game*, not gambling: stakes are fictional "Teh Points", nothing can be bought, sold, or cashed out, and the UI says so plainly.
+## The Solution
 
-**Your result card — Circuit Pass**
-A 9:16 shareable card rendered client-side and exportable as a PNG. Pointer-driven 3D tilt, plus an optional holographic effect that is off by default so it never costs anything on a low-end phone. Shares to a phone's native share sheet, or one tap to X, Threads, or Instagram with a pre-written caption.
+JomLap turns race strategy into a pick-up-and-play game with three interlocking parts:
 
-**After the race — Paddock Mamak**
-A five-question swipe quiz on what you're in the mood for; every answer is tallied and the highest-scoring spot wins. Shows a live route map from your location to the match, and pulls real ratings and hours from Google Places when a key is configured, falling back to curated static info otherwise. No fabricated reviews or invented opening hours.
+1. **The Pit Wall (strategy game).** Three personas — AERO-9 (a nervous strategy computer), Uncle Sepang (a 22-year veteran marshal who reads the sky), and Din Turbo (an unsupervised junior who wants full wets *now*) — argue live over the radio for three different calls in three hand-tuned weather scenarios. Each scenario is built so a different engineer is objectively right. You choose; a deterministic lap engine resolves it into a 0–100 **Strategy IQ**, a lap-delta chart, and a verdict from whoever called it.
+2. **The Circuit Pass (shareable result).** A 9:16 card rendered client-side and exportable as a PNG, with pointer-driven 3D tilt and an optional (off-by-default) holographic shader. Shares to the native share sheet or one tap to X / Threads / Instagram.
+3. **The Paddock Mamak (post-race routing).** A five-question swipe quiz matches you to a supper spot that routes *away* from the Sepang exit bottlenecks, with live Google ratings/hours when a key is set and curated static info otherwise.
 
-## Tech stack
+Two more features keep people coming back: a **Trophy Room** (12 achievements, XP, five ranks, per-device leaderboard) and a **Fan Market** (five Sepang-specific yes/no prediction markets played with fictional "Teh Points" — a game, not gambling).
+
+The radio banter is streamed from a Malaysian LLM (ILMU, with an OpenRouter fallback and a scripted offline fallback) so two of the three personas speak native Manglish rather than an impression of it. Crucially, your Strategy IQ never depends on the model's output, so a slow or failed API call can never break the game.
+
+## Tech Stack
 
 | Layer | Choice | Why |
 |---|---|---|
-| Framework | Next.js (App Router) + TypeScript | |
-| Styling | Tailwind CSS v4 + hand-written CSS design system | Titan One display face, red/black/yellow palette |
-| AI | [ILMU](https://ilmu.ai) (YTL AI Labs' Malaysian LLM), OpenRouter as fallback | Two of the three personas speak Manglish — a locally trained model produces it natively instead of doing an impression |
-| Maps | Google Places + Maps Embed (both optional) | Live ratings/hours and an embedded route map; degrades cleanly with no key |
-| Image export | `html-to-image` | Loaded on demand, not in the main bundle |
-| Audio | Web Audio API | Synthesised radio beep, no audio files to ship |
-| Motion | CSS keyframes + IntersectionObserver | No animation library; transform/opacity only, so it stays smooth on low-end devices |
+| Framework | Next.js 16 (App Router) + React 19 + TypeScript | Single-route app, zero backend needed |
+| Styling | Tailwind CSS v4 + hand-written CSS design system | Titan One display face, red/black/yellow Malaysian-GP palette |
+| AI / radio | [ILMU](https://ilmu.ai) (YTL AI Labs' Malaysian sovereign LLM) via the Vercel `ai` SDK; OpenRouter as fallback | Locally trained model speaks Manglish natively; both OpenAI-compatible so fallback is a base-URL swap |
+| Maps | Google Places (New) + Maps Directions, both optional | Live ratings/hours and route links; cleanly degraded when no key is present |
+| Image export | `html-to-image` (lazy-loaded only on the share screen) | Keeps the library out of the main bundle |
+| Audio | Web Audio API | Synthesised radio beep, no audio files shipped |
+| Motion | CSS keyframes + IntersectionObserver | No animation library; transform/opacity only, smooth on low-end phones |
 
-No backend and no database. Progress, predictions, and the leaderboard live in `localStorage` — deliberately, so there is no login wall between a judge and the demo.
+**No backend, no database, no login.** Progress, predictions, and the leaderboard live in `localStorage` — deliberately, so a judge can open the demo with no account wall. The only server code is two optional API routes.
 
-## Getting started
-
-```bash
-git clone https://github.com/mewHacks/f1-sepang.git
-cd f1-sepang
-npm install
-cp .env.example .env.local   # add your ILMU key
-npm run dev
-```
-
-Open http://localhost:3000.
-
-### Environment variables
-
-Every one of these is optional — the app is fully playable with no keys at all.
-
-| Variable | Notes |
-|---|---|
-| `ILMU_API_KEY` | `sk-...` from console.ilmu.ai. Without it the radio uses scripted lines and the game still plays end to end. |
-| `ILMU_MODEL` | Defaults to `nemo-super`. |
-| `OPENROUTER_API_KEY` | Fallback provider if ILMU is unavailable; both are OpenAI-compatible. |
-| `GOOGLE_MAPS_API_KEY` | Server-side only. Enables live ratings and hours in Paddock Mamak. |
-| `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY` | Exposed to the browser (it is an iframe src). Enables the embedded route map. Restrict it by HTTP referrer and enable only the Maps Embed API. |
-
-Never commit these — `.env*` is gitignored.
-
-### Scripts
-
-```bash
-npm run check   # asserts each scenario rewards the engineer it claims to
-npm run lint
-npm run build
-```
-
-## Project structure
+## Project Structure
 
 ```
 app/
-  api/radio/route.ts      ILMU-backed radio endpoint, with scripted fallback
-  api/places/route.ts     Google Places proxy, optional
-  page.tsx                Single-route view switcher (7 views)
-components/               One file per screen or shared UI piece
+  layout.tsx              Root layout, fonts (Titan One + Geist), metadata
+  page.tsx               Single-route view switcher across 7 views
+  globals.css            Design tokens + hand-written component styles
+  api/
+    radio/route.ts       ILMU/OpenRouter radio streaming, scripted fallback
+    places/route.ts      Google Places proxy (optional, server-side key)
+components/
+  Chrome.tsx             Header, Menu, shared UI (Avatar, Title, Stat, Flag…)
+  Landing.tsx            Home / hero, "what's in here", roster, callsign entry
+  PitWall.tsx            Scenario brief + 3-engineer radio + call picker
+  Debrief.tsx            Score reveal, lap chart, engineer verdict
+  LapChart.tsx           Lap-delta SVG chart
+  SharePass.tsx          Tiltable, exportable 9:16 result card
+  ShareRow.tsx           Native-share + social caption buttons
+  Mamak.tsx              Swipe quiz + browse-all escape routes
+  RouteMap.tsx           Static route-map renderer
+  Predictions.tsx        Teh-Points prediction markets
+  Trophies.tsx           Achievements album, ranks, leaderboard
 lib/
-  personas.ts             The three engineers: voice, colour, which call they push
-  scenarios.ts            The three weather scenarios and their tuning
-  sim.ts + sim.check.ts   Deterministic lap engine + its self-check
-  progress.ts             Achievements, XP, ranks, leaderboard
-  predictions.ts          Prediction markets, odds, and fictional-currency wallet
-  mamak.ts                Escape routes and food spots
-  ai.ts / fallback.ts     LLM provider + offline scripted lines
-public/portraits/         Engineer portraits (WebP, optimised)
+  personas.ts            3 engineers: voice, colour, call they push
+  scenarios.ts           3 weather scenarios + tuning + evaporation model
+  sim.ts + sim.check.ts  Deterministic lap engine + self-check
+  progress.ts            Achievements, XP, ranks, leaderboard
+  predictions.ts         Markets, odds, fictional-currency wallet
+  mamak.ts               Escape routes & food spots
+  sepangPlaces.ts        Scraped real spots dataset
+  ai.ts / fallback.ts    LLM provider + offline scripted lines
+  radio.ts / beep.ts     Client radio streamer + Web Audio beep
+  share.ts / views.ts    Caption builder + view enum
+public/
+  portraits/             Engineer portraits (WebP)
+  hero-car.webp          Landing hero art
+  stamps/                Achievement sticker art (WebP, optional)
 ```
 
-## Notes on scope
+## User Flows
 
-Some things are deliberately simple, for demo reliability on a tight deadline:
+**Primary — race loop (one continuous act):**
+`Landing` → enter callsign → `PitWall` (listen to 3-engineer radio, pick a call) → `Debrief` (Strategy IQ + lap chart + verdict) → `SharePass` (export/share card) or `Mamak` (post-race routing) → back to `Landing`.
 
-- The lap "simulation" is tuned arithmetic, not a physics engine — fast, deterministic, and covered by `npm run check`, which fails loudly if the scenario tuning ever stops rewarding the engineer it advertises.
-- The radio banter is flavour text. Your Strategy IQ never depends on what the LLM says, so a slow or failed API call cannot break the game.
-- Paddock Mamak links to a Google Maps *search* rather than a single pinned business — a pinned restaurant can close or change hours; a search query can't go stale.
-- The leaderboard is per-device and seeded with clearly fictional pace-setters, so a first-time player has something to climb toward. Making it global would mean accounts, and accounts would mean a login wall.
+**Progression:**
+Every resolved race calls `recordRace()`, which awards achievements, adds XP, and updates the per-device leaderboard immediately — so the Trophy Room (`Trophies`) always agrees with the Debrief without extra plumbing.
 
-## License
+**Fan Market (standalone):**
+`Predictions` → pick stake (25/50/100 Teh Points) → back YES/NO on 5 Sepang markets → odds shift with the crowd, payout locks at placement. Played with fictional currency; the UI states plainly it is not gambling.
 
-MIT
+**Post-race (standalone):**
+`Mamak` → 5-question swipe quiz → highest-scoring vibe wins a hideaway → optional live Google Places card + route map from the user's GPS → "browse all" directory with category filters and search.
+
+**Accessibility of the demo:**
+With no keys set, the radio uses scripted lines, Mamak uses curated static places, and every flow still plays end to end. Setting `ILMU_API_KEY` / `OPENROUTER_API_KEY` adds live LLM banter; `GOOGLE_MAPS_API_KEY` adds live ratings, hours, and embedded routes.

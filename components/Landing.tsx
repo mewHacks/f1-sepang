@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { SCENARIOS } from "@/lib/scenarios.ts";
 import { PERSONAS, CALL_LABEL } from "@/lib/personas.ts";
 import { Avatar, Reveal, Title } from "./Chrome.tsx";
 
@@ -34,10 +33,9 @@ const FEATURES = [
 export function Landing({
   onStart,
 }: {
-  onStart: (callsign: string, scenarioId: string) => void;
+  onStart: (callsign: string) => void;
 }) {
   const [callsign, setCallsign] = useState("");
-  const [picked, setPicked] = useState(SCENARIOS[0].id);
   const [active, setActive] = useState(0);
 
   // Hero parallax: refs written to directly (no React state) so a mouse
@@ -263,44 +261,8 @@ export function Landing({
           />
         </label>
 
-        <div className="mb-2 mt-6 text-[15px] text-fg/75">Pick your weather:</div>
-        <div className="flex flex-col gap-2.5">
-          {SCENARIOS.map((s, i) => {
-            const active = s.id === picked;
-            return (
-              <button
-                key={s.id}
-                onClick={() => setPicked(s.id)}
-                aria-pressed={active}
-                style={{ "--i": i } as React.CSSProperties}
-                className={`anim-rise card relative overflow-hidden px-4 py-4 text-left transition-transform active:scale-[0.985] ${
-                  active ? "border-red ring-1 ring-red/30" : ""
-                }`}
-              >
-                {active && <span aria-hidden className="absolute inset-y-0 left-0 w-1 bg-red" />}
-                <div className="flex items-start justify-between gap-2">
-                  <div className="title text-xl leading-none">{s.name}</div>
-                  <div className="flex -space-x-1.5 opacity-85">
-                    {PERSONAS.map((p) => (
-                      <Avatar key={p.id} persona={p} size={20} className="border border-bg" />
-                    ))}
-                  </div>
-                </div>
-                <div className="mt-2 text-[15px] leading-relaxed text-fg/75">{s.blurb}</div>
-                <div className="data mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
-                  <span>
-                    Track <span className="text-yellow">{s.trackTempC}°C</span>
-                  </span>
-                  <span>
-                    Humidity <span className="text-ice">{s.humidityPct}%</span>
-                  </span>
-                  <span>
-                    <span className="text-ice">{s.lapsRemaining}</span> laps left
-                  </span>
-                </div>
-              </button>
-            );
-          })}
+        <div className="mb-2 mt-6 text-[15px] text-fg/75">
+          Then you&apos;ll mix the weather yourself and meet the judges.
         </div>
       </Reveal>
 
@@ -336,7 +298,7 @@ export function Landing({
       <div className="actionbar mt-8">
         <div className="shell px-4">
           <button
-            onClick={() => onStart(callsign.trim() || "STRATEGIST", picked)}
+            onClick={() => onStart(callsign.trim() || "STRATEGIST")}
             className="display w-full rounded-xl bg-red py-4 text-xl leading-none transition-transform active:scale-[0.98]"
           >
             Start the race →
