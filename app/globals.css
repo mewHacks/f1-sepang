@@ -219,6 +219,50 @@ body {
   }
 }
 
+/* ---- share buttons ------------------------------------------------------
+   The "fills like water" hover is one blend trick, no JS: the icon sits on
+   `mix-blend-mode: difference`, so as the fill rises behind it the icon's
+   apparent colour inverts on its own — difference(black-ish bg, white icon)
+   reads white, difference(white fill, white icon) reads black. */
+.share-btn {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 999px;
+  border: 1.5px solid var(--fg);
+  background: var(--bg);
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  transition: transform 0.15s ease;
+}
+
+.share-btn:active {
+  transform: scale(0.92);
+}
+
+.share-btn__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--fg);
+  transform: scaleY(0);
+  transform-origin: bottom;
+  transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.share-btn:hover .share-btn__fill,
+.share-btn:focus-visible .share-btn__fill {
+  transform: scaleY(1);
+}
+
+.share-btn__icon {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  color: var(--fg);
+  mix-blend-mode: difference;
+}
+
 /* ---- surfaces ---------------------------------------------------------- */
 /* Translucent so the red bloom behind shows through — a solid fill here is
    what made the old version feel like flat boxes on black. */

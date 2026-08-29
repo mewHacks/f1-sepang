@@ -1,10 +1,12 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { CALL_LABEL } from "@/lib/personas.ts";
 import { scenarioById } from "@/lib/scenarios.ts";
 import { iqGrade, type RaceResult } from "@/lib/sim.ts";
+import { buildCaption, downloadBlob } from "@/lib/share.ts";
 import { Title, Wordmark } from "./Chrome.tsx";
+import { ShareRow } from "./ShareRow.tsx";
 
 /* Stylised Sepang: the long straights, the Turn 1-2 complex and the final
    hairpin, reduced to hard angles. Deliberately an abstraction rather than a
@@ -29,39 +31,46 @@ export function SharePass({
   const [note, setNote] = useState("");
   const scenario = scenarioById(scenarioId);
 
-  async function exportPass() {
+  const grade = iqGrade(result.strategyIQ);
+  const caption = buildCaption({
+    callsign,
+    scenarioName: scenario.name,
+    iq: result.strategyIQ,
+    grade,
+    call: result.call,
+  });
+
+  /** Render the card to a PNG blob. Shared by the main button and ShareRow
+      so there is exactly one place that knows how to rasterise this card. */
+  const getBlob = useCallback(async () => {
     const node = cardRef.current;
-    if (!node || busy) return;
+    if (!node) return null;
+    // Loaded on demand: ~13kb that most visitors never need.
+    const { toBlob } = await import("html-to-image");
+    return toBlob(node, {
+      pixelRatio: 3, // 320x569 -> 960x1707, plenty for a Story
+      backgroundColor: "#0a0a0c",
+      cacheBust: true,
+    });
+  }, []);
+
+  async function exportPass() {
+    if (busy) return;
     setBusy(true);
     setNote("");
     try {
-      // Loaded on demand: ~30kb that most visitors never need.
-      const { toBlob } = await import("html-to-image");
-      const blob = await toBlob(node, {
-        pixelRatio: 3, // 320x569 -> 960x1707, plenty for a Story
-        backgroundColor: "#0a0a0c",
-        cacheBust: true,
-      });
+      const blob = await getBlob();
       if (!blob) throw new Error("render failed");
 
       const file = new File([blob], "jomlap-pass.png", { type: "image/png" });
-      const shareData = {
-        files: [file],
-        title: "JomLap",
-        text: `Strategy IQ ${result.strategyIQ} on ${scenario.name} at Sepang.`,
-      };
+      const shareData = { files: [file], title: "JomLap", text: caption };
 
       // Native share sheet goes straight to Stories on a phone; desktop falls
       // back to a download.
       if (navigator.canShare?.(shareData)) {
         await navigator.share(shareData);
       } else {
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement("a");
-        a.href = url;
-        a.download = "jomlap-pass.png";
-        a.click();
-        URL.revokeObjectURL(url);
+        downloadBlob(blob, "jomlap-pass.png");
         setNote("Saved to your downloads.");
       }
     } catch (err) {
@@ -197,6 +206,8 @@ export function SharePass({
 
       {note && <p className="data text-center text-[11px] text-muted">{note}</p>}
 
+      <ShareRow caption={caption} getBlob={getBlob} />
+
       <div className="actionbar lg:mt-2">
         <div className="shell lg:px-0">
           <button
@@ -204,7 +215,7 @@ export function SharePass({
             disabled={busy}
             className="display w-full rounded-xl bg-red py-4 text-xl leading-none transition-transform active:scale-[0.98] disabled:opacity-50"
           >
-            {busy ? "Rendering…" : "Share your pass"}
+            {busy ? "Rendering…" : "Save your pass"}
           </button>
         </div>
       </div>
