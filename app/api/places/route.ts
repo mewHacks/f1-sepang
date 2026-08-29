@@ -18,22 +18,34 @@ const CORRIDOR_QUERIES: Record<
   { query: string; destination: string; lat: number; lng: number }
 > = {
   dengkil: {
-    query: "mamak restaurant in Dengkil Selangor",
+    query: "mamak restaurant Dengkil Selangor",
     destination: "Dengkil, Selangor",
     lat: 2.8586,
     lng: 101.6806,
   },
+  bagan: {
+    query: "seafood restaurant Bagan Lalang Sepang",
+    destination: "Bagan Lalang Beach, Selangor",
+    lat: 2.6033,
+    lng: 101.6917,
+  },
+  cyberjaya: {
+    query: "cafe Tamarind Square Cyberjaya",
+    destination: "Tamarind Square Cyberjaya",
+    lat: 2.9189,
+    lng: 101.6508,
+  },
+  mitsui: {
+    query: "restaurants Mitsui Outlet Park KLIA Sepang",
+    destination: "Mitsui Outlet Park KLIA",
+    lat: 2.7794,
+    lng: 101.6869,
+  },
   nilai: {
-    query: "mamak 24 jam Nilai Negeri Sembilan",
+    query: "nasi kandar restaurant 24 jam Nilai Negeri Sembilan",
     destination: "Nilai, Negeri Sembilan",
     lat: 2.8126,
     lng: 101.7981,
-  },
-  rail: {
-    query: "restoran mamak Salak Tinggi Sepang",
-    destination: "Salak Tinggi ERL Station",
-    lat: 2.8009,
-    lng: 101.7289,
   },
 };
 
@@ -79,7 +91,7 @@ export async function GET(req: Request) {
     });
 
     if (!placesRes.ok) {
-      // Fall back to legacy Text Search endpoint if Places v1 is not enabled
+      // Fall back to legacy Text Search endpoint
       const legacyUrl = `https://maps.googleapis.com/maps/api/place/textsearch/json?query=${encodeURIComponent(
         target.query,
       )}&location=${target.lat},${target.lng}&radius=8000&key=${apiKey}`;

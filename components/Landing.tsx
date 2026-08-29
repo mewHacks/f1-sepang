@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { SCENARIOS } from "@/lib/scenarios.ts";
 import { PERSONAS, CALL_LABEL } from "@/lib/personas.ts";
 import { Avatar, Title } from "./Chrome.tsx";
@@ -18,6 +18,14 @@ export function Landing({
 }) {
   const [callsign, setCallsign] = useState("");
   const [picked, setPicked] = useState(SCENARIOS[0].id);
+  const [active, setActive] = useState(0);
+
+  // Cycles the roster reveal on its own; any tap on a dot resets the clock
+  // so a manual choice doesn't get yanked away a moment later.
+  useEffect(() => {
+    const t = setInterval(() => setActive((a) => (a + 1) % PERSONAS.length), 4200);
+    return () => clearInterval(t);
+  }, [active]);
 
   return (
     <div className="pb-32 pt-6 lg:pb-10">
@@ -97,48 +105,40 @@ export function Landing({
         ))}
       </div>
 
-      {/* --- roster: horizontal snap strip with big character portraits --- */}
+      {/* --- roster: one engineer revealed at a time, auto-cycling --- */}
       <div className="mt-9">
         <div className="annot data mb-3 px-4 text-[10px] uppercase tracking-[0.25em] text-muted">
           <span>Your pit wall team</span>
         </div>
-        <div className="flex snap-x snap-mandatory gap-3.5 overflow-x-auto px-4 pb-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+
+        <div className="relative mx-4 h-[380px] overflow-hidden rounded-2xl border border-line sm:mx-auto sm:w-96">
           {PERSONAS.map((p, i) => (
             <div
               key={p.id}
-              style={{ "--i": i } as React.CSSProperties}
-              className="anim-rise card group relative w-[72vw] shrink-0 snap-start overflow-hidden transition-all sm:w-72"
+              aria-hidden={i !== active}
+              className="absolute inset-0 flex flex-col items-center justify-center bg-surface pt-2 transition-all duration-500 ease-[cubic-bezier(0.22,1,0.36,1)]"
+              style={{
+                opacity: i === active ? 1 : 0,
+                transform: i === active ? "scale(1)" : "scale(0.96)",
+                pointerEvents: i === active ? "auto" : "none",
+              }}
             >
               <span
                 aria-hidden
                 className="absolute inset-x-0 top-0 h-1.5"
                 style={{ background: `var(--${p.tone})` }}
               />
-
-              {/* Portrait Hero Frame */}
-              <div className="halftone relative flex flex-col items-center justify-center pb-3 pt-7">
-                <div className="relative">
-                  <Avatar
-                    persona={p}
-                    size={128}
-                    className="transition-transform duration-300 group-hover:scale-105"
-                  />
-                  <span
-                    className="data absolute -bottom-2 right-2 rounded-md bg-surface-2 px-2 py-0.5 text-[9px] uppercase tracking-wider text-muted border border-line"
-                  >
-                    Radio CH-{i + 1}
-                  </span>
-                </div>
+              <div className="halftone flex flex-col items-center pt-6 pb-2">
+                <Avatar persona={p} size={140} />
               </div>
-
-              <div className="px-4 pb-4 pt-2 text-center">
-                <div className="title text-2xl leading-none" style={{ color: `var(--${p.tone})` }}>
+              <div className="px-6 pb-6 pt-2 text-center">
+                <div className="title text-3xl leading-none" style={{ color: `var(--${p.tone})` }}>
                   {p.name}
                 </div>
                 <div className="data mt-1 text-[10px] uppercase tracking-widest text-muted">
                   {p.role}
                 </div>
-                <div className="mt-2.5 text-[12px] leading-snug text-fg/80">{p.pitch}</div>
+                <div className="mt-2.5 text-[13px] leading-snug text-fg/80">{p.pitch}</div>
                 <div
                   className="data mt-3.5 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.12em]"
                   style={{
@@ -147,14 +147,27 @@ export function Landing({
                     color: `var(--${p.tone})`,
                   }}
                 >
-                  <span
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{ background: `var(--${p.tone})` }}
-                  />
+                  <span className="h-1.5 w-1.5 rounded-full" style={{ background: `var(--${p.tone})` }} />
                   Wants {CALL_LABEL[p.advocates]}
                 </div>
               </div>
             </div>
+          ))}
+        </div>
+
+        <div className="mt-3 flex justify-center gap-2">
+          {PERSONAS.map((p, i) => (
+            <button
+              key={p.id}
+              onClick={() => setActive(i)}
+              aria-label={`Show ${p.name}`}
+              aria-current={i === active}
+              className="h-2 rounded-full transition-all"
+              style={{
+                width: i === active ? 20 : 8,
+                background: i === active ? `var(--${p.tone})` : "var(--line)",
+              }}
+            />
           ))}
         </div>
       </div>

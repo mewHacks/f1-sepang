@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ESCAPES } from "@/lib/mamak.ts";
+import { useEffect, useState, useRef } from "react";
+import { ESCAPES, type Escape, type VibeCategory } from "@/lib/mamak.ts";
 import { Title } from "./Chrome.tsx";
 
 type LivePlace = {
@@ -15,9 +15,29 @@ type LivePlace = {
   routeUrl: string;
 };
 
+const CATEGORIES: { id: VibeCategory; label: string; icon: string }[] = [
+  { id: "all", label: "All Spots", icon: "🏁" },
+  { id: "mamak", label: "24h Mamak", icon: "☕" },
+  { id: "seafood", label: "Beach Seafood", icon: "🦐" },
+  { id: "cafe", label: "AC & Coffee", icon: "❄️" },
+  { id: "pitstop", label: "Fast Pitstop", icon: "🛍️" },
+  { id: "south", label: "Southbound", icon: "🍛" },
+];
+
 export function Mamak({ onRestart }: { onRestart: () => void }) {
+  const [mode, setMode] = useState<"swipe" | "browse">("swipe");
+  const [filter, setFilter] = useState<VibeCategory>("all");
   const [livePlaces, setLivePlaces] = useState<Record<string, LivePlace[]>>({});
-  const [loading, setLoading] = useState(true);
+
+  // Swipe Deck State
+  const [deckIndex, setDeckIndex] = useState(0);
+  const [matchedEscape, setMatchedEscape] = useState<Escape | null>(null);
+  const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
+
+  // Drag state for card
+  const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
+  const [isDragging, setIsDragging] = useState(false);
+  const dragStartRef = useRef<{ x: number; y: number }>({ x: 0, y: 0 });
 
   useEffect(() => {
     let active = true;
@@ -39,10 +59,9 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
         );
         if (active) {
           setLivePlaces(results);
-          setLoading(false);
         }
       } catch {
-        if (active) setLoading(false);
+        // ignore
       }
     })();
     return () => {
@@ -50,119 +69,415 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
     };
   }, []);
 
+  const handleSwipe = (dir: "left" | "right") => {
+    setSwipeDirection(dir);
+    setTimeout(() => {
+      if (dir === "right") {
+        setMatchedEscape(ESCAPES[deckIndex]);
+      } else {
+        if (deckIndex < ESCAPES.length - 1) {
+          setDeckIndex((prev) => prev + 1);
+        } else {
+          // Reached end of deck, loop or show summary
+          setDeckIndex(0);
+        }
+      }
+      setSwipeDirection(null);
+      setDragOffset({ x: 0, y: 0 });
+    }, 280);
+  };
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    setIsDragging(true);
+    dragStartRef.current = { x: e.clientX, y: e.clientY };
+  };
+
+  const handlePointerMove = (e: React.PointerEvent) => {
+    if (!isDragging) return;
+    const deltaX = e.clientX - dragStartRef.current.x;
+    const deltaY = e.clientY - dragStartRef.current.y;
+    setDragOffset({ x: deltaX, y: deltaY });
+  };
+
+  const handlePointerUp = () => {
+    if (!isDragging) return;
+    setIsDragging(false);
+    if (dragOffset.x > 90) {
+      handleSwipe("right");
+    } else if (dragOffset.x < -90) {
+      handleSwipe("left");
+    } else {
+      setDragOffset({ x: 0, y: 0 });
+    }
+  };
+
+  const resetSwipe = () => {
+    setMatchedEscape(null);
+    setDeckIndex(0);
+    setSwipeDirection(null);
+    setDragOffset({ x: 0, y: 0 });
+  };
+
+  const filteredEscapes =
+    filter === "all" ? ESCAPES : ESCAPES.filter((e) => e.category === filter);
+
+  const currentEscape = ESCAPES[deckIndex];
+  const currentLive = currentEscape ? livePlaces[currentEscape.id]?.[0] : null;
+
   return (
     <div className="flex flex-col gap-5 px-4 pb-32 pt-5 lg:pb-8">
+      {/* Header */}
       <div className="relative overflow-hidden pt-3">
         <span
           aria-hidden
           className="title ghost bleed absolute -top-2 left-0 text-[24vw] leading-[0.8] lg:text-[8rem]"
         >
-          TEH TARIK
+          MAKAN
         </span>
         <div className="relative pt-[7vw] lg:pt-12">
-          <Title hit="MAMAK" tone="yellow" size="text-[13vw] leading-[0.84] lg:text-6xl">
+          <Title hit="RADAR" tone="yellow" size="text-[13vw] leading-[0.84] lg:text-6xl">
             Paddock
           </Title>
         </div>
         <p className="relative mt-4 max-w-md text-sm leading-relaxed text-muted">
-          Race done. Ninety thousand people now want the same two highways. Here is how you
-          leave — and where to eat while everyone else sits on the ELITE.
+          90,000 people stuck on the ELITE highway. Swipe your ideal post-race hideaway or browse all nearby supper escapes.
         </p>
       </div>
 
-      <div className="flex flex-col gap-4 lg:grid lg:grid-cols-3">
-        {ESCAPES.map((e, i) => {
-          const spots = livePlaces[e.id];
-          const topSpot = spots?.[0];
+      {/* Mode Switcher */}
+      <div className="flex rounded-xl border border-line bg-surface p-1">
+        <button
+          onClick={() => setMode("swipe")}
+          className={`flex-1 rounded-lg py-2.5 text-center text-xs uppercase tracking-wider transition-all ${
+            mode === "swipe"
+              ? "bg-red text-white font-medium shadow-md"
+              : "text-muted hover:text-white"
+          }`}
+        >
+          🔥 Vibe Matcher (Swipe)
+        </button>
+        <button
+          onClick={() => setMode("browse")}
+          className={`flex-1 rounded-lg py-2.5 text-center text-xs uppercase tracking-wider transition-all ${
+            mode === "browse"
+              ? "bg-red text-white font-medium shadow-md"
+              : "text-muted hover:text-white"
+          }`}
+        >
+          📋 Browse & Filter ({ESCAPES.length})
+        </button>
+      </div>
 
-          return (
-            <article
-              key={e.id}
-              style={{ "--i": i } as React.CSSProperties}
-              className="anim-rise card flex flex-col overflow-hidden"
-            >
-              <div className="flex items-center justify-between border-b border-line px-4 py-2.5">
-                <span className="data text-[10px] uppercase tracking-wider text-muted">
-                  Skips {e.skips}
+      {/* MODE 1: SWIPE MATCHING */}
+      {mode === "swipe" && (
+        <div className="flex flex-col items-center">
+          {matchedEscape ? (
+            /* Matched View */
+            <div className="anim-pop card relative w-full max-w-md overflow-hidden p-5 border-yellow/40 bg-surface">
+              <div className="flex items-center justify-between">
+                <span className="data text-xs uppercase tracking-widest text-yellow font-medium">
+                  ★ Matched Hideaway
                 </span>
-                <div className="flex items-center gap-2">
-                  {topSpot && (
-                    <span className="data flex items-center gap-1 rounded bg-green/10 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-green">
-                      <span className="h-1.5 w-1.5 rounded-full bg-green" />
-                      Live Maps
-                    </span>
-                  )}
-                  <span className="data text-[10px] text-yellow">0{i + 1}</span>
+                <span className="data text-xs text-muted">
+                  {matchedEscape.driveTime} ({matchedEscape.distance})
+                </span>
+              </div>
+
+              <div className="mt-3 flex items-center gap-2.5">
+                <span className="text-3xl">{matchedEscape.vibeEmoji}</span>
+                <div>
+                  <h3 className="title text-2xl leading-none text-white">
+                    {matchedEscape.name}
+                  </h3>
+                  <div className="data mt-1 text-[11px] text-yellow">
+                    {matchedEscape.tagline}
+                  </div>
                 </div>
               </div>
 
-              <div className="flex flex-1 flex-col p-4">
-                <h3 className="display text-lg leading-none">{e.name}</h3>
-                <div className="data mt-1.5 text-[11px] text-muted">{e.via}</div>
-                <p className="mt-3 text-[13px] leading-snug text-muted">{e.note}</p>
+              <p className="mt-3 text-sm leading-relaxed text-muted">
+                {matchedEscape.note}
+              </p>
 
-                {/* Supper stop details: uses Live Google Place if available, or curated default */}
-                <div className="mt-4 flex-1 rounded-xl border border-line bg-surface-2 p-3.5">
+              {/* Engineer Endorsement */}
+              <div className="mt-4 flex items-start gap-3 rounded-xl border border-line bg-surface-2 p-3">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={matchedEscape.engineerTip.avatar}
+                  alt={matchedEscape.engineerTip.author}
+                  className="h-10 w-10 rounded-lg object-cover border border-line"
+                />
+                <div className="flex-1">
+                  <div className="data text-[9px] uppercase tracking-wider text-muted">
+                    {matchedEscape.engineerTip.author}&apos;s Post-Race Tip
+                  </div>
+                  <div className="mt-1 text-xs italic text-fg/90">
+                    &ldquo;{matchedEscape.engineerTip.text}&rdquo;
+                  </div>
+                </div>
+              </div>
+
+              {/* Live Place Card */}
+              {livePlaces[matchedEscape.id]?.[0] && (
+                <div className="mt-3.5 rounded-xl border border-line bg-surface-2 p-3">
                   <div className="flex items-center justify-between">
-                    <div className="data text-[9px] uppercase tracking-wider text-muted">
-                      Supper stop recommendation
+                    <div className="data text-[9px] uppercase tracking-wider text-green flex items-center gap-1">
+                      <span className="h-1.5 w-1.5 rounded-full bg-green" />
+                      Live Google Maps Place
                     </div>
-                    {topSpot?.rating && (
-                      <div className="data text-[11px] text-yellow font-medium">
-                        ★ {topSpot.rating} <span className="text-muted text-[9px]">({topSpot.userRatingCount || 0})</span>
+                    {livePlaces[matchedEscape.id][0].rating && (
+                      <div className="data text-xs text-yellow">
+                        ★ {livePlaces[matchedEscape.id][0].rating} ({livePlaces[matchedEscape.id][0].userRatingCount})
                       </div>
                     )}
                   </div>
-
-                  <div className="display mt-1.5 text-base leading-snug text-yellow">
-                    {topSpot ? topSpot.name : e.food.name}
+                  <div className="display mt-1 text-sm text-yellow">
+                    {livePlaces[matchedEscape.id][0].name}
                   </div>
-
-                  <div className="mt-1 text-[12px] text-muted">
-                    {topSpot ? topSpot.address : e.food.dish}
+                  <div className="data mt-0.5 text-[11px] text-muted truncate">
+                    {livePlaces[matchedEscape.id][0].address}
                   </div>
+                </div>
+              )}
 
-                  {topSpot?.isOpen !== undefined && (
-                    <div className="mt-2">
-                      <span
-                        className={`data text-[9px] uppercase tracking-wider px-2 py-0.5 rounded ${
-                          topSpot.isOpen
-                            ? "bg-green/10 text-green"
-                            : "bg-yellow/10 text-yellow"
-                        }`}
-                      >
-                        {topSpot.isOpen ? "● Open Now" : "Hours Vary"}
-                      </span>
-                    </div>
-                  )}
+              {/* Buttons */}
+              <div className="mt-5 grid grid-cols-2 gap-2.5">
+                <button
+                  onClick={resetSwipe}
+                  className="data rounded-xl border border-line py-3.5 text-center text-xs uppercase tracking-wider transition-all hover:bg-white/5 active:scale-95"
+                >
+                  🔄 Swipe Again
+                </button>
+                <a
+                  href={livePlaces[matchedEscape.id]?.[0]?.routeUrl || matchedEscape.routeUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="data rounded-xl bg-yellow py-3.5 text-center text-xs uppercase tracking-wider text-black font-semibold transition-all active:scale-95 flex items-center justify-center gap-1.5"
+                >
+                  <span>Route on Maps</span>
+                  <span>↗</span>
+                </a>
+              </div>
+            </div>
+          ) : (
+            /* Active Swipe Card */
+            <div className="relative w-full max-w-sm">
+              <div className="data mb-2 text-center text-[11px] uppercase tracking-wider text-muted">
+                Spot {deckIndex + 1} of {ESCAPES.length} · Swipe right to pick
+              </div>
+
+              <div
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onPointerCancel={handlePointerUp}
+                className="card relative flex flex-col overflow-hidden select-none cursor-grab active:cursor-grabbing transition-transform"
+                style={{
+                  transform: `translate3d(${dragOffset.x}px, ${dragOffset.y}px, 0) rotate(${
+                    dragOffset.x * 0.06
+                  }deg) ${
+                    swipeDirection === "left"
+                      ? "translateX(-120%)"
+                      : swipeDirection === "right"
+                      ? "translateX(120%)"
+                      : ""
+                  }`,
+                  transition: isDragging ? "none" : "transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)",
+                }}
+              >
+                {/* Visual Swipe Overlays */}
+                {dragOffset.x > 35 && (
+                  <div className="absolute top-4 right-4 z-20 rounded-lg border-2 border-green bg-green/20 px-3 py-1 text-sm font-bold uppercase text-green shadow-lg">
+                    LET&apos;S GO ✓
+                  </div>
+                )}
+                {dragOffset.x < -35 && (
+                  <div className="absolute top-4 left-4 z-20 rounded-lg border-2 border-red bg-red/20 px-3 py-1 text-sm font-bold uppercase text-red shadow-lg">
+                    PASS ✕
+                  </div>
+                )}
+
+                <div className="flex items-center justify-between border-b border-line px-4 py-3 bg-surface-2/70">
+                  <div className="flex items-center gap-2">
+                    <span className="text-xl">{currentEscape.vibeEmoji}</span>
+                    <span className="data text-xs uppercase tracking-wider text-muted">
+                      Skips {currentEscape.skips}
+                    </span>
+                  </div>
+                  <span className="data text-xs text-yellow font-medium">
+                    {currentEscape.driveTime}
+                  </span>
                 </div>
 
-                {/* Actions */}
-                <div className="mt-4 grid grid-cols-2 gap-2">
-                  <a
-                    href={topSpot ? topSpot.routeUrl : e.routeUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="data rounded-lg border border-line py-2.5 text-center text-[10px] uppercase tracking-wider transition-transform active:scale-95 hover:border-fg/40 flex items-center justify-center gap-1"
+                <div className="p-5 flex flex-col flex-1">
+                  <h3 className="title text-3xl leading-none text-white">
+                    {currentEscape.name}
+                  </h3>
+                  <div className="data mt-1.5 text-xs text-yellow">
+                    {currentEscape.tagline}
+                  </div>
+                  <div className="data mt-1 text-[11px] text-muted">
+                    Route: {currentEscape.via}
+                  </div>
+
+                  <p className="mt-3.5 text-sm leading-relaxed text-fg/80">
+                    {currentEscape.note}
+                  </p>
+
+                  {/* Food summary */}
+                  <div className="mt-4 rounded-xl border border-line bg-surface-2 p-3">
+                    <div className="data text-[9px] uppercase tracking-wider text-muted">
+                      Signature Feast
+                    </div>
+                    <div className="display mt-1 text-sm text-yellow">
+                      {currentEscape.food.dish}
+                    </div>
+                  </div>
+
+                  {/* Engineer Tip */}
+                  <div className="mt-3 flex items-center gap-2.5 text-[11px] text-muted italic">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={currentEscape.engineerTip.avatar}
+                      alt=""
+                      className="h-6 w-6 rounded-md object-cover border border-line"
+                    />
+                    <span>&ldquo;{currentEscape.engineerTip.text}&rdquo;</span>
+                  </div>
+                </div>
+
+                {/* Physical Swipe Action Buttons */}
+                <div className="grid grid-cols-2 gap-2 border-t border-line p-3 bg-surface-2/40">
+                  <button
+                    onClick={() => handleSwipe("left")}
+                    className="data rounded-xl border border-line py-3 text-center text-xs uppercase tracking-wider text-muted transition-transform active:scale-95 hover:bg-white/5"
                   >
-                    <span>Route</span>
-                    <span aria-hidden>↗</span>
-                  </a>
-                  <a
-                    href={topSpot ? topSpot.googleMapsUri : e.food.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="data rounded-lg bg-yellow py-2.5 text-center text-[10px] uppercase tracking-wider text-black transition-transform active:scale-95 hover:bg-yellow/90 font-medium flex items-center justify-center gap-1"
+                    ✕ Pass
+                  </button>
+                  <button
+                    onClick={() => handleSwipe("right")}
+                    className="data rounded-xl bg-yellow py-3 text-center text-xs uppercase tracking-wider text-black font-semibold transition-transform active:scale-95 hover:bg-yellow/90"
                   >
-                    <span>{topSpot ? "Navigate" : "Find food"}</span>
-                    <span aria-hidden>↗</span>
-                  </a>
+                    ★ Let&apos;s Go
+                  </button>
                 </div>
               </div>
-            </article>
-          );
-        })}
-      </div>
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* MODE 2: BROWSE ALL & FILTER */}
+      {mode === "browse" && (
+        <div className="flex flex-col gap-4">
+          {/* Filter Chips */}
+          <div className="flex gap-2 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {CATEGORIES.map((cat) => (
+              <button
+                key={cat.id}
+                onClick={() => setFilter(cat.id)}
+                className={`data shrink-0 flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs uppercase tracking-wider transition-all ${
+                  filter === cat.id
+                    ? "bg-yellow text-black font-medium"
+                    : "border border-line bg-surface text-muted hover:text-white"
+                }`}
+              >
+                <span>{cat.icon}</span>
+                <span>{cat.label}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* Cards Grid */}
+          <div className="flex flex-col gap-3.5 lg:grid lg:grid-cols-2">
+            {filteredEscapes.map((e, i) => {
+              const liveSpot = livePlaces[e.id]?.[0];
+              return (
+                <article
+                  key={e.id}
+                  style={{ "--i": i } as React.CSSProperties}
+                  className="anim-rise card flex flex-col overflow-hidden"
+                >
+                  <div className="flex items-center justify-between border-b border-line px-4 py-2.5 bg-surface-2/50">
+                    <span className="data text-[10px] uppercase tracking-wider text-muted">
+                      Skips {e.skips}
+                    </span>
+                    <div className="flex items-center gap-2">
+                      {liveSpot && (
+                        <span className="data flex items-center gap-1 rounded bg-green/10 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-green">
+                          <span className="h-1.5 w-1.5 rounded-full bg-green" />
+                          Live Maps
+                        </span>
+                      )}
+                      <span className="data text-[10px] text-yellow font-medium">
+                        {e.driveTime}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex flex-1 flex-col p-4">
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <span className="text-xl">{e.vibeEmoji}</span>
+                          <h3 className="title text-2xl leading-none">{e.name}</h3>
+                        </div>
+                        <div className="data mt-1 text-[11px] text-yellow">
+                          {e.tagline}
+                        </div>
+                      </div>
+                    </div>
+
+                    <p className="mt-2.5 text-[13px] leading-snug text-muted">{e.note}</p>
+
+                    {/* Supper recommendation */}
+                    <div className="mt-3.5 flex-1 rounded-xl border border-line bg-surface-2 p-3">
+                      <div className="flex items-center justify-between">
+                        <div className="data text-[9px] uppercase tracking-wider text-muted">
+                          Supper stop
+                        </div>
+                        {liveSpot?.rating && (
+                          <div className="data text-xs text-yellow font-medium">
+                            ★ {liveSpot.rating} <span className="text-muted text-[9px]">({liveSpot.userRatingCount || 0})</span>
+                          </div>
+                        )}
+                      </div>
+                      <div className="display mt-1 text-sm text-yellow">
+                        {liveSpot ? liveSpot.name : e.food.name}
+                      </div>
+                      <div className="mt-0.5 text-[11px] text-muted truncate">
+                        {liveSpot ? liveSpot.address : e.food.dish}
+                      </div>
+                    </div>
+
+                    {/* Actions */}
+                    <div className="mt-4 grid grid-cols-2 gap-2">
+                      <a
+                        href={liveSpot ? liveSpot.routeUrl : e.routeUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="data rounded-lg border border-line py-2.5 text-center text-[10px] uppercase tracking-wider transition-transform active:scale-95 hover:border-fg/40 flex items-center justify-center gap-1"
+                      >
+                        <span>Route ({e.driveTime})</span>
+                        <span aria-hidden>↗</span>
+                      </a>
+                      <a
+                        href={liveSpot ? liveSpot.googleMapsUri : e.food.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="data rounded-lg bg-yellow py-2.5 text-center text-[10px] uppercase tracking-wider text-black font-semibold transition-transform active:scale-95 hover:bg-yellow/90 flex items-center justify-center gap-1"
+                      >
+                        <span>Navigate</span>
+                        <span aria-hidden>↗</span>
+                      </a>
+                    </div>
+                  </div>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       <p className="data text-[10px] leading-relaxed text-muted">
         Routes open directly in Google Maps with turn-by-turn directions starting from Sepang International Circuit.
