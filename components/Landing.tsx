@@ -304,6 +304,35 @@ export function Landing({
         </div>
       </Reveal>
 
+      {/* --- official circuit tickets banner --- */}
+      <Reveal className="mt-11 px-4">
+        <div className="card relative overflow-hidden p-5 border-line bg-gradient-to-br from-surface to-surface-2">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <div className="data text-[10px] uppercase tracking-[0.2em] text-red font-medium flex items-center gap-1.5">
+                <span className="h-1.5 w-1.5 rounded-full bg-red" />
+                Sepang International Circuit
+              </div>
+              <h3 className="title text-2xl leading-tight text-white mt-1">
+                Experience Sepang Trackside Live
+              </h3>
+              <p className="mt-1.5 text-[14px] leading-relaxed text-fg/75 max-w-md">
+                Get official grandstand tickets, track day passes, and race schedules directly from SIC.
+              </p>
+            </div>
+            <a
+              href="https://www.sepangcircuit.com/home"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="data shrink-0 inline-flex items-center justify-center gap-2 rounded-xl border border-line bg-surface-2 px-5 py-3.5 text-xs uppercase tracking-wider text-white font-medium transition-all hover:bg-white/10 hover:border-fg/40 active:scale-95 text-center"
+            >
+              <span>Get Official Tickets</span>
+              <span aria-hidden>↗</span>
+            </a>
+          </div>
+        </div>
+      </Reveal>
+
       <div className="actionbar mt-8">
         <div className="shell px-4">
           <button

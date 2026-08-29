@@ -2,6 +2,12 @@
 
 import { useEffect, useState, useRef, useMemo } from "react";
 import { ESCAPES, type Escape, type VibeCategory } from "@/lib/mamak.ts";
+import {
+  SCRAPED_PLACES,
+  routeUrlFor,
+  SCRAPED_COUNT,
+  SCRAPED_SCRAPED_AT,
+} from "@/lib/sepangPlaces.ts";
 import { Title } from "./Chrome.tsx";
 import { RouteMap } from "./RouteMap.tsx";
 
@@ -29,8 +35,8 @@ type VibeQuestion = {
 const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_mamak",
-    targetId: "dengkil",
-    icon: "",
+    targetId: "warisan",
+    icon: "☕",
     question: "Craving hot teh tarik & crispy roti canai on plastic chairs?",
     subtext: "Classic late-night mamak feast with friends to debate the race strategy.",
     tag: "24-Hour Mamak & Teh Tarik",
@@ -38,15 +44,15 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_cafe",
     targetId: "cyberjaya",
-    icon: "",
+    icon: "❄️",
     question: "Need freezing cold air-con, specialty iced coffee & chill vibes?",
     subtext: "Cool down immediately, escape the humidity, and relax in aesthetic cafes.",
     tag: "Cold AC & Specialty Cafes",
   },
   {
     id: "q_seafood",
-    targetId: "bagan",
-    icon: "",
+    targetId: "terapung",
+    icon: "🦐",
     question: "Want fresh grilled Ikan Bakar & ocean breeze by the beach?",
     subtext: "Drive opposite to all KL highway traffic and feast on seafood by the coast.",
     tag: "Coastal Seafood & Beach",
@@ -54,15 +60,23 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_fast",
     targetId: "mitsui",
-    icon: "",
+    icon: "🛍️",
     question: "Super hungry right now? Need food & cold AC within 6 minutes?",
     subtext: "Quick sanctuary closest to circuit gates with plenty of food court choices.",
     tag: "Instant 6-Min Pitstop",
   },
   {
+    id: "q_satay",
+    targetId: "salak",
+    icon: "🍢",
+    question: "In the mood for smoky charcoal Sate Kajang & Hainanese kopi?",
+    subtext: "Authentic local heritage town supper just minutes from the circuit track.",
+    tag: "Charcoal Sate & Kopitiam",
+  },
+  {
     id: "q_south",
     targetId: "nilai",
-    icon: "",
+    icon: "🍛",
     question: "Heading South (JB / Melaka / Seremban) and want midnight Nasi Kandar?",
     subtext: "Skip the northern toll queues entirely and grab crispy fried chicken & naan.",
     tag: "Southbound Midnight Feast",
@@ -70,13 +84,21 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
 ];
 
 const CATEGORIES: { id: VibeCategory; label: string; icon: string }[] = [
-  { id: "all", label: "All Spots", icon: "" },
-  { id: "mamak", label: "24h Mamak", icon: "" },
-  { id: "seafood", label: "Beach Seafood", icon: "" },
-  { id: "cafe", label: "AC & Coffee", icon: "" },
-  { id: "pitstop", label: "Fast Pitstop", icon: "" },
-  { id: "south", label: "Southbound", icon: "" },
+  { id: "all", label: "All Spots", icon: "🏁" },
+  { id: "mamak", label: "24h Mamak", icon: "☕" },
+  { id: "seafood", label: "Beach Seafood", icon: "🦐" },
+  { id: "cafe", label: "AC & Coffee", icon: "❄️" },
+  { id: "pitstop", label: "Fast Pitstop", icon: "🛍️" },
+  { id: "south", label: "Southbound", icon: "🍛" },
 ];
+
+const CAT_META: Record<string, { icon: string; color: string }> = {
+  mamak: { icon: "☕", color: "var(--yellow)" },
+  seafood: { icon: "🦐", color: "var(--ice)" },
+  cafe: { icon: "❄️", color: "var(--ice)" },
+  pitstop: { icon: "🛍️", color: "var(--red)" },
+  south: { icon: "🍛", color: "var(--yellow)" },
+};
 
 export function Mamak({ onRestart }: { onRestart: () => void }) {
   // Starts directly in Quiz mode without showing tabs upfront
@@ -290,19 +312,19 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
     return fallbackUrl;
   };
 
-  // Filtered & Searched Escapes for Browse Mode
+  // Filtered & Searched real scraped places for Browse Mode
   const displayedEscapes = useMemo(() => {
-    return ESCAPES.filter((e) => {
-      const matchesCategory = filter === "all" || e.category === filter;
+    return SCRAPED_PLACES.filter((p) => {
+      const matchesCategory = filter === "all" || p.category === filter;
       const query = searchQuery.trim().toLowerCase();
       const matchesSearch =
         !query ||
-        e.name.toLowerCase().includes(query) ||
-        e.tagline.toLowerCase().includes(query) ||
-        e.food.dish.toLowerCase().includes(query) ||
-        e.via.toLowerCase().includes(query);
+        p.name.toLowerCase().includes(query) ||
+        p.address.toLowerCase().includes(query) ||
+        (p.summary || "").toLowerCase().includes(query) ||
+        (p.types || []).some((t) => t.toLowerCase().includes(query));
       return matchesCategory && matchesSearch;
-    });
+    }).sort((a, b) => (b.rating ?? 0) - (a.rating ?? 0));
   }, [filter, searchQuery]);
 
   const currentQ = VIBE_QUESTIONS[qIndex];
@@ -379,7 +401,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                 : "text-muted hover:text-white"
             }`}
           >
-             Browse All ({ESCAPES.length})
+               Browse All ({SCRAPED_COUNT})
           </button>
         </div>
       )}
@@ -655,10 +677,15 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
             ))}
           </div>
 
-          {/* Cards Grid */}
-          <div className="flex flex-col gap-3.5 lg:grid lg:grid-cols-2">
+          {/* Scraped-data note */}
+          <p className="data text-[10px] uppercase tracking-wider text-muted">
+            Scraped live from Google Maps around Sepang International Circuit · {SCRAPED_COUNT} real spots
+          </p>
+
+          {/* Cards Grid — simple, info-dense rows */}
+          <div className="flex flex-col gap-2.5">
             {displayedEscapes.length === 0 ? (
-              <div className="card p-8 text-center col-span-2">
+              <div className="card p-8 text-center">
                 <p className="text-sm text-muted">No spots matching &ldquo;{searchQuery}&rdquo;</p>
                 <button
                   onClick={() => {
@@ -671,84 +698,71 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                 </button>
               </div>
             ) : (
-              displayedEscapes.map((e, i) => {
-                const liveSpot = livePlaces[e.id]?.[0];
+              displayedEscapes.map((p, i) => {
+                const meta = CAT_META[p.category] ?? CAT_META.mamak;
                 return (
                   <article
-                    key={e.id}
+                    key={p.id}
                     style={{ "--i": i } as React.CSSProperties}
-                    className="anim-rise card flex flex-col overflow-hidden"
+                    className="anim-rise card flex items-center gap-3 p-3"
                   >
-                    <div className="flex items-center justify-between border-b border-line px-4 py-2.5 bg-surface-2/50">
-                      <span className="data text-[10px] uppercase tracking-wider text-muted">
-                        Skips {e.skips}
-                      </span>
+                    {/* Category stamp */}
+                    <div
+                      className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border text-lg"
+                      style={{ borderColor: meta.color, color: meta.color }}
+                    >
+                      {meta.icon}
+                    </div>
+
+                    {/* Core info */}
+                    <div className="min-w-0 flex-1">
                       <div className="flex items-center gap-2">
-                        {liveSpot && (
-                          <span className="data flex items-center gap-1 rounded bg-green/10 px-1.5 py-0.5 text-[9px] uppercase tracking-wider text-green">
-                            <span className="h-1.5 w-1.5 rounded-full bg-green" />
-                            Live Maps
+                        <span className="truncate title text-base leading-none">{p.name}</span>
+                        {p.isOpen != null && (
+                          <span
+                            className="h-1.5 w-1.5 shrink-0 rounded-full"
+                            style={{ background: p.isOpen ? "var(--green)" : "var(--muted)" }}
+                            title={p.isOpen ? "Open now" : "Closed"}
+                          />
+                        )}
+                      </div>
+                      <div className="data mt-1 flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[11px] text-muted">
+                        {p.rating != null && (
+                          <span className="text-yellow">★ {p.rating}</span>
+                        )}
+                        {p.rating != null && p.userRatingCount != null && (
+                          <span>({p.userRatingCount})</span>
+                        )}
+                        {typeof p.distanceKm === "number" && <span>{p.distanceKm} km</span>}
+                        {p.isOpen != null && (
+                          <span style={{ color: p.isOpen ? "var(--green)" : "var(--muted)" }}>
+                            {p.isOpen ? "Open" : "Closed"}
                           </span>
                         )}
-                        <span className="data text-[10px] text-yellow font-medium">
-                          {e.driveTime}
-                        </span>
+                      </div>
+                      <div className="mt-0.5 truncate text-[11px] text-muted/80">
+                        {p.address}
                       </div>
                     </div>
 
-                    <div className="flex flex-1 flex-col p-4">
-                      <div className="flex items-start justify-between gap-2">
-                        <div>
-                          <h3 className="title text-2xl leading-none">{e.name}</h3>
-                          <div className="data mt-1 text-[11px] text-yellow">
-                            {e.tagline}
-                          </div>
-                        </div>
-                      </div>
-
-                      <p className="mt-2.5 text-[13px] leading-snug text-muted">{e.note}</p>
-
-                      {/* Supper recommendation */}
-                      <div className="mt-3.5 flex-1 rounded-xl border border-line bg-surface-2 p-3">
-                        <div className="flex items-center justify-between">
-                          <div className="data text-[9px] uppercase tracking-wider text-muted">
-                            Supper stop recommendation
-                          </div>
-                          {liveSpot?.rating && (
-                            <div className="data text-xs text-yellow font-medium">
-                              ★ {liveSpot.rating} <span className="text-muted text-[9px]">({liveSpot.userRatingCount || 0})</span>
-                            </div>
-                          )}
-                        </div>
-                        <div className="display mt-1 text-sm text-yellow">
-                          {liveSpot ? liveSpot.name : e.food.name}
-                        </div>
-                        <div className="mt-0.5 text-[11px] text-muted truncate">
-                          {liveSpot ? liveSpot.address : e.food.dish}
-                        </div>
-                      </div>
-
-                      {/* Actions */}
-                      <div className="mt-4 grid grid-cols-2 gap-2">
-                        <a
-                          href={getNavUrl(e.name, e.routeUrl, liveSpot?.id)}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="data rounded-lg border border-line py-2.5 text-center text-[10px] uppercase tracking-wider transition-transform active:scale-95 hover:border-fg/40 flex items-center justify-center gap-1"
-                        >
-                          <span>Route ({e.driveTime})</span>
-                          <span aria-hidden>↗</span>
-                        </a>
-                        <a
-                          href={liveSpot ? liveSpot.googleMapsUri : e.food.url}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className="data rounded-lg bg-yellow py-2.5 text-center text-[10px] uppercase tracking-wider text-black font-semibold transition-transform active:scale-95 hover:bg-yellow/90 flex items-center justify-center gap-1"
-                        >
-                          <span>Navigate</span>
-                          <span aria-hidden>↗</span>
-                        </a>
-                      </div>
+                    {/* Actions */}
+                    <div className="flex shrink-0 flex-col gap-1.5">
+                      <a
+                        href={getNavUrl(p.name, routeUrlFor(p), p.id)}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="data rounded-lg border border-line px-2.5 py-1.5 text-center text-[10px] uppercase tracking-wider transition-transform active:scale-95 hover:border-fg/40"
+                      >
+                        Route
+                      </a>
+                      <a
+                        href={p.googleMapsUri}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="data rounded-lg bg-yellow px-2.5 py-1.5 text-center text-[10px] uppercase tracking-wider text-black font-semibold transition-transform active:scale-95 hover:bg-yellow/90"
+                      >
+                        Map
+                      </a>
                     </div>
                   </article>
                 );

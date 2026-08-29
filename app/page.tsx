@@ -32,7 +32,15 @@ export default function Page() {
 
   return (
     <>
-      <Header onHome={() => setView("landing")} onOpenMenu={() => setMenuOpen(true)} />
+      <Header
+        onHome={() => setView("landing")}
+        onOpenMenu={() => setMenuOpen(true)}
+        currentView={view}
+        onNavigate={setView}
+        hasRun={run !== null}
+        muted={muted}
+        onToggleMute={() => setMuted((m) => !m)}
+      />
 
       <Menu
         open={menuOpen}

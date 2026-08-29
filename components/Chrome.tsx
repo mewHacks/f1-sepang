@@ -64,30 +64,108 @@ export function Wordmark({ small = false }: { small?: boolean }) {
   );
 }
 
+import type { View } from "@/lib/views.ts";
+
 export function Header({
   onHome,
   onOpenMenu,
+  currentView,
+  onNavigate,
+  hasRun = false,
+  muted = false,
+  onToggleMute,
 }: {
   onHome: () => void;
   onOpenMenu: () => void;
+  currentView?: View;
+  onNavigate?: (view: View) => void;
+  hasRun?: boolean;
+  muted?: boolean;
+  onToggleMute?: () => void;
 }) {
+  const NAV_ITEMS: { id: View; label: string; icon: string; requiresRun?: boolean }[] = [
+    { id: "landing", label: "Pit Wall", icon: "🏁" },
+    { id: "trophies", label: "Trophies", icon: "🏆" },
+    { id: "predict", label: "Predictions", icon: "🎯" },
+    { id: "mamak", label: "Paddock Mamak", icon: "🍛" },
+    { id: "pass", label: "Circuit Pass", icon: "🎫", requiresRun: true },
+  ];
+
   return (
     <header
-      className="sticky top-0 z-30 border-b border-line bg-bg"
+      className="sticky top-0 z-30 border-b border-line bg-bg/95 backdrop-blur-md"
       style={{ paddingTop: "var(--safe-t)" }}
     >
       <div className="shell flex items-center justify-between px-4 py-3">
+        {/* Brand Wordmark */}
         <button
           onClick={onHome}
           aria-label="JomLap — home"
-          className="transition-transform active:scale-95"
+          className="transition-transform active:scale-95 shrink-0"
         >
           <Wordmark small />
         </button>
+
+        {/* Desktop Horizontal Nav Bar */}
+        {onNavigate && (
+          <nav className="hidden md:flex items-center gap-1.5 lg:gap-2">
+            {NAV_ITEMS.map((item) => {
+              const isActive =
+                item.id === "landing"
+                  ? currentView === "landing" || currentView === "pitwall" || currentView === "debrief"
+                  : currentView === item.id;
+              const disabled = item.requiresRun && !hasRun;
+
+              return (
+                <button
+                  key={item.id}
+                  disabled={disabled}
+                  onClick={() => onNavigate(item.id)}
+                  className={`data flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-xs uppercase tracking-wider transition-all ${
+                    isActive
+                      ? "bg-red text-white font-medium shadow-sm"
+                      : disabled
+                      ? "text-muted/40 cursor-not-allowed"
+                      : "text-muted hover:text-white hover:bg-surface"
+                  }`}
+                  title={disabled ? "Run a race on the Pit Wall first" : undefined}
+                >
+                  <span className="text-sm">{item.icon}</span>
+                  <span>{item.label}</span>
+                </button>
+              );
+            })}
+
+            {/* Official Tickets Link in Desktop Nav */}
+            <a
+              href="https://www.sepangcircuit.com/home"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="data flex items-center gap-1 rounded-lg border border-line px-2.5 py-1.5 text-xs uppercase tracking-wider text-muted hover:text-white hover:border-fg/40 transition-colors ml-1"
+            >
+              <span>SIC Tickets</span>
+              <span className="text-[10px]" aria-hidden>↗</span>
+            </a>
+
+            {/* Sound Toggle */}
+            {onToggleMute && (
+              <button
+                onClick={onToggleMute}
+                aria-label={muted ? "Unmute pit radio" : "Mute pit radio"}
+                className="data flex items-center justify-center h-8 w-8 rounded-lg border border-line text-xs text-muted hover:text-white hover:bg-surface transition-colors ml-1"
+                title={muted ? "Unmute radio audio" : "Mute radio audio"}
+              >
+                {muted ? "🔇" : "🔊"}
+              </button>
+            )}
+          </nav>
+        )}
+
+        {/* Mobile Menu Button */}
         <button
           onClick={onOpenMenu}
           aria-label="Open menu"
-          className="data flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-[11px] uppercase tracking-wider text-muted transition-transform active:scale-95"
+          className="md:hidden data flex items-center gap-2 rounded-full border border-line px-3 py-1.5 text-[11px] uppercase tracking-wider text-muted transition-transform active:scale-95"
         >
           Menu
           <span aria-hidden className="flex flex-col gap-[3px]">

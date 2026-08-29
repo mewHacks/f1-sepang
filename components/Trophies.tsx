@@ -18,6 +18,71 @@ const TIER_COLOR = {
   gold: "var(--yellow)",
 } as const;
 
+// Rarity label per tier — shown on every trophy so collectors know the pull.
+const RARITY: Record<keyof typeof TIER_COLOR, string> = {
+  bronze: "Common",
+  silver: "Rare",
+  gold: "Legendary",
+};
+
+/**
+ * Sticker stamp for one achievement. Looks for /stamps/<id>.webp and falls
+ * back to a plain badge if the art isn't there yet, so the page works
+ * whether or not every sticker has been drawn.
+ *
+ * Locked stamps render desaturated and faded — the classic "empty slot in
+ * the sticker album" read. Static filter, painted once, no per-frame cost.
+ */
+function Stamp({
+  id,
+  tier,
+  got,
+}: {
+  id: string;
+  tier: keyof typeof TIER_COLOR;
+  got: boolean;
+}) {
+  const [missing, setMissing] = useState(false);
+
+  if (missing) {
+    // Car-stamp fallback: a rounded pit-lane badge with a car for collected
+    // trophies, a faded checkered flag for locked ones.
+    return (
+      <span
+        className="grid aspect-square w-16 place-items-center rounded-full border-2 text-2xl"
+        style={{
+          borderColor: got ? TIER_COLOR[tier] : "var(--line)",
+          color: got ? TIER_COLOR[tier] : "var(--muted)",
+          background: got
+            ? `color-mix(in srgb, ${TIER_COLOR[tier]} 15%, transparent)`
+            : "transparent",
+          opacity: got ? 1 : 0.5,
+        }}
+      >
+        {got ? "🏎️" : "🏁"}
+      </span>
+    );
+  }
+
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={`/stamps/${id}.webp`}
+      alt=""
+      width={56}
+      height={56}
+      loading="lazy"
+      decoding="async"
+      onError={() => setMissing(true)}
+      className="h-14 w-14 shrink-0 object-contain"
+      style={{
+        filter: got ? "none" : "grayscale(1)",
+        opacity: got ? 1 : 0.4,
+      }}
+    />
+  );
+}
+
 export function Trophies({ callsign }: { callsign: string }) {
   // Read storage in an effect so server and first client paint agree.
   const [progress, setProgress] = useState<Progress | null>(null);
@@ -110,43 +175,49 @@ export function Trophies({ callsign }: { callsign: string }) {
         </div>
       </Reveal>
 
-      {/* Achievements */}
+      {/* Achievements — square car-stamp album: 4 per row on desktop,
+          2 per row on mobile, each box tagged with its rarity. */}
       <Reveal className="mt-8">
         <h2 className="title title-loose text-3xl leading-tight">Achievements</h2>
         <p className="mt-1.5 text-[13px] text-muted">
-          Locked ones show exactly how to earn them — no guessing.
+          Your paddock stamp album — collected trophies become car stamps, each with a rarity.
         </p>
-        <div className="mt-3 flex flex-col gap-2">
+        <div className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">
           {ACHIEVEMENTS.map((a) => {
             const got = progress.unlocked.includes(a.id);
             return (
               <div
                 key={a.id}
-                className="card flex items-center gap-3.5 p-4"
-                style={{ opacity: got ? 1 : 0.55 }}
+                className={`card relative flex aspect-square flex-col items-center justify-center gap-2 p-3 text-center transition-all ${
+                  got ? "border-yellow/40 bg-surface shadow-lg" : "border-line bg-surface/60"
+                }`}
               >
-                <span
-                  className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border text-lg"
-                  style={{
-                    borderColor: got ? TIER_COLOR[a.tier] : "var(--line)",
-                    color: got ? TIER_COLOR[a.tier] : "var(--muted)",
-                    background: got
-                      ? `color-mix(in srgb, ${TIER_COLOR[a.tier]} 12%, transparent)`
-                      : "transparent",
-                  }}
-                >
-                  {got ? "★" : "○"}
-                </span>
-                <div className="min-w-0 flex-1">
-                  <div className="title text-lg leading-tight">{a.name}</div>
-                  <div className="mt-0.5 text-[13px] leading-snug text-muted">{a.how}</div>
-                </div>
-                <span
-                  className="data shrink-0 text-xs"
+                {/* Rarity tag */}
+                <div
+                  className="data absolute right-2 top-2 rounded px-1.5 py-0.5 text-[9px] uppercase tracking-wider font-semibold"
                   style={{ color: got ? TIER_COLOR[a.tier] : "var(--muted)" }}
                 >
-                  +{a.xp}
-                </span>
+                  {RARITY[a.tier]}
+                </div>
+
+                {/* Car stamp */}
+                <Stamp id={a.id} tier={a.tier} got={got} />
+
+                {/* Name */}
+                <div
+                  className="title text-sm leading-tight"
+                  style={{ color: got ? "var(--fg)" : "var(--muted)" }}
+                >
+                  {a.name}
+                </div>
+
+                {/* Status */}
+                <div
+                  className="data text-[10px] uppercase tracking-wider font-semibold"
+                  style={{ color: got ? "var(--yellow)" : "var(--muted)" }}
+                >
+                  {got ? "✓ Unlocked" : `+${a.xp} XP`}
+                </div>
               </div>
             );
           })}

@@ -23,11 +23,23 @@ const CORRIDOR_QUERIES: Record<
     lat: 2.8586,
     lng: 101.6806,
   },
-  bagan: {
-    query: "seafood restaurant Bagan Lalang Sepang",
-    destination: "Bagan Lalang Beach, Selangor",
-    lat: 2.6033,
-    lng: 101.6917,
+  warisan: {
+    query: "Restoran Nasi Kandar Al-Barkath Kota Warisan Sepang",
+    destination: "KIP Sentral Kota Warisan, Sepang",
+    lat: 2.8228,
+    lng: 101.7058,
+  },
+  enstek: {
+    query: "Restoran Nasi Kandar Yasmeen Bandar Enstek",
+    destination: "Bandar Baru Enstek, Negeri Sembilan",
+    lat: 2.7562,
+    lng: 101.7891,
+  },
+  mitsui: {
+    query: "restaurants Mitsui Outlet Park KLIA Sepang",
+    destination: "Mitsui Outlet Park KLIA",
+    lat: 2.7794,
+    lng: 101.6869,
   },
   cyberjaya: {
     query: "cafe Tamarind Square Cyberjaya",
@@ -35,11 +47,29 @@ const CORRIDOR_QUERIES: Record<
     lat: 2.9189,
     lng: 101.6508,
   },
-  mitsui: {
-    query: "restaurants Mitsui Outlet Park KLIA Sepang",
-    destination: "Mitsui Outlet Park KLIA",
-    lat: 2.7794,
-    lng: 101.6869,
+  salak: {
+    query: "sate restaurant Bandar Baru Salak Tinggi Sepang",
+    destination: "Bandar Baru Salak Tinggi, Selangor",
+    lat: 2.8091,
+    lng: 101.7412,
+  },
+  bagan: {
+    query: "seafood restaurant Bagan Lalang Sepang",
+    destination: "Bagan Lalang Beach, Selangor",
+    lat: 2.6033,
+    lng: 101.6917,
+  },
+  terapung: {
+    query: "Restoran Terapung HM Sri Bagan Lalang Sepang",
+    destination: "Restoran Terapung HM Sri Bagan Lalang",
+    lat: 2.6015,
+    lng: 101.6888,
+  },
+  sinki: {
+    query: "Restoran Sinki Dengkil Selangor",
+    destination: "Restoran Sinki Dengkil",
+    lat: 2.8595,
+    lng: 101.6798,
   },
   nilai: {
     query: "nasi kandar restaurant 24 jam Nilai Negeri Sembilan",

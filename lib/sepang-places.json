@@ -1,0 +1,1434 @@
+{
+  "scrapedAt": "2026-08-29T12:38:05.394Z",
+  "source": "Google Places Nearby Search (grid scrape around Sepang International Circuit)",
+  "center": {
+    "lat": 2.7607,
+    "lng": 101.7369,
+    "name": "Sepang International Circuit"
+  },
+  "count": 59,
+  "places": [
+    {
+      "id": "ChIJ1TCwTVOTzTERTF0Eh75iloo",
+      "name": "CIKGU CAFE",
+      "address": "No 7, Cikgu Cafe, Medan Selera, Jalan Pantai, Bagan Lalang, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": 5,
+      "userRatingCount": 4,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "cafe",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=9986277794189172044&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5994406999999997,
+        "lng": 101.6907262
+      }
+    },
+    {
+      "id": "ChIJJ18sqv3tzTER3bmwuydCgJ0",
+      "name": "BITS by Herriza Lokman",
+      "address": "JQ36+W2, Lot 11348, Lorong Pantai Baru, Kampung Chuah, 71960 Port Dickson, Negeri Sembilan, Malaysia",
+      "rating": 5,
+      "userRatingCount": 2,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "bakery",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=11349143799393728989&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.6047613999999997,
+        "lng": 101.7600544
+      }
+    },
+    {
+      "id": "ChIJhRZ5gYXtzTERgoE4CPQOSvM",
+      "name": "Warung jimah power",
+      "address": "Lot 3670 Kampung sungai nipah,chuah, 71960 Port Dickson, Negeri Sembilan, Malaysia",
+      "rating": 5,
+      "userRatingCount": 2,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=17530840940765806978&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.6132912,
+        "lng": 101.744596
+      }
+    },
+    {
+      "id": "ChIJ482JCB7tzTERvvHksRgK_Pc",
+      "name": "Kopi Warung",
+      "address": "D'Rebung @Banghuris, Jalan Agro, Kampung Hulu Chuchoh, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": 5,
+      "userRatingCount": 12,
+      "isOpen": false,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "coffee_shop",
+        "cafe",
+        "food_store",
+        "food",
+        "store",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "https://mylink.la/kopiwarung",
+      "googleMapsUri": "https://maps.google.com/?cid=17869168522679349694&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.6617539999999997,
+        "lng": 101.6873997
+      }
+    },
+    {
+      "id": "ChIJK12-peqUzTER0s2xzqQSgOw",
+      "name": "NAR Kitchen",
+      "address": "Jalan Punai, Kampung Bukit Bangkong, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": 5,
+      "userRatingCount": 1,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "family_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=17041641489021652434&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.6629053000000003,
+        "lng": 101.6836187
+      }
+    },
+    {
+      "id": "ChIJw-dTdEm5zTER5UvmoGeXot0",
+      "name": "MalaAlya Little Kitchen",
+      "address": "Taman Seri Maju, Jln Maju 2/2, Kampung Bukit Changgang, 42700 Banting, Selangor, Malaysia",
+      "rating": 5,
+      "userRatingCount": 2,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "bakery",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=15970493699946073061&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.835266,
+        "lng": 101.6301752
+      }
+    },
+    {
+      "id": "ChIJB_GpEP7HzTERwAfX33Jc1Nw",
+      "name": "BURGER MANTOL desa vista",
+      "address": "Jalan Vista 2, Desa Vista, 43900 Sepang, Selangor, Malaysia",
+      "rating": 5,
+      "userRatingCount": 7,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "western_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=15912445031858243520&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.8404667,
+        "lng": 101.748037
+      }
+    },
+    {
+      "id": "ChIJUx7NlSzKzTERmuK9DAr3OJc",
+      "name": "Mama's Oven Sdn. Bhd.",
+      "address": "17, Jalan Medan Pusat Bandar AA, Seksyen 9, 43650 Bandar Baru Bangi, Selangor, Malaysia",
+      "rating": 5,
+      "userRatingCount": 1,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "bakery",
+        "food_store",
+        "food",
+        "store",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=10896730920958419610&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9603102999999997,
+        "lng": 101.75078979999999
+      }
+    },
+    {
+      "id": "ChIJ0fG3jOHNzTERE9q49aMhOEE",
+      "name": "WarungVaganza",
+      "address": "Jalan p6, 1, Seksyen 6, Bandar Teknologi Kajang, 43500 Semenyih, Selangor, Malaysia",
+      "rating": 5,
+      "userRatingCount": 2,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "breakfast_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=4699543199247030803&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9600257,
+        "lng": 101.8103378
+      }
+    },
+    {
+      "id": "ChIJ5xDVQanJzTERPKY79aWOGGA",
+      "name": "ROTI CANAI HATI IKAN PAUS",
+      "address": "Roti Canai Hati Ikan Paus, seksyen 6, Jalan P6/2, Bandar Teknologi Kajang, 43500 Semenyih, Selangor, Malaysia",
+      "rating": 5,
+      "userRatingCount": 2,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=6924441270517212732&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9602796,
+        "lng": 101.8091209
+      }
+    },
+    {
+      "id": "ChIJ75wPYQDNzTERH3E_IV4P3EY",
+      "name": "Nasi Kukus Kak Ma Riverside",
+      "address": "Bandar Teknologi Kajang, 43500 Semenyih, Selangor, Malaysia",
+      "rating": 5,
+      "userRatingCount": 4,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "family_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=5105972974490448159&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9602546,
+        "lng": 101.8091115
+      }
+    },
+    {
+      "id": "ChIJnQ0wAQDFzTERIreSiWJOmf4",
+      "name": "DNY Slowbar.",
+      "address": "Jalan Nilam 4, Nilai Impian, 71800 Nilai, Negeri Sembilan, Malaysia",
+      "rating": 4.9,
+      "userRatingCount": 11,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "coffee_shop",
+        "cafe",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=18345780742192281378&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.8388914,
+        "lng": 101.809919
+      }
+    },
+    {
+      "id": "ChIJz4n5eGGTzTEREY98Z3GfJ6E",
+      "name": "Dhillaz Kitchen @Bagan Lalang",
+      "address": "No 10, Medan Selera Pantai, Bagan Lalang, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": 4.8,
+      "userRatingCount": 40,
+      "isOpen": false,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "family_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=11612425473614450449&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5994262,
+        "lng": 101.6907164
+      }
+    },
+    {
+      "id": "ChIJX_dBZgDFzTERru81Ujwkk38",
+      "name": "Nasi Dagang Orginal Terengganu Che Laa",
+      "address": "Taman Tasik Ujana, Jalan Nilam 4, Nilai Impian, 71800 Nilai, Negeri Sembilan, Malaysia",
+      "rating": 4.7,
+      "userRatingCount": 3,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "breakfast_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=9192731105889218478&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.840961,
+        "lng": 101.81065000000001
+      }
+    },
+    {
+      "id": "ChIJu3BmudY3zDERyJgHtUzeBcE",
+      "name": "ZuZu Kitchy",
+      "address": "Taman Desa Vista, 20, Jalan Vista 2/6, Bandar Baru Salak Tinggi, 43900 Sepang, Selangor, Malaysia",
+      "rating": 4.5,
+      "userRatingCount": 2,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "bakery",
+        "cake_shop",
+        "food_store",
+        "wholesaler",
+        "manufacturer",
+        "food",
+        "store",
+        "point_of_interest",
+        "service",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "http://zuzukitchy.com/",
+      "googleMapsUri": "https://maps.google.com/?cid=13908767445239699656&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.8394188,
+        "lng": 101.75027929999999
+      }
+    },
+    {
+      "id": "ChIJaVnjHgCVzTERw0JNR3qIMmQ",
+      "name": "Nasi ambeng d'rebung",
+      "address": "D'rebung @banghuris, Kampung Hulu Chuchoh, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": 4.4,
+      "userRatingCount": 7,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "family_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=7219983211391959747&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.6623904,
+        "lng": 101.6869127
+      }
+    },
+    {
+      "id": "ChIJuezkqz-_zTERMUcVz-4u_sM",
+      "name": "Restoran Nosa sari",
+      "address": "31, Jalan Bse 4/45, Bandar Seri Ehsan, 42700 Banting, Selangor, Malaysia",
+      "rating": 4.4,
+      "userRatingCount": 28,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "https://wa.me/message/7BWLTJRXUN2NN1",
+      "googleMapsUri": "https://maps.google.com/?cid=14122777084691826481&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7710653,
+        "lng": 101.63110479999999
+      }
+    },
+    {
+      "id": "ChIJT7L28-LDzTERnn8sFdjNV8k",
+      "name": "Kedai BAHULU SABUT LABU",
+      "address": "Kampung Jerangkang, Batu 12 Labu, 71900 Seremban, Negeri Sembilan, Malaysia",
+      "rating": 4.4,
+      "userRatingCount": 83,
+      "isOpen": false,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "cafe",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "https://m.facebook.com/bahulusabut/",
+      "googleMapsUri": "https://maps.google.com/?cid=14508291052549210014&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7774163,
+        "lng": 101.80691039999999
+      }
+    },
+    {
+      "id": "ChIJcdbfyDaVzTERrPWO017HzLI",
+      "name": "D'Rebung @Banghuris",
+      "address": "Pusat Aktiviti Homestay Banghuris, Kampung Hulu Chuchoh, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": 4.3,
+      "userRatingCount": 625,
+      "isOpen": false,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "https://www.facebook.com/drebung.banghuris.7/",
+      "googleMapsUri": "https://maps.google.com/?cid=12883891844090361260&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.6617474,
+        "lng": 101.6870269
+      }
+    },
+    {
+      "id": "ChIJd61kpv3FzTERpYYOFm4Usl4",
+      "name": "Nasi Lemak Tasik Nilai Impian",
+      "address": "Jalan Tasik Ujana, Nilai Impian, 71800 Nilai, Negeri Sembilan, Malaysia",
+      "rating": 4.3,
+      "userRatingCount": 15,
+      "isOpen": false,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=6823538848468731557&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.8379488999999998,
+        "lng": 101.81010390000002
+      }
+    },
+    {
+      "id": "ChIJB6r_qR63zTERzZ6INEKRXyk",
+      "name": "Mamasab Sepang Cyberjaya Surprise Delivery",
+      "address": "B-10-23 Masreca, 19, Persiaran Rimba Permai, Cyber 10, 63200 Cyberjaya, Selangor, Malaysia",
+      "rating": 4.3,
+      "userRatingCount": 6,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_EXPENSIVE",
+      "types": [
+        "bakery",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=2981261191877795533&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9002738,
+        "lng": 101.6303376
+      }
+    },
+    {
+      "id": "ChIJG5zKMvXIzTERv6j1GWuXSls",
+      "name": "Restoran d'Atom",
+      "address": "Lot 20250, Kampung Sungai Buah, 43000 Dengkil, Selangor, Malaysia",
+      "rating": 4.3,
+      "userRatingCount": 192,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "https://www.facebook.com/asampedasterbaik/",
+      "googleMapsUri": "https://maps.google.com/?cid=6578236691980855487&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.8958123,
+        "lng": 101.7546979
+      }
+    },
+    {
+      "id": "ChIJ51SuDt_AzTERv9WXNjujCzY",
+      "name": "Hwong Lee Heng 旺利兴海鲜饭店",
+      "address": "120, B48, Kampung Salak, 43900 Sepang, Selangor, Malaysia",
+      "rating": 4.2,
+      "userRatingCount": 138,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "types": [
+        "diner",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=3894385777506244031&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7810862999999997,
+        "lng": 101.7506276
+      }
+    },
+    {
+      "id": "ChIJDWtfV5zPzTERW5wYijLFoYk",
+      "name": "Yuhana Talam dan Kek",
+      "address": "B24, 43500, 43000, 43000 Kajang, Selangor, Malaysia",
+      "rating": 4.2,
+      "userRatingCount": 5,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "cafe",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=9917424675302448219&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.8987612,
+        "lng": 101.811359
+      }
+    },
+    {
+      "id": "ChIJEzpFzjvPzTERSWOOp-rQg_M",
+      "name": "WARUNG CIK TEH ( RUMAH MAKAN & KATERING WCT)",
+      "address": "Lot 2237, Jalan Utama, Kampung Rinching Hilir, 43500 Kajang, Selangor, Malaysia",
+      "rating": 4.2,
+      "userRatingCount": 29,
+      "isOpen": false,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "coffee_shop",
+        "cafe",
+        "food_store",
+        "food",
+        "store",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "https://www.facebook.com/dapo.cikteh.7",
+      "googleMapsUri": "https://maps.google.com/?cid=17547098279417635657&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9005902,
+        "lng": 101.8125081
+      }
+    },
+    {
+      "id": "ChIJBzJ6OprtzTERIb3OpVwPQYc",
+      "name": "Bagan Nyiur Seafood",
+      "address": "No 8, Medan Selera, Jalan Pantai Bagan Lalang, Bagan Lalang, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": 4.1,
+      "userRatingCount": 7,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "seafood",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=9746087959199661345&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.599436,
+        "lng": 101.6907201
+      }
+    },
+    {
+      "id": "ChIJ1bomXlbszTERtHTzMclYs_c",
+      "name": "Kedai Makanan Rakyat Cina",
+      "address": "71960 Port Dickson, Negeri Sembilan, Malaysia",
+      "rating": 4.1,
+      "userRatingCount": 54,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "chinese_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=17848707369349117108&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.6090549999999997,
+        "lng": 101.754992
+      }
+    },
+    {
+      "id": "ChIJG1LW3QXtzTERbfVX7p29SbU",
+      "name": "Gerai Kak Ida",
+      "address": "Lot 184 Kg chuah, 71960 Port Dickson, Negeri Sembilan, Malaysia",
+      "rating": 4.1,
+      "userRatingCount": 7,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=13063180680171091309&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.6066713999999997,
+        "lng": 101.7628179
+      }
+    },
+    {
+      "id": "ChIJ9Q_OQw23zTERy57ZOFjpkSE",
+      "name": "Ekues Cabin Cafe",
+      "address": "Ekues Cabin Cafe, Taman Ekuestrian, Jalan Kandang Kuda, Presint 5, 62000 Putrajaya, Wilayah Persekutuan Putrajaya, Malaysia",
+      "rating": 4.1,
+      "userRatingCount": 1249,
+      "isOpen": false,
+      "priceLevel": "PRICE_LEVEL_MODERATE",
+      "types": [
+        "cafe",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "http://tekadia.com/",
+      "googleMapsUri": "https://maps.google.com/?cid=2418971039994846923&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.8949761,
+        "lng": 101.6870661
+      }
+    },
+    {
+      "id": "ChIJcfxLv9KTzTERVlHkyyVI5Kg",
+      "name": "Selera Berapi",
+      "address": "NO 1, Pusat Penjaja Pantai Bagan Lalang Sungai Pelek, Bagan Lalang, 43950 Sepang, Selangor, Malaysia",
+      "rating": 4,
+      "userRatingCount": 4,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "https://www.tiktok.com/@selera.berapi?_r=1&_t=ZS-94ar0pFqIDs",
+      "googleMapsUri": "https://maps.google.com/?cid=12169931420233650518&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5999936999999997,
+        "lng": 101.68980619999999
+      }
+    },
+    {
+      "id": "ChIJWx1S28GUzTER70i_4FKvEJM",
+      "name": "Kak Ju Cookies",
+      "address": "Jalan Bonon 1, Kampung Hulu Chuchoh, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": 4,
+      "userRatingCount": 19,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "bakery",
+        "food_store",
+        "food",
+        "store",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=10597162693695588591&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.665336,
+        "lng": 101.6847483
+      }
+    },
+    {
+      "id": "ChIJl8yoweqUzTERlhnPrxDsBzc",
+      "name": "Kedai Air Tebu Wak Bunari",
+      "address": "Kampung Hulu Chuchoh, 43950 Tanjong Sepat, Selangor, Malaysia",
+      "rating": 4,
+      "userRatingCount": 14,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=3965397553336228246&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.6630840000000005,
+        "lng": 101.68241169999999
+      }
+    },
+    {
+      "id": "ChIJj4Tbz5G-zTERGu33IlchxNY",
+      "name": "Adiratna Rizq",
+      "address": "4, Jalan Bse 4/44, Bandar Seri Ehsan, 42700 Banting, Selangor, Malaysia",
+      "rating": 4,
+      "userRatingCount": 8,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "cafe",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "https://m.facebook.com/pages/category/Local-Business/Adiratna-Rizq-Katering-918139978253174/",
+      "googleMapsUri": "https://maps.google.com/?cid=15475530877684411674&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.771353,
+        "lng": 101.63004289999999
+      }
+    },
+    {
+      "id": "ChIJL41PYQDNzTERmxGYpHxpMFA",
+      "name": "Riverside by Pak Din, Roti Canai Kari Kambing",
+      "address": "21, Jalan P6/1, Seksyen 6, 43500 Semenyih, Selangor, Malaysia",
+      "rating": 4,
+      "userRatingCount": 3,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "coffee_shop",
+        "cafe",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=5778234305974636955&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9600345,
+        "lng": 101.8094236
+      }
+    },
+    {
+      "id": "ChIJGewRvT_JzTERMjIh8GpwpPk",
+      "name": "Suka Ramai Seafood",
+      "address": "KG SG BUAH, Bt 30, JLN KAJANG DENGKIL, Kampung Sungai Buah, 43800 Dengkil, Selangor, Malaysia",
+      "rating": 3.7,
+      "userRatingCount": 55,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "seafood",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=17988626416222155314&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.8956044,
+        "lng": 101.75440689999999
+      }
+    },
+    {
+      "id": "ChIJvcnCSNmSzTERVm_d3dlvU3Q",
+      "name": "Selera @ Bagan Lalang",
+      "address": "Bagan Lalang, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": 3.4,
+      "userRatingCount": 90,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "food_court",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=8382166312987488086&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5997632,
+        "lng": 101.69029669999999
+      }
+    },
+    {
+      "id": "ChIJpXn73WbuzTERoHVZYkBcZwE",
+      "name": "Restoran Che Ros",
+      "address": "71000 Port Dickson, Negeri Sembilan, Malaysia",
+      "rating": 3.4,
+      "userRatingCount": 7,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=101150948236817824&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5963209,
+        "lng": 101.81752619999999
+      }
+    },
+    {
+      "id": "ChIJ76AshfeTzTERTpaE5qaKGmQ",
+      "name": "Pusat Penjaja@ Bagan Lalang",
+      "address": "Pantai, Bagan Lalang, 43950 Tanjong Sepat, Selangor, Malaysia",
+      "rating": 3,
+      "userRatingCount": 23,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=7213230202623923790&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5999936999999997,
+        "lng": 101.68980619999999
+      }
+    },
+    {
+      "id": "ChIJ5597IXzpzTER4ORHYQB4YdI",
+      "name": "Kafe Sri Lawang Politeknik Nilai",
+      "address": "71350, Unnamed Road, 71350 Labu, Negeri Sembilan, Malaysia",
+      "rating": 3,
+      "userRatingCount": 54,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "cafe",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=15159529763733234912&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7189555999999997,
+        "lng": 101.7985107
+      }
+    },
+    {
+      "id": "ChIJy2iDRdmSzTERgi3vcVTC3oU",
+      "name": "Kedai Makan Bahtera Baiduri",
+      "address": "Bagan Lalang, 43950 Tanjong Sepat, Selangor, Malaysia",
+      "rating": 2.3,
+      "userRatingCount": 4,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "https://m.facebook.com/bahterabagan/",
+      "googleMapsUri": "https://maps.google.com/?cid=9646361119818722690&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5995071999999997,
+        "lng": 101.6905709
+      }
+    },
+    {
+      "id": "ChIJp5IRCWm_zTERaKLbplhwbiE",
+      "name": "Dunkin' Mitsui (Kiosk 12)",
+      "address": "Kiosk No. 12, Ground Floor, Mitsui Outlet Park KLIA Sepang, Persiaran Komersial, 64000 Sepang, Selangor, Malaysia",
+      "rating": 2.2,
+      "userRatingCount": 12,
+      "isOpen": true,
+      "priceLevel": "PRICE_LEVEL_INEXPENSIVE",
+      "types": [
+        "donut_shop",
+        "bakery",
+        "food_store",
+        "food",
+        "store",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "Long-running chain serving signature breakfast items & a variety of coffee drinks.",
+      "website": "http://www.dunkindonuts.com.my/",
+      "googleMapsUri": "https://maps.google.com/?cid=2408986376748638824&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.781384,
+        "lng": 101.67896879999999
+      }
+    },
+    {
+      "id": "ChIJaecWecWTzTERgcEPuzX1fWI",
+      "name": "Satay Pitstop Pantai Bagan nyiur",
+      "address": "Bagan Lalang, 43950 Tanjong Sepat, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=7097098198926213505&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5999353999999997,
+        "lng": 101.68979879999999
+      }
+    },
+    {
+      "id": "ChIJa2J289OTzTERG8RiUxOxhXg",
+      "name": "MONGGOH ASAM PEDAS",
+      "address": "No. 3, Medan Selera Bagan, Bagan Lalang, 43950 Sungai Pelek, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "food_court",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=8684542153015346203&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5994555999999998,
+        "lng": 101.6906446
+      }
+    },
+    {
+      "id": "ChIJW4tyB6zvzTER_HU7XrxEVTE",
+      "name": "Belanga Emas Catering & Event Management Plt",
+      "address": "12, Bukit Palong, Taman Perindustrian Perdana, 71010 Port Dickson, Negeri Sembilan, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=3554823056704370172&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.5989473,
+        "lng": 101.8147657
+      }
+    },
+    {
+      "id": "ChIJnwn0awDrzTERW5CBfTOwTCw",
+      "name": "Sepang",
+      "address": "PP5R+4G, Sepang, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "coffee_shop",
+        "cafe",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=3192119971094302811&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7078460000000004,
+        "lng": 101.7413263
+      }
+    },
+    {
+      "id": "ChIJDWBOSzzDzTER8xgQzkM-nOk",
+      "name": "yummycrunchies",
+      "address": "politeknik nilai , kompleks pendidikan bandar enstek Labu, 71760 Nilai, Negeri Sembilan, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "snack_bar",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "pitstop",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=16833397968144963827&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7195161999999997,
+        "lng": 101.79840449999999
+      }
+    },
+    {
+      "id": "ChIJT3fY1nLDzTERzE7cQ2xoI9I",
+      "name": "mycruchies",
+      "address": "politeknik nilai , kompleks pendidikan , bandar estek, 71760 Nilai, Negeri Sembilan, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "snack_bar",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "pitstop",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=15142061186354007756&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7195638,
+        "lng": 101.7984007
+      }
+    },
+    {
+      "id": "ChIJ69j_HwDBzTERFDNgALFOnWw",
+      "name": "Kafe Sri Siantan",
+      "address": "71350 Labu, Negeri Sembilan, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "cafe",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=7826498249562272532&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7203537,
+        "lng": 101.79662409999999
+      }
+    },
+    {
+      "id": "ChIJtR175l-_zTER0pMG_72UaUU",
+      "name": "Sepul Kitchen",
+      "address": "No64, Jalan Bse 4/11, Bandar Seri Ehsan, 42700 Banting, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "korean_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=5001692404919997394&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7713628,
+        "lng": 101.63072389999999
+      }
+    },
+    {
+      "id": "ChIJvUEkAgC_zTER5nlCFsZzvGg",
+      "name": "Mekna Tomyam",
+      "address": "Bandar Seri Ehsan, 42700 Banting, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "thai_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=7547034370180282854&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7713202,
+        "lng": 101.6300859
+      }
+    },
+    {
+      "id": "ChIJAQtRvZLBzTER6TahknLoh0o",
+      "name": "Madhu curry hs",
+      "address": "No 4, Medan selera pekan, salak, Salak, 43900 Sepang, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "food_court",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=5370516659446560489&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7799253,
+        "lng": 101.74966599999999
+      }
+    },
+    {
+      "id": "ChIJP39raADBzTERxlWMLC20NoE",
+      "name": "Roti Canai",
+      "address": "QPJX+3P, Salak, 43900 Sepang, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "breakfast_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=9310827385749001670&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7803123999999997,
+        "lng": 101.74929449999999
+      }
+    },
+    {
+      "id": "ChIJW3S9egDBzTEREISuJvdfmuc",
+      "name": "Medan Selera Salak",
+      "address": "QPJX+3P, Salak, 43900 Sepang, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "breakfast_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=16688756884285326352&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7802995999999998,
+        "lng": 101.7492298
+      }
+    },
+    {
+      "id": "ChIJdXif9zHDzTERazOx59voqGY",
+      "name": "OKYEO Burger",
+      "address": "LOT 727, Batu 13, darat, Kampung Jerengkang, 71900 Labu, Negeri Sembilan, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "snack_bar",
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "pitstop",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=7397418419138671467&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7803158999999997,
+        "lng": 101.8066375
+      }
+    },
+    {
+      "id": "ChIJy8BLr53DzTERejV7z2dY7Wg",
+      "name": "Zam chicken korean",
+      "address": "3272A, Jalan labu Batu 13 kampung jerengkang Labu, Kampung Jerengkang, 71900 Nilai, Negeri Sembilan, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": true,
+      "priceLevel": null,
+      "types": [
+        "meal_takeaway",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "pitstop",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=7560796552310764922&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.7829516,
+        "lng": 101.80805509999999
+      }
+    },
+    {
+      "id": "ChIJl6fGRg3HzTEROFTltLWS_dk",
+      "name": "Fizee Char Kuey Teow",
+      "address": "1, Jalan Vista 2/7, Bandar Baru Salak Tinggi, 43900 Sepang, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "asian_restaurant",
+        "restaurant",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "mamak",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=15707872384459822136&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.8383415,
+        "lng": 101.7508117
+      }
+    },
+    {
+      "id": "ChIJO77xmvO3zTERcE9anzWM_7U",
+      "name": "Mama Bakes by Izzaty Bassin",
+      "address": "Block C, MasReca 19, Cyberjaya, 63200 Cyberjaya, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": null,
+      "priceLevel": null,
+      "types": [
+        "bakery",
+        "food_store",
+        "store",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "",
+      "googleMapsUri": "https://maps.google.com/?cid=13114354801860824944&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9003437,
+        "lng": 101.62982099999999
+      }
+    },
+    {
+      "id": "ChIJ3cwJaoS3zTERcB-gwslvUD0",
+      "name": "Bananabites@cyber",
+      "address": "No 50-G,Masreca 19 Jalan 19, 1, Persiaran Rimba Permai, Masreca 19, 63000 Cyberjaya, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "cafe",
+        "food",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "https://beacons.ai/bananabites",
+      "googleMapsUri": "https://maps.google.com/?cid=4418154146794839920&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9002738,
+        "lng": 101.6303376
+      }
+    },
+    {
+      "id": "ChIJAUcAPO23zTERJHt1S_WlSkw",
+      "name": "Cups & Bars",
+      "address": "Persiaran Rimba Permai, Cyber 10 Masreca19, Cyberjaya, 63100 Cyberjaya, Selangor, Malaysia",
+      "rating": null,
+      "userRatingCount": null,
+      "isOpen": false,
+      "priceLevel": null,
+      "types": [
+        "dessert_shop",
+        "cake_shop",
+        "wholesaler",
+        "confectionery",
+        "bakery",
+        "food_store",
+        "store",
+        "food",
+        "manufacturer",
+        "service",
+        "point_of_interest",
+        "establishment"
+      ],
+      "category": "cafe",
+      "summary": "",
+      "website": "https://www.instagram.com/cupsandbars/",
+      "googleMapsUri": "https://maps.google.com/?cid=5497388768110672676&g_mp=Cilnb29nbGUubWFwcy5wbGFjZXMudjEuUGxhY2VzLlNlYXJjaE5lYXJieRACGAQgAA",
+      "location": {
+        "lat": 2.9006837,
+        "lng": 101.62984709999999
+      }
+    }
+  ]
+}
