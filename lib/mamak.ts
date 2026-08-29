@@ -45,7 +45,7 @@ export const ESCAPES: Escape[] = [
     skips: "ELITE northbound jam",
     driveTime: "~12 mins",
     distance: "14 km",
-    vibeEmoji: "☕",
+    vibeEmoji: "",
     engineerTip: {
       author: "UNCLE SEPANG",
       avatar: "/portraits/uncle-sepang.webp",
@@ -68,7 +68,7 @@ export const ESCAPES: Escape[] = [
     skips: "Entire KL exit crowd",
     driveTime: "~22 mins",
     distance: "24 km",
-    vibeEmoji: "🦐",
+    vibeEmoji: "",
     engineerTip: {
       author: "UNCLE SEPANG",
       avatar: "/portraits/uncle-sepang.webp",
@@ -91,7 +91,7 @@ export const ESCAPES: Escape[] = [
     skips: "Toll plaza bottlenecks",
     driveTime: "~18 mins",
     distance: "21 km",
-    vibeEmoji: "❄️",
+    vibeEmoji: "",
     engineerTip: {
       author: "AERO-9",
       avatar: "/portraits/aero-9.webp",
@@ -114,7 +114,7 @@ export const ESCAPES: Escape[] = [
     skips: "Immediate circuit exit gridlock",
     driveTime: "~6 mins",
     distance: "6.5 km",
-    vibeEmoji: "🛍️",
+    vibeEmoji: "",
     engineerTip: {
       author: "DIN TURBO",
       avatar: "/portraits/din-turbo.webp",
@@ -137,7 +137,7 @@ export const ESCAPES: Escape[] = [
     skips: "Airport merge & PLUS North toll",
     driveTime: "~15 mins",
     distance: "16 km",
-    vibeEmoji: "🍛",
+    vibeEmoji: "",
     engineerTip: {
       author: "DIN TURBO",
       avatar: "/portraits/din-turbo.webp",

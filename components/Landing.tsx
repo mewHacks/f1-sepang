@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { SCENARIOS } from "@/lib/scenarios.ts";
 import { PERSONAS, CALL_LABEL } from "@/lib/personas.ts";
-import { Avatar, Title } from "./Chrome.tsx";
+import { Avatar, Reveal, Title } from "./Chrome.tsx";
 
 // Plain English first. The F1 term is a small subtitle, not the headline —
 // nobody should need to know what a "paddock" is to understand the app.
@@ -59,7 +59,7 @@ export function Landing({
       {/* --- hero: full-bleed, no side padding, so the ghost word and the
           car can both run truly edge to edge. --- */}
       <div
-        className="relative min-h-[620px] overflow-hidden px-4 pb-2 pt-6 sm:min-h-[560px]"
+        className="relative min-h-[620px] overflow-hidden px-4 pb-2 pt-6 sm:min-h-[560px] lg:min-h-[640px]"
         onPointerMove={(e) => {
           const r = e.currentTarget.getBoundingClientRect();
           const px = (e.clientX - r.left) / r.width - 0.5;
@@ -89,7 +89,7 @@ export function Landing({
           src="/hero-car.webp"
           alt=""
           aria-hidden
-          className="pointer-events-none absolute -bottom-6 -right-10 w-[78vw] max-w-[560px] opacity-90 transition-transform duration-200 ease-out sm:-right-16 sm:w-[52vw] lg:-right-20 lg:w-[42vw]"
+          className="pointer-events-none absolute -bottom-2 -right-10 w-[78vw] max-w-[560px] opacity-90 transition-transform duration-200 ease-out sm:-right-16 sm:w-[52vw] lg:bottom-4 lg:-right-16 lg:w-[38vw]"
         />
 
         <span
@@ -110,8 +110,10 @@ export function Landing({
           <span className="text-red">You decide. No F1 knowledge needed.</span>
         </p>
 
-        {/* --- Hero Comms Trio: instant visual intro to the 3 personas --- */}
-        <div className="anim-rise mt-6 flex flex-wrap items-center gap-3 rounded-2xl border border-line bg-surface/70 p-3.5 backdrop-blur-sm">
+        {/* --- Hero Comms Trio: instant visual intro to the 3 personas ---
+            Capped to the text column on wide screens — full-width here was
+            running straight over the car. */}
+        <div className="anim-rise relative mt-6 flex max-w-[85vw] flex-wrap items-center gap-3 rounded-2xl border border-line bg-surface/85 p-3.5 sm:max-w-md lg:max-w-lg">
           <div className="flex -space-x-3">
             {PERSONAS.map((p) => (
               <div
@@ -137,7 +139,7 @@ export function Landing({
       </div>
 
       {/* --- what's in here: three big, plain-language cards --- */}
-      <div className="mt-10 px-4">
+      <Reveal className="mt-10 px-4">
         <h2 className="title title-loose text-3xl leading-tight sm:text-4xl">
           What&apos;s in here
         </h2>
@@ -146,7 +148,7 @@ export function Landing({
             <div
               key={f.label}
               style={{ "--i": i } as React.CSSProperties}
-              className="anim-rise card flex gap-4 p-5"
+              className="anim-rise card flex gap-4 p-5 transition-transform duration-200 hover:-translate-y-1 lg:hover:border-fg/30"
             >
               <span
                 className="title shrink-0 text-4xl leading-none"
@@ -169,10 +171,10 @@ export function Landing({
             </div>
           ))}
         </div>
-      </div>
+      </Reveal>
 
       {/* --- roster: one engineer revealed at a time, auto-cycling --- */}
-      <div className="mt-10">
+      <Reveal className="mt-10">
         <div className="px-4">
           <h2 className="title title-loose text-3xl leading-tight sm:text-4xl">
             Meet the three
@@ -241,10 +243,10 @@ export function Landing({
             />
           ))}
         </div>
-      </div>
+      </Reveal>
 
       {/* --- setup --- */}
-      <div className="mt-11 px-4">
+      <Reveal className="mt-11 px-4">
         <h2 className="title title-loose text-3xl leading-tight sm:text-4xl">Start a race</h2>
 
         <label className="mt-5 block">
@@ -300,7 +302,7 @@ export function Landing({
             );
           })}
         </div>
-      </div>
+      </Reveal>
 
       <div className="actionbar mt-8">
         <div className="shell px-4">

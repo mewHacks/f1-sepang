@@ -4,9 +4,11 @@ import { PERSONAS } from "@/lib/personas.ts";
 import { Avatar } from "./Chrome.tsx";
 
 const ITEMS: { view: View; n: string; label: string; hint: string }[] = [
-  { view: "landing", n: "01", label: "Pit Wall", hint: "Call the strategy" },
-  { view: "pass", n: "02", label: "Circuit Pass", hint: "Your shareable result" },
-  { view: "mamak", n: "03", label: "Paddock Mamak", hint: "Escape routes & supper" },
+  { view: "landing", n: "01", label: "Pit Wall", hint: "Play the strategy game" },
+  { view: "predict", n: "02", label: "Fan Market", hint: "Predict the race" },
+  { view: "trophies", n: "03", label: "Trophy Room", hint: "Achievements & leaderboard" },
+  { view: "pass", n: "04", label: "Circuit Pass", hint: "Your shareable result" },
+  { view: "mamak", n: "05", label: "Paddock Mamak", hint: "Beat the traffic, find food" },
 ];
 
 export function Menu({

@@ -1,6 +1,45 @@
 "use client";
 
+import { useEffect, useRef } from "react";
 import type { Persona } from "@/lib/personas.ts";
+
+/**
+ * Reveals its children with a rise+fade the moment they scroll into view,
+ * once, then leaves them alone. IntersectionObserver + a class flip — no
+ * scroll listener, no per-frame work, and it costs nothing for anything
+ * that's already on screen at load (the hero doesn't need this).
+ */
+export function Reveal({
+  children,
+  className = "",
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("in");
+          io.disconnect();
+        }
+      },
+      { threshold: 0.15 },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  return (
+    <div ref={ref} className={`reveal ${className}`}>
+      {children}
+    </div>
+  );
+}
 
 export function Wordmark({ small = false }: { small?: boolean }) {
   return (

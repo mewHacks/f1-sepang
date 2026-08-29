@@ -30,7 +30,7 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_mamak",
     targetId: "dengkil",
-    icon: "☕",
+    icon: "",
     question: "Craving hot teh tarik & crispy roti canai on plastic chairs?",
     subtext: "Classic late-night mamak feast with friends to debate the race strategy.",
     tag: "24-Hour Mamak & Teh Tarik",
@@ -38,7 +38,7 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_cafe",
     targetId: "cyberjaya",
-    icon: "❄️",
+    icon: "",
     question: "Need freezing cold air-con, specialty iced coffee & chill vibes?",
     subtext: "Cool down immediately, escape the humidity, and relax in aesthetic cafes.",
     tag: "Cold AC & Specialty Cafes",
@@ -46,7 +46,7 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_seafood",
     targetId: "bagan",
-    icon: "🦐",
+    icon: "",
     question: "Want fresh grilled Ikan Bakar & ocean breeze by the beach?",
     subtext: "Drive opposite to all KL highway traffic and feast on seafood by the coast.",
     tag: "Coastal Seafood & Beach",
@@ -54,7 +54,7 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_fast",
     targetId: "mitsui",
-    icon: "🛍️",
+    icon: "",
     question: "Super hungry right now? Need food & cold AC within 6 minutes?",
     subtext: "Quick sanctuary closest to circuit gates with plenty of food court choices.",
     tag: "Instant 6-Min Pitstop",
@@ -62,7 +62,7 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
   {
     id: "q_south",
     targetId: "nilai",
-    icon: "🍛",
+    icon: "",
     question: "Heading South (JB / Melaka / Seremban) and want midnight Nasi Kandar?",
     subtext: "Skip the northern toll queues entirely and grab crispy fried chicken & naan.",
     tag: "Southbound Midnight Feast",
@@ -70,12 +70,12 @@ const VIBE_QUESTIONS: VibeQuestion[] = [
 ];
 
 const CATEGORIES: { id: VibeCategory; label: string; icon: string }[] = [
-  { id: "all", label: "All Spots", icon: "🏁" },
-  { id: "mamak", label: "24h Mamak", icon: "☕" },
-  { id: "seafood", label: "Beach Seafood", icon: "🦐" },
-  { id: "cafe", label: "AC & Coffee", icon: "❄️" },
-  { id: "pitstop", label: "Fast Pitstop", icon: "🛍️" },
-  { id: "south", label: "Southbound", icon: "🍛" },
+  { id: "all", label: "All Spots", icon: "" },
+  { id: "mamak", label: "24h Mamak", icon: "" },
+  { id: "seafood", label: "Beach Seafood", icon: "" },
+  { id: "cafe", label: "AC & Coffee", icon: "" },
+  { id: "pitstop", label: "Fast Pitstop", icon: "" },
+  { id: "south", label: "Southbound", icon: "" },
 ];
 
 export function Mamak({ onRestart }: { onRestart: () => void }) {
@@ -93,13 +93,15 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
 
   // Question Deck State
   const [qIndex, setQIndex] = useState(0);
+  /** Target ids the player said yes to, scored once all five are answered. */
+  const [yesIds, setYesIds] = useState<string[]>([]);
   const [matchedEscape, setMatchedEscape] = useState<Escape | null>(null);
   const [swipeDirection, setSwipeDirection] = useState<"left" | "right" | null>(null);
 
   // 3-Second Calculating Telemetry State
   const [isCalculating, setIsCalculating] = useState(false);
   const [calcProgress, setCalcProgress] = useState(0);
-  const [calcStepText, setCalcStepText] = useState("🛰️ ACQUIRING GPS & TRAFFIC DELTAS...");
+  const [calcStepText, setCalcStepText] = useState(" ACQUIRING GPS & TRAFFIC DELTAS...");
 
   // Drag state for swipe card
   const [dragOffset, setDragOffset] = useState({ x: 0, y: 0 });
@@ -172,11 +174,11 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
       setCalcProgress(progress);
 
       if (elapsed < 850) {
-        setCalcStepText("🛰️ LOCKING GPS COORDS & SEPANG GATE CONGESTION...");
+        setCalcStepText(" LOCKING GPS COORDS & SEPANG GATE CONGESTION...");
       } else if (elapsed < 1800) {
-        setCalcStepText("⚡ CALCULATING HIGHWAY DELTAS & BYPASS ROUTES...");
+        setCalcStepText(" CALCULATING HIGHWAY DELTAS & BYPASS ROUTES...");
       } else if (elapsed < 2650) {
-        setCalcStepText("🍛 VERIFYING OPEN MAMAKS & SUPPER AVAILABILITY...");
+        setCalcStepText(" VERIFYING OPEN MAMAKS & SUPPER AVAILABILITY...");
       } else {
         setCalcStepText("✓ ROUTE LOCKED · PRESENTING HIDEAWAY");
       }
@@ -191,22 +193,39 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
     }, 50);
   };
 
+  /* Answer all five, then score. Previously a single right-swipe jumped
+     straight to the result, so questions 2-5 were unreachable and the
+     "5 questions" promise was a lie. Now every yes adds a point to that
+     question's spot and the highest total wins; ties fall back to the
+     earliest yes, and all-no still yields a sensible default. */
   const handleSwipe = (dir: "left" | "right") => {
     setSwipeDirection(dir);
-    const currentQ = VIBE_QUESTIONS[qIndex];
-    const target = ESCAPES.find((e) => e.id === currentQ.targetId) || ESCAPES[0];
+    const answeredIndex = qIndex;
 
     setTimeout(() => {
-      if (dir === "right") {
-        triggerMatchCalculation(target);
+      const nextYes =
+        dir === "right" ? [...yesIds, VIBE_QUESTIONS[answeredIndex].targetId] : yesIds;
+      if (dir === "right") setYesIds(nextYes);
+
+      if (answeredIndex < VIBE_QUESTIONS.length - 1) {
+        setQIndex((prev) => prev + 1);
       } else {
-        if (qIndex < VIBE_QUESTIONS.length - 1) {
-          setQIndex((prev) => prev + 1);
-        } else {
-          // Reached end without matching: switch to full browse view
-          switchToBrowse();
-        }
+        // Last question answered — score every yes and reveal the match.
+        const tally = new Map<string, number>();
+        nextYes.forEach((id) => tally.set(id, (tally.get(id) ?? 0) + 1));
+
+        const winnerId =
+          [...tally.entries()].sort((a, b) => b[1] - a[1])[0]?.[0] ?? nextYes[0];
+        const target =
+          ESCAPES.find((e) => e.id === winnerId) ??
+          // Said no to everything: give the closest, most universally useful
+          // option rather than nothing at all.
+          ESCAPES.find((e) => e.category === "pitstop") ??
+          ESCAPES[0];
+
+        triggerMatchCalculation(target);
       }
+
       setSwipeDirection(null);
       setDragOffset({ x: 0, y: 0 });
     }, 240);
@@ -240,6 +259,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
   const resetQuiz = () => {
     setMatchedEscape(null);
     setQIndex(0);
+    setYesIds([]);
     setSwipeDirection(null);
     setDragOffset({ x: 0, y: 0 });
     setIsCalculating(false);
@@ -325,7 +345,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
             ) : (
               <>
                 <span className="h-2 w-2 rounded-full bg-muted/60" />
-                <span>📍 Tap for Live GPS Origin</span>
+                <span> Tap for Live GPS Origin</span>
               </>
             )}
           </button>
@@ -346,7 +366,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                 : "text-muted hover:text-white"
             }`}
           >
-            ⚡ Vibe Questions
+             Vibe Questions
           </button>
           <button
             onClick={() => {
@@ -359,7 +379,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                 : "text-muted hover:text-white"
             }`}
           >
-            📋 Browse All ({ESCAPES.length})
+             Browse All ({ESCAPES.length})
           </button>
         </div>
       )}
@@ -374,7 +394,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                 <div className="absolute inset-0 rounded-full border border-dashed border-red/40 animate-[spin_6s_linear_infinite]" />
                 <div className="absolute inset-2 rounded-full border border-yellow/30 animate-[spin_3s_linear_infinite_reverse]" />
                 <div className="anim-blink h-12 w-12 rounded-full bg-red/20 flex items-center justify-center">
-                  <span className="text-2xl">⚡</span>
+                  <span className="text-2xl"></span>
                 </div>
               </div>
 
@@ -480,7 +500,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                   onClick={resetQuiz}
                   className="data rounded-xl border border-line py-3.5 text-center text-xs uppercase tracking-wider transition-all hover:bg-white/5 active:scale-95"
                 >
-                  🔄 Retake Questions
+                   Retake Questions
                 </button>
                 <a
                   href={getNavUrl(
@@ -546,7 +566,6 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                 {/* Card Top Banner */}
                 <div className="flex items-center justify-between border-b border-line px-5 py-3.5 bg-surface-2/80">
                   <div className="flex items-center gap-2">
-                    <span className="text-2xl">{currentQ.icon}</span>
                     <span className="data text-xs uppercase tracking-wider text-muted">
                       {currentQ.tag}
                     </span>
@@ -558,7 +577,6 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
 
                 {/* Question Body */}
                 <div className="p-6 flex flex-col flex-1 items-center text-center justify-center min-h-[220px]">
-                  <div className="text-4xl mb-3">{currentQ.icon}</div>
                   <h3 className="title title-loose text-2xl sm:text-3xl text-white max-w-xs">
                     &ldquo;{currentQ.question}&rdquo;
                   </h3>
@@ -632,7 +650,6 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                     : "border border-line bg-surface text-muted hover:text-white"
                 }`}
               >
-                <span>{cat.icon}</span>
                 <span>{cat.label}</span>
               </button>
             ))}
@@ -747,7 +764,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
               }}
               className="data text-xs uppercase tracking-wider text-yellow hover:underline"
             >
-              ⚡ Back to Vibe Questions
+               Back to Vibe Questions
             </button>
           </div>
         </div>

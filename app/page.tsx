@@ -8,6 +8,9 @@ import { PitWall } from "@/components/PitWall.tsx";
 import { Debrief } from "@/components/Debrief.tsx";
 import { SharePass } from "@/components/SharePass.tsx";
 import { Mamak } from "@/components/Mamak.tsx";
+import { Predictions } from "@/components/Predictions.tsx";
+import { Trophies } from "@/components/Trophies.tsx";
+import { recordRace } from "@/lib/progress.ts";
 import { resolve, type RaceResult } from "@/lib/sim.ts";
 import { scenarioById } from "@/lib/scenarios.ts";
 import type { Call } from "@/lib/personas.ts";
@@ -56,9 +59,16 @@ export default function Page() {
             scenarioId={setup.scenarioId}
             muted={muted}
             onDecide={(call: Call) => {
-              setRun({
-                ...setup,
-                result: resolve(scenarioById(setup.scenarioId), call),
+              const result = resolve(scenarioById(setup.scenarioId), call);
+              setRun({ ...setup, result });
+              // Award achievements the moment the race resolves, so the
+              // debrief and trophy room agree without extra plumbing.
+              recordRace({
+                scenarioId: setup.scenarioId,
+                strategyIQ: result.strategyIQ,
+                wasOptimal: result.wasOptimal,
+                advocateId: result.rightAllAlong.id,
+                call,
               });
               setView("debrief");
             }}
@@ -85,6 +95,12 @@ export default function Page() {
         )}
 
         {view === "mamak" && <Mamak onRestart={() => setView("landing")} />}
+
+        {view === "predict" && <Predictions muted={muted} />}
+
+        {view === "trophies" && (
+          <Trophies callsign={run?.callsign ?? setup?.callsign ?? "YOU"} />
+        )}
 
         {/* A view that needs a race you have not run yet. */}
         {((view === "pitwall" && !setup) ||
