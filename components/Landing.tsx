@@ -10,40 +10,40 @@ const SECTIONS = [
     n: "01",
     tone: "red" as const,
     label: "Pit Wall Strategy",
-    title: "Monsoon Strategy Simulation",
-    body: "Dial in Sepang's track heat, sudden monsoon showers, and race distance. Listen to 3 race engineers argue live over pit radio, lock in your tire call, and review deterministic lap telemetry with your 0–100 Strategy IQ.",
+    title: "Call the race",
+    body: "Mix Sepang's heat and sudden rain, hear three engineers fight over the radio, then make the tire call. You get a score at the end.",
     tag: "Core Game",
   },
   {
     n: "02",
     tone: "yellow" as const,
     label: "Trophy Room",
-    title: "12 Achievement Stamps & Rank Progression",
-    body: "Rise from Pit Lane Rookie to Pit Wall Legend across 5 ranks. Unlock 12 custom circular achievement badges by mastering tricky weather calls, trusting local wisdom, and scoring high on the live leaderboard.",
+    title: "Climb the ranks",
+    body: "Go from Rookie to Legend. Earn 12 stamps by calling the weather right and beating the local leaderboard.",
     tag: "Achievements",
   },
   {
     n: "03",
     tone: "purple" as const,
     label: "Fan Market",
-    title: "Sepang Race Prediction Markets",
-    body: "Wager virtual paddock credit on race outcomes — from Turn 11 monsoon showers to safety car deployments and tire strategies. Test your instincts with real-time odds calculations.",
+    title: "Predict the race",
+    body: "Bet fake credits on what happens — will it rain at Turn 11, who pits first. See if your gut is right.",
     tag: "Predictions",
   },
   {
     n: "04",
     tone: "green" as const,
     label: "Paddock Mamak",
-    title: "Escape Circuit Jam & Find Local Food",
-    body: "Take a 5-question food vibe quiz with smart radar matching, or explore 10 authentic supper corridors, satay hotspots, and seafood hideaways around Sepang Circuit with GPS routing.",
+    title: "Find your supper",
+    body: "Answer 5 quick questions to get your food match, or browse 10 real makan spots near the track with directions.",
     tag: "Food & Navigation",
   },
   {
     n: "05",
     tone: "ice" as const,
     label: "Circuit Pass",
-    title: "Holographic Credential & Social Sharing",
-    body: "Mint your personal interactive 3D holographic circuit pass stamped with your final Strategy IQ, rank badge, and callsign. Export in high resolution directly to X, Threads, and Instagram.",
+    title: "Share your pass",
+    body: "Get a pass stamped with your rank and callsign, then post it straight to X, Threads, or Instagram.",
     tag: "Shareable Pass",
   },
 ];
@@ -164,7 +164,7 @@ export function Landing({
           Inside the Web App
         </h2>
         <p className="mt-1.5 text-[14px] leading-relaxed text-muted max-w-md">
-          A complete guide to everything available in JomLap — from real-time monsoon strategy to post-race food escapes.
+          Five things to do in JomLap — pick a race, chase stamps, predict the outcome, grab supper, share your pass.
         </p>
 
         <div className="mt-6 flex flex-col gap-3.5">

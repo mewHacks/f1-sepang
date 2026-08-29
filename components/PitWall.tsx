@@ -470,7 +470,7 @@ export function PitWall({
               <button
                 key={p.id}
                 onClick={() => chooseJudge(p)}
-                className={`card flex items-center gap-3 p-4 text-left transition-all active:scale-[0.98] ${
+                className={`group card flex items-center gap-3 p-4 text-left transition-all active:scale-[0.98] ${
                   active ? "border-yellow bg-yellow/10" : "border-line bg-surface hover:border-fg/30"
                 }`}
                 style={{ borderColor: active ? "var(--yellow)" : undefined }}
