@@ -3,6 +3,7 @@
 import { useEffect, useState, useRef, useMemo } from "react";
 import { ESCAPES, type Escape, type VibeCategory } from "@/lib/mamak.ts";
 import { Title } from "./Chrome.tsx";
+import { RouteMap } from "./RouteMap.tsx";
 
 type LivePlace = {
   id: string;
@@ -410,15 +411,14 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                 </span>
               </div>
 
-              <div className="mt-3 flex items-center gap-3">
-                <span className="text-3xl">{matchedEscape.vibeEmoji}</span>
-                <div>
-                  <h3 className="title text-2xl leading-none text-white">
-                    {matchedEscape.name}
-                  </h3>
-                  <div className="data mt-1 text-[11px] text-yellow">
-                    {matchedEscape.tagline}
-                  </div>
+              {/* One picture per card, not two: the emoji is gone, the
+                  engineer's portrait below is the only image here. */}
+              <div className="mt-3">
+                <h3 className="title text-2xl leading-none text-white">
+                  {matchedEscape.name}
+                </h3>
+                <div className="data mt-1 text-[11px] text-yellow">
+                  {matchedEscape.tagline}
                 </div>
               </div>
 
@@ -466,6 +466,13 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                   </div>
                 </div>
               )}
+
+              <RouteMap
+                userLocation={userLocation}
+                destination={
+                  livePlaces[matchedEscape.id]?.[0]?.name ?? matchedEscape.food.name
+                }
+              />
 
               {/* Action Buttons */}
               <div className="mt-5 grid grid-cols-2 gap-2.5">
@@ -675,10 +682,7 @@ export function Mamak({ onRestart }: { onRestart: () => void }) {
                     <div className="flex flex-1 flex-col p-4">
                       <div className="flex items-start justify-between gap-2">
                         <div>
-                          <div className="flex items-center gap-2">
-                            <span className="text-xl">{e.vibeEmoji}</span>
-                            <h3 className="title text-2xl leading-none">{e.name}</h3>
-                          </div>
+                          <h3 className="title text-2xl leading-none">{e.name}</h3>
                           <div className="data mt-1 text-[11px] text-yellow">
                             {e.tagline}
                           </div>

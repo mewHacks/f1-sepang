@@ -1,33 +1,33 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { SCENARIOS } from "@/lib/scenarios.ts";
 import { PERSONAS, CALL_LABEL } from "@/lib/personas.ts";
 import { Avatar, Title } from "./Chrome.tsx";
 
-// Names carry the F1 flavour; the plain-English line does the actual
-// explaining, so nobody needs to already know what a "paddock" is.
+// Plain English first. The F1 term is a small subtitle, not the headline —
+// nobody should need to know what a "paddock" is to understand the app.
 const FEATURES = [
   {
-    n: "01",
+    n: "1",
     tone: "red" as const,
-    label: "Pit Wall",
-    plain: "The strategy game",
-    tag: "Three engineers argue live — you make the call",
+    title: "Play the strategy game",
+    body: "Rain is coming. Three engineers each tell you to do something different. You decide.",
+    label: "The Pit Wall",
   },
   {
-    n: "02",
+    n: "2",
     tone: "yellow" as const,
-    label: "Circuit Pass",
-    plain: "Your result card",
-    tag: "A shareable score card for how you did",
+    title: "Get your score card",
+    body: "See how good your call was, then share the card with your friends.",
+    label: "The Circuit Pass",
   },
   {
-    n: "03",
+    n: "3",
     tone: "ice" as const,
-    label: "Paddock Mamak",
-    plain: "After the race",
-    tag: "Skip the traffic jam, find supper nearby",
+    title: "Beat the traffic after",
+    body: "Skip the jam leaving the circuit and find somewhere open to eat nearby.",
+    label: "The Paddock Mamak",
   },
 ];
 
@@ -40,6 +40,13 @@ export function Landing({
   const [picked, setPicked] = useState(SCENARIOS[0].id);
   const [active, setActive] = useState(0);
 
+  // Hero parallax: refs written to directly (no React state) so a mouse
+  // sweeping across the hero doesn't trigger a re-render per pixel. Touch
+  // devices never fire pointermove without a finger down, so this is
+  // inherently free on mobile — nothing runs until a mouse actually moves.
+  const carRef = useRef<HTMLImageElement>(null);
+  const slabRef = useRef<HTMLDivElement>(null);
+
   // Cycles the roster reveal on its own; any tap on a dot resets the clock
   // so a manual choice doesn't get yanked away a moment later.
   useEffect(() => {
@@ -49,9 +56,42 @@ export function Landing({
 
   return (
     <div className="pb-32 pt-6 lg:pb-10">
-      {/* --- hero: full-bleed, no side padding, so the ghost word can run
-          truly edge to edge instead of stopping at a content margin. --- */}
-      <div className="relative overflow-hidden px-4 pb-2 pt-6">
+      {/* --- hero: full-bleed, no side padding, so the ghost word and the
+          car can both run truly edge to edge. --- */}
+      <div
+        className="relative min-h-[620px] overflow-hidden px-4 pb-2 pt-6 sm:min-h-[560px]"
+        onPointerMove={(e) => {
+          const r = e.currentTarget.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - 0.5;
+          const py = (e.clientY - r.top) / r.height - 0.5;
+          if (carRef.current)
+            carRef.current.style.transform = `translate3d(${px * -22}px, ${py * -14}px, 0)`;
+          if (slabRef.current)
+            slabRef.current.style.transform = `translate3d(${px * -10}px, ${py * -7}px, 0)`;
+        }}
+        onPointerLeave={() => {
+          if (carRef.current) carRef.current.style.transform = "translate3d(0,0,0)";
+          if (slabRef.current) slabRef.current.style.transform = "translate3d(0,0,0)";
+        }}
+      >
+        {/* Diagonal slab + car, bleeding off the bottom-right. Pure decor —
+            aria-hidden, and it sits behind the text so nothing overlaps
+            content on a narrow phone. */}
+        <div
+          ref={slabRef}
+          aria-hidden
+          className="absolute -right-24 -top-10 h-[420px] w-[420px] bg-red opacity-[0.14] transition-transform duration-200 ease-out sm:h-[520px] sm:w-[520px]"
+          style={{ clipPath: "polygon(30% 0, 100% 0, 100% 100%, 0 100%)" }}
+        />
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          ref={carRef}
+          src="/hero-car.webp"
+          alt=""
+          aria-hidden
+          className="pointer-events-none absolute -bottom-6 -right-10 w-[78vw] max-w-[560px] opacity-90 transition-transform duration-200 ease-out sm:-right-16 sm:w-[52vw] lg:-right-20 lg:w-[42vw]"
+        />
+
         <span
           aria-hidden
           className="title ghost-red bleed absolute -top-3 left-0 text-[30vw] leading-[0.78] lg:text-[11rem]"
@@ -64,9 +104,10 @@ export function Landing({
             STRATEGY
           </Title>
         </div>
-        <p className="relative mt-4 max-w-sm text-base leading-snug text-fg/80 lg:max-w-md lg:text-lg">
-          Fifty degrees of asphalt. A monsoon over Turn 11. Three engineers screaming
-          different things in your ear — <span className="text-red">you make the call.</span>
+        <p className="relative mt-5 max-w-[85vw] text-lg leading-relaxed text-fg/85 sm:max-w-md lg:max-w-lg lg:text-xl">
+          You are running race strategy at the Malaysian Grand Prix. The track is 50°C, rain
+          is coming, and three engineers each want you to do something different.{" "}
+          <span className="text-red">You decide. No F1 knowledge needed.</span>
         </p>
 
         {/* --- Hero Comms Trio: instant visual intro to the 3 personas --- */}
@@ -87,51 +128,61 @@ export function Landing({
             ))}
           </div>
           <div className="min-w-0 flex-1">
-            <div className="data text-[10px] uppercase tracking-[0.2em] text-muted">
-              Your three strategists
-            </div>
-            <div className="display text-sm tracking-wide text-fg">
-              AERO-9 <span className="text-muted/60">·</span> UNCLE SEPANG <span className="text-muted/60">·</span> DIN TURBO
+            <div className="title text-lg leading-tight">Your three engineers</div>
+            <div className="mt-0.5 text-[13px] leading-snug text-muted">
+              They never agree. That is the whole game.
             </div>
           </div>
-          <span className="data inline-flex items-center gap-1.5 rounded-full bg-red/10 px-2.5 py-1 text-[10px] uppercase tracking-wider text-red">
-            <span className="anim-blink h-1.5 w-1.5 rounded-full bg-red" />
-            3 Debates
-          </span>
         </div>
       </div>
 
-      {/* --- features: big, terse, three rows instead of a paragraph each --- */}
-      <div className="mt-8 flex flex-col gap-2 px-4">
-        {FEATURES.map((f, i) => (
-          <div
-            key={f.label}
-            style={{ "--i": i } as React.CSSProperties}
-            className="anim-rise card flex items-center gap-4 px-4 py-3.5"
-          >
-            <span
-              className="title shrink-0 text-3xl leading-none opacity-90"
-              style={{ color: `var(--${f.tone})` }}
+      {/* --- what's in here: three big, plain-language cards --- */}
+      <div className="mt-10 px-4">
+        <h2 className="title title-loose text-3xl leading-tight sm:text-4xl">
+          What&apos;s in here
+        </h2>
+        <div className="mt-4 flex flex-col gap-3">
+          {FEATURES.map((f, i) => (
+            <div
+              key={f.label}
+              style={{ "--i": i } as React.CSSProperties}
+              className="anim-rise card flex gap-4 p-5"
             >
-              {f.n}
-            </span>
-            <div className="min-w-0">
-              <div className="title-loose title text-lg leading-tight sm:text-xl">{f.tag}</div>
-              <div className="data mt-1 text-[10px] uppercase tracking-[0.15em] text-muted">
-                {f.plain} <span className="text-muted/50">· aka {f.label}</span>
+              <span
+                className="title shrink-0 text-4xl leading-none"
+                style={{ color: `var(--${f.tone})` }}
+              >
+                {f.n}
+              </span>
+              <div className="min-w-0">
+                <h3 className="title title-loose text-2xl leading-tight sm:text-[1.75rem]">
+                  {f.title}
+                </h3>
+                <p className="mt-2 text-[15px] leading-relaxed text-fg/75">{f.body}</p>
+                <div
+                  className="data mt-2.5 text-xs uppercase tracking-wider"
+                  style={{ color: `var(--${f.tone})` }}
+                >
+                  {f.label}
+                </div>
               </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* --- roster: one engineer revealed at a time, auto-cycling --- */}
-      <div className="mt-9">
-        <div className="annot data mb-3 px-4 text-[10px] uppercase tracking-[0.25em] text-muted">
-          <span>Your pit wall team</span>
+      <div className="mt-10">
+        <div className="px-4">
+          <h2 className="title title-loose text-3xl leading-tight sm:text-4xl">
+            Meet the three
+          </h2>
+          <p className="mt-2 text-[15px] leading-relaxed text-fg/75">
+            Each one always pushes for a different call. One of them is right.
+          </p>
         </div>
 
-        <div className="relative mx-4 h-[380px] overflow-hidden rounded-2xl border border-line sm:mx-auto sm:w-96">
+        <div className="relative mx-4 mt-4 h-[400px] overflow-hidden rounded-2xl border border-line sm:mx-auto sm:w-96">
           {PERSONAS.map((p, i) => (
             <div
               key={p.id}
@@ -155,12 +206,12 @@ export function Landing({
                 <div className="title text-3xl leading-none" style={{ color: `var(--${p.tone})` }}>
                   {p.name}
                 </div>
-                <div className="data mt-1 text-[10px] uppercase tracking-widest text-muted">
+                <div className="data mt-1.5 text-xs uppercase tracking-wider text-muted">
                   {p.role}
                 </div>
-                <div className="mt-2.5 text-[13px] leading-snug text-fg/80">{p.pitch}</div>
+                <div className="mt-3 text-[15px] leading-relaxed text-fg/85">{p.pitch}</div>
                 <div
-                  className="data mt-3.5 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-[10px] uppercase tracking-[0.12em]"
+                  className="data mt-4 inline-flex items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs uppercase tracking-wider"
                   style={{
                     borderColor: `color-mix(in srgb, var(--${p.tone}) 40%, transparent)`,
                     background: `color-mix(in srgb, var(--${p.tone}) 10%, transparent)`,
@@ -193,17 +244,25 @@ export function Landing({
       </div>
 
       {/* --- setup --- */}
-      <div className="mt-9 px-4">
-        <input
-          value={callsign}
-          onChange={(e) => setCallsign(e.target.value)}
-          maxLength={24}
-          placeholder="YOUR CALL-SIGN"
-          autoComplete="off"
-          className="title w-full rounded-xl border border-line bg-surface px-4 py-4 text-2xl outline-none placeholder:text-muted/40 focus:border-red"
-        />
+      <div className="mt-11 px-4">
+        <h2 className="title title-loose text-3xl leading-tight sm:text-4xl">Start a race</h2>
 
-        <div className="mt-4 flex flex-col gap-2.5">
+        <label className="mt-5 block">
+          <span className="mb-2 block text-[15px] text-fg/75">
+            What should they call you on the radio?
+          </span>
+          <input
+            value={callsign}
+            onChange={(e) => setCallsign(e.target.value)}
+            maxLength={24}
+            placeholder="Type a name"
+            autoComplete="off"
+            className="title w-full rounded-xl border border-line bg-surface px-4 py-4 text-2xl outline-none placeholder:text-muted/40 focus:border-red"
+          />
+        </label>
+
+        <div className="mb-2 mt-6 text-[15px] text-fg/75">Pick your weather:</div>
+        <div className="flex flex-col gap-2.5">
           {SCENARIOS.map((s, i) => {
             const active = s.id === picked;
             return (
@@ -225,16 +284,16 @@ export function Landing({
                     ))}
                   </div>
                 </div>
-                <div className="mt-1.5 text-[13px] leading-snug text-muted">{s.blurb}</div>
-                <div className="data mt-2.5 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted">
+                <div className="mt-2 text-[15px] leading-relaxed text-fg/75">{s.blurb}</div>
+                <div className="data mt-3 flex flex-wrap gap-x-4 gap-y-1 text-xs text-muted">
                   <span>
-                    TRACK <span className="text-yellow">{s.trackTempC}°C</span>
+                    Track <span className="text-yellow">{s.trackTempC}°C</span>
                   </span>
                   <span>
-                    HUM <span className="text-ice">{s.humidityPct}%</span>
+                    Humidity <span className="text-ice">{s.humidityPct}%</span>
                   </span>
                   <span>
-                    LAPS <span className="text-ice">{s.lapsRemaining}</span>
+                    <span className="text-ice">{s.lapsRemaining}</span> laps left
                   </span>
                 </div>
               </button>
@@ -249,7 +308,7 @@ export function Landing({
             onClick={() => onStart(callsign.trim() || "STRATEGIST", picked)}
             className="display w-full rounded-xl bg-red py-4 text-xl leading-none transition-transform active:scale-[0.98]"
           >
-            Take the pit wall
+            Start the race →
           </button>
         </div>
       </div>
