@@ -2,11 +2,7 @@
 
 **Call the strategy from Sepang's pit wall — three engineers, one monsoon, zero chill.**
 
-> _Home screen (attach the photo here):_
->
-> ![JomLap home screen](./docs/home.png)
->
-> _Replace `./docs/home.png` with the screenshot you'll provide._
+![JomLap home screen](./public/home.png)
 
 ---
 
@@ -24,15 +20,36 @@ On top of that, 90,000 people leave Sepang into the same ELITE-highway jam, with
 
 ## The Solution
 
-JomLap turns race strategy into a pick-up-and-play game with three interlocking parts:
+JomLap turns race strategy into a pick-up-and-play game. Each feature is its own piece, built to stand alone and combine into one loop.
 
-1. **The Pit Wall (strategy game).** Three personas — AERO-9 (a nervous strategy computer), Uncle Sepang (a 22-year veteran marshal who reads the sky), and Din Turbo (an unsupervised junior who wants full wets *now*) — argue live over the radio for three different calls in three hand-tuned weather scenarios. Each scenario is built so a different engineer is objectively right. You choose; a deterministic lap engine resolves it into a 0–100 **Strategy IQ**, a lap-delta chart, and a verdict from whoever called it.
-2. **The Circuit Pass (shareable result).** A 9:16 card rendered client-side and exportable as a PNG, with pointer-driven 3D tilt and an optional (off-by-default) holographic shader. Shares to the native share sheet or one tap to X / Threads / Instagram.
-3. **The Paddock Mamak (post-race routing).** A five-question swipe quiz matches you to a supper spot that routes *away* from the Sepang exit bottlenecks, with live Google ratings/hours when a key is set and curated static info otherwise.
+### 1. The Pit Wall — call the race
 
-Two more features keep people coming back: a **Trophy Room** (12 achievements, XP, five ranks, per-device leaderboard) and a **Fan Market** (five Sepang-specific yes/no prediction markets played with fictional "Teh Points" — a game, not gambling).
+Three engineers argue live over the radio and each want a different tire call:
+- **AERO-9** — a nervous strategy computer that only trusts the numbers
+- **Uncle Sepang** — a 22-year veteran marshal who reads the sky
+- **Din Turbo** — an unsupervised junior who wants full wets *now*
 
-The radio banter is streamed from a Malaysian LLM (ILMU, with an OpenRouter fallback and a scripted offline fallback) so two of the three personas speak native Manglish rather than an impression of it. Crucially, your Strategy IQ never depends on the model's output, so a slow or failed API call can never break the game.
+You pick one. A deterministic lap engine resolves the three hand-tuned weather scenarios into a 0–100 **Strategy IQ**, a lap-delta chart, and a verdict from whoever called it. Each scenario is tuned so a different engineer is objectively right.
+
+### 2. The Circuit Pass — share your result
+
+A 9:16 result card with your Strategy IQ, rank, and callsign. It renders client-side, exports as a PNG, and tilts with your pointer (optional holographic shader, off by default). Share to the native share sheet or one tap to X / Threads / Instagram.
+
+### 3. The Paddock Mamak — escape the jam and eat
+
+A five-question swipe quiz matches you to a supper spot that routes *away* from the Sepang exit bottlenecks. Live Google ratings and hours when a key is set, curated static info otherwise.
+
+### 4. The Trophy Room — keep coming back
+
+12 achievements, XP, five ranks, and a per-device leaderboard.
+
+### 5. The Fan Market — predict the race, no real money
+
+Five Sepang-specific yes/no prediction markets played with fictional **Teh Points** — a game, not gambling.
+
+### The radio voice
+
+Banter is streamed from a Malaysian LLM (ILMU, with an OpenRouter fallback and a scripted offline fallback), so two of the three personas speak native Manglish. Your Strategy IQ never depends on the model's output, so a slow or failed API call can never break the game.
 
 ## Tech Stack
 
