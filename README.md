@@ -106,17 +106,35 @@ public/
 
 ## User Flows
 
-**Primary — race loop (one continuous act):**
-`Landing` → enter callsign → `PitWall` (listen to 3-engineer radio, pick a call) → `Debrief` (Strategy IQ + lap chart + verdict) → `SharePass` (export/share card) or `Mamak` (post-race routing) → back to `Landing`.
+The seven views in `app/page.tsx` are a single continuous race act plus three always-available features. Rendered with Mermaid (GitHub and most Markdown renderers display this natively; if your viewer doesn't, paste the block into [mermaid.live](https://mermaid.live)).
 
-**Progression:**
-Every resolved race calls `recordRace()`, which awards achievements, adds XP, and updates the per-device leaderboard immediately — so the Trophy Room (`Trophies`) always agrees with the Debrief without extra plumbing.
+```mermaid
+flowchart TD
+    subgraph RACE["Race loop · one continuous act"]
+        direction TB
+        L["Landing · enter callsign"] -->|Start the race| PW["Pit Wall · 3-engineer radio"]
+        PW -->|pick a call| DB["Debrief · Strategy IQ · lap chart · verdict"]
+        DB -->|Circuit pass| SP["Circuit Pass · export / share 9:16 card"]
+        DB -->|Now eat| MK["Paddock Mamak · escape-route match"]
+        SP -->|Home| L
+        MK -->|Back to the pit wall| L
+    end
 
-**Fan Market (standalone):**
-`Predictions` → pick stake (25/50/100 Teh Points) → back YES/NO on 5 Sepang markets → odds shift with the crowd, payout locks at placement. Played with fictional currency; the UI states plainly it is not gambling.
+    FM["Fan Market · 5 Teh-Points YES/NO markets"]
+    TR["Trophy Room · achievements · XP · ranks · leaderboard"]
 
-**Post-race (standalone):**
-`Mamak` → 5-question swipe quiz → highest-scoring vibe wins a hideaway → optional live Google Places card + route map from the user's GPS → "browse all" directory with category filters and search.
+    L -->|"menu"| FM
+    L -->|"menu"| TR
+    L -->|"menu"| MK
 
-**Accessibility of the demo:**
-With no keys set, the radio uses scripted lines, Mamak uses curated static places, and every flow still plays end to end. Setting `ILMU_API_KEY` / `OPENROUTER_API_KEY` adds live LLM banter; `GOOGLE_MAPS_API_KEY` adds live ratings, hours, and embedded routes.
+    DB -.->|"recordRace() · +XP & achievements"| TR
+    FM -.->|"recordPrediction() · un-locks"| TR
+```
+
+**Progression:** every resolved race calls `recordRace()`, which awards achievements, adds XP, and updates the per-device leaderboard immediately — so the Trophy Room always agrees with the Debrief without extra plumbing. Placing a Fan Market bet calls `recordPrediction()` and can unlock achievements too.
+
+**Fan Market:** pick a stake (25 / 50 / 100 Teh Points) and back YES/NO on any of the five Sepang markets. Odds shift with the crowd, and your payout multiplier locks at the moment you place. Played with fictional currency — nothing can be bought, sold, or cashed out, and the UI says so.
+
+**Paddock Mamak:** a five-question swipe quiz tallies your answers and routes you to the winning hideaway — away from the Sepang exit bottlenecks — then offers an optional live Google Places card and a route map from the user's GPS, or a "browse all" directory with category filters and search.
+
+**Demo accessibility:** with no keys set, the radio uses scripted lines and Mamak uses curated static places, so every flow plays end to end with zero configuration. Setting `ILMU_API_KEY` / `OPENROUTER_API_KEY` adds live LLM banter; `GOOGLE_MAPS_API_KEY` adds live ratings, hours, and routes.
